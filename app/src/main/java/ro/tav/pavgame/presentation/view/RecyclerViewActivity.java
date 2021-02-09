@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.domain.GamesAdapter;
-import ro.tav.pavgame.presentation.PavGameBindingAdapter;
+import ro.tav.pavgame.presentation.view.recycleViewAux.GamesAdapter;
+import ro.tav.pavgame.presentation.view.recycleViewAux.PavGameBindingAdapter;
 
 
 public class RecyclerViewActivity extends AppCompatActivity {

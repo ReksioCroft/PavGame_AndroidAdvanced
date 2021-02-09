@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ro.tav.pavgame.data.GameHistory;
 import ro.tav.pavgame.domain.GameUseCase;
+import ro.tav.pavgame.presentation.view.recycleViewAux.PavGameBindingAdapter;
 
 public class PavGameViewModel extends ViewModel {
     static private GameUseCase game;      ///game face legatura cu repo-ul din domain

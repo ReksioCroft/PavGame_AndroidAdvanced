@@ -1,4 +1,4 @@
-package ro.tav.pavgame.domain;
+package ro.tav.pavgame.presentation.view.recycleViewAux;
 
 import android.view.View;
 import android.widget.TextView;

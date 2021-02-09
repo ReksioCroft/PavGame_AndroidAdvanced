@@ -1,4 +1,4 @@
-package ro.tav.pavgame.domain;
+package ro.tav.pavgame.presentation.view.recycleViewAux;
 
 import android.content.Context;
 import android.view.LayoutInflater;

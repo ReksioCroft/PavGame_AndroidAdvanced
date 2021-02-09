@@ -1,11 +1,11 @@
-package ro.tav.pavgame.presentation;
+package ro.tav.pavgame.presentation.view.recycleViewAux;
 
 import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ro.tav.pavgame.data.GameHistory;
-import ro.tav.pavgame.domain.GamesAdapter;
+import ro.tav.pavgame.presentation.PavGameViewModel;
 
 public class PavGameBindingAdapter {
     @BindingAdapter( "pavGameInsert" )
