@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.data.GameHistory;
 import ro.tav.pavgame.domain.ContactsAdapter;
@@ -21,7 +22,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_recycler_view );
-
+        PavGameApplication.addActivity( this );
         // get recycler view from xml layout
         RecyclerView mRecyclerViewContacts = findViewById( R.id.recycler_view_contacts_1 );
 
@@ -42,4 +43,9 @@ public class RecyclerViewActivity extends AppCompatActivity {
         } );
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PavGameApplication.removeActivity( this );
+    }
 }

@@ -166,6 +166,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public void onDestroy() {
         super.onDestroy();
         LoginActivity.getFireBaseCurrentInstance().signOut();
+        PavGameApplication.removeActivity( this );
         finish();
     }
 

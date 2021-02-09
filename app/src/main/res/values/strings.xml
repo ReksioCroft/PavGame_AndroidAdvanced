@@ -49,4 +49,5 @@
     <string name="saidHello">Someone said hello</string>
     <string name="work">Heavy work</string>
     <string name="processing">Something heavy is being processed&#8230;</string>
+    <string name="floatingButton">Floating Button for Score Board</string>
 </resources>

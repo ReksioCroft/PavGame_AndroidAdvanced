@@ -10,13 +10,13 @@ public class PavGameNotificationChannelFactory {
 
     public static final String CHANNEL_ID = "channel-id";
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi( api = Build.VERSION_CODES.O )
     public static NotificationChannel createProcessingWorkNotificationChannel() {
-        NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+        NotificationChannel channel = new NotificationChannel( CHANNEL_ID,
                 "my processing channel 2",
-                NotificationManager.IMPORTANCE_HIGH);
-        channel.setShowBadge(true);
-        channel.enableVibration(true);
+                NotificationManager.IMPORTANCE_HIGH );
+        channel.setShowBadge( true );
+        channel.enableVibration( true );
         return channel;
     }
 }

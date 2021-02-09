@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -27,6 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_register );
+        PavGameApplication.addActivity( this );
 
         TextView register_notLogedIn = findViewById( R.id.logInFromRegister );
         register_notLogedIn.setOnClickListener( new View.OnClickListener() {
@@ -86,5 +88,11 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
         } );
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        PavGameApplication.removeActivity( this );
     }
 }

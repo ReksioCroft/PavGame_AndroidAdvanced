@@ -66,7 +66,11 @@ public class PavGameApplication extends Application {
         return context;
     }
 
-    public static void addActivity(Activity a){
+    public static void addActivity( Activity a ) {
         context.activities.add( a );
+    }
+
+    public static void removeActivity( Activity a ) {
+        context.activities.remove( a );
     }
 }

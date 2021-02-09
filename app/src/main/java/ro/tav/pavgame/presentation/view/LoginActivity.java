@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
+import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 
 public class LoginActivity extends AppCompatActivity {
@@ -32,6 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_login );
+        PavGameApplication.addActivity( this );
+
         mFirebaseAuth = FirebaseAuth.getInstance();
         email = findViewById( R.id.email );
         password = findViewById( R.id.password );
@@ -128,6 +131,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mFirebaseAuth.signOut();
+        PavGameApplication.removeActivity( this );
         finish();
     }
 
