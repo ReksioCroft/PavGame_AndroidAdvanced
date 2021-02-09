@@ -9,11 +9,11 @@ import java.util.List;
 
 import ro.tav.pavgame.data.GameHistory;
 
-public class gameViewModel extends AndroidViewModel {
+public class GameMediatorViewModel extends AndroidViewModel {
     private final GameRepository mRepository;
     private final LiveData < List < GameHistory > > mAllGames;
 
-    public gameViewModel( Application application ) {
+    public GameMediatorViewModel( Application application ) {
         super( application );
         mRepository = new GameRepository( application );
         mAllGames = mRepository.getAllGames();

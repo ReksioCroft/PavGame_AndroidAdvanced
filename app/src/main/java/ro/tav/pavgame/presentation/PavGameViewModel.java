@@ -6,14 +6,14 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ro.tav.pavgame.data.GameHistory;
-import ro.tav.pavgame.domain.gameViewModel;
+import ro.tav.pavgame.domain.GameMediatorViewModel;
 
 public class PavGameViewModel extends ViewModel {
-    static private gameViewModel game;      ///game face legatura cu repo-ul din domain
+    static private GameMediatorViewModel game;      ///game face legatura cu repo-ul din domain
     static private PavGameViewModel instance = null;
 
     private PavGameViewModel( ViewModelStoreOwner c ) { //constructor privat pt clasa singleotn
-        game = new ViewModelProvider( c ).get( gameViewModel.class );
+        game = new ViewModelProvider( c ).get( GameMediatorViewModel.class );
     }
 
     public static PavGameViewModel getInstance( ViewModelStoreOwner c ) {
@@ -26,7 +26,7 @@ public class PavGameViewModel extends ViewModel {
         return instance;
     }
 
-    public static gameViewModel getGame(){  ///pentru a putea accesa repoul din domain
+    public static GameMediatorViewModel getGame(){  ///pentru a putea accesa repoul din domain
         return game;
     }
 

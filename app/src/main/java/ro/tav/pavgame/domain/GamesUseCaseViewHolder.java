@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import ro.tav.pavgame.R;
 
-public class GamesViewHolder extends RecyclerView.ViewHolder {
+public class GamesUseCaseViewHolder extends RecyclerView.ViewHolder {
 
     protected final TextView mTextViewName;
     protected final TextView mTextViewResult;
@@ -17,7 +17,7 @@ public class GamesViewHolder extends RecyclerView.ViewHolder {
     protected final TextView mTextViewTotalPoints;
     protected final CardView mCard;
 
-    public GamesViewHolder( @NonNull View itemView ) {
+    public GamesUseCaseViewHolder( @NonNull View itemView ) {
         super( itemView );
 
         mTextViewName = itemView.findViewById( R.id.textview_name );

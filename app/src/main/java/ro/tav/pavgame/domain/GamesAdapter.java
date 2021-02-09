@@ -13,7 +13,7 @@ import java.util.List;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.data.GameHistory;
 
-public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
+public class GamesAdapter extends RecyclerView.Adapter < GamesUseCaseViewHolder > {
 
     private List < GameHistory > mGames;
     private final LayoutInflater mInflater;
@@ -25,13 +25,13 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
 
     @NonNull
     @Override
-    public GamesViewHolder onCreateViewHolder( @NonNull ViewGroup parent, int viewType ) {
+    public GamesUseCaseViewHolder onCreateViewHolder( @NonNull ViewGroup parent, int viewType ) {
         itemView = mInflater.inflate( R.layout.contact_item, parent, false );
-        return new GamesViewHolder( itemView );
+        return new GamesUseCaseViewHolder( itemView );
     }
 
     @Override
-    public void onBindViewHolder( @NonNull GamesViewHolder contactsViewHolder, int i ) {
+    public void onBindViewHolder( @NonNull GamesUseCaseViewHolder contactsViewHolder, int i ) {
         if ( mGames != null ) {
             GameHistory currentGame = mGames.get( i );
             contactsViewHolder.mTextViewName.setText( currentGame.getNume() );
