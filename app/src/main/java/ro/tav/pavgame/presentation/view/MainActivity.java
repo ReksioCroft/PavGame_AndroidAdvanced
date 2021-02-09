@@ -19,16 +19,22 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.Objects;
 
+import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
+import ro.tav.pavgame.data.GameHistory;
+import ro.tav.pavgame.domain.gameViewModel;
+import ro.tav.pavgame.presentation.PavGameBindingAdapter;
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 import ro.tav.pavgame.presentation.fragments.HomeFragment;
 import ro.tav.pavgame.presentation.fragments.SlideshowFragment;
+import timber.log.Timber;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -49,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+        PavGameApplication.instance.activities.add( this );
+        Timber.i( "MainActivity created" );
         setContentView( R.layout.activity_main );
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
@@ -66,14 +74,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener( toggle );
         toggle.syncState();
 
+        PavGameBindingAdapter.setGame( new ViewModelProvider( this ).get( gameViewModel.class ) );
+
         NavigationView navigationView = findViewById( R.id.nav_view );
         navigationView.setNavigationItemSelectedListener( this );
         View headerView = navigationView.getHeaderView( 0 );
         TextView textView = headerView.findViewById( R.id.nav_header_subtitle );
         textView.setText( Objects.requireNonNull( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() ).getEmail() );
-
-        RecyclerViewActivity.setDbEngineInitialized( false );
-        startActivity( new Intent( MainActivity.this, RecyclerViewActivity.class ) );
 
         openFragment( new HomeFragment() );
         setTitle( "HOME" );
@@ -304,14 +311,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
                 button = findViewById( R.id.startGameButton );
                 button.setText( R.string.victorie );
-                RecyclerViewActivity.addResult( userName, "Win", "Game Type: " + lat + "x" + lat );
+                GameHistory mGame = new GameHistory();
+                mGame.setNume( userName );
+                mGame.setResult( "Win" );
+                mGame.setGameType( "Game Type: " + lat + "x" + lat );
+                //  RecyclerViewActivity.addResult( userName, "Win", "Game Type: " + lat + "x" + lat );
+                PavGameBindingAdapter.addResul( findViewById( R.id.recycler_view_contacts_1 ), mGame );
             } else if ( nrGreseli > nrGreseliMax && finished == Boolean.FALSE ) {
                 finished = Boolean.TRUE;
                 messege = getString( R.string.esec );
                 Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
                 button = findViewById( R.id.startGameButton );
                 button.setText( R.string.esec );
-                RecyclerViewActivity.addResult( userName, "Lose", "Game Type: " + lat + "x" + lat );
+                GameHistory mGame = new GameHistory();
+                mGame.setNume( userName );
+                mGame.setResult( "Lose" );
+                mGame.setGameType( "Game Type: " + lat + "x" + lat );
+                // RecyclerViewActivity.addResult( userName, "Lose", "Game Type: " + lat + "x" + lat );
+                PavGameBindingAdapter.addResul( findViewById( R.id.recycler_view_contacts_1 ), mGame );
             }
         }
     }
