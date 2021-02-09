@@ -1,4 +1,4 @@
-package ro.tav.pavgame.presentation;
+package ro.tav.pavgame.presentation.view;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private int nrGreseli;
     private final int[][] matrix = new int[ 256 ][ 256 ];
     private static String userName = "Current User";
+    public static final int NOTIFICATION_LAUNCH_CODE = 485;
 
 
     @Override

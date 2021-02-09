@@ -12,21 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="ro.tav.pavgame.presentation.RecyclerViewActivity"
+            android:name="ro.tav.pavgame.presentation.view.RecyclerViewActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="ro.tav.pavgame.presentation.CreditsActivity"
+            android:name="ro.tav.pavgame.presentation.view.CreditsActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="ro.tav.pavgame.presentation.MainActivity"
+            android:name="ro.tav.pavgame.presentation.view.MainActivity"
             android:label="@string/title_activity_main"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="ro.tav.pavgame.presentation.RegisterActivity"
+            android:name="ro.tav.pavgame.presentation.view.RegisterActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name="ro.tav.pavgame.presentation.LoginActivity"
+            android:name="ro.tav.pavgame.presentation.view.LoginActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

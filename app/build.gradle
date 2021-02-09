@@ -20,6 +20,10 @@ android {
             }
         }
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // use these functions to have BuildConfig additional flags or '@string/' resources
+        buildConfigField("boolean", "my_flag", "${rootProject.hasProperty("withCustomFlag")}")
+        resValue("string", "gen_string", "my generated string")
     }
 
     compileOptions {
@@ -32,7 +36,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
 
+    buildFeatures {
+        dataBinding = true
     }
 }
 

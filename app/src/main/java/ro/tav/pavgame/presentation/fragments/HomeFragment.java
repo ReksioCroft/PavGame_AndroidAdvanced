@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 
-import ro.tav.pavgame.presentation.LoginActivity;
+import ro.tav.pavgame.presentation.view.LoginActivity;
 import ro.tav.pavgame.R;
 
 public class HomeFragment extends Fragment {
