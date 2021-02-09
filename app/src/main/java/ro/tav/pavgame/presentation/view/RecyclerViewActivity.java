@@ -14,7 +14,7 @@ import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.data.GameHistory;
 import ro.tav.pavgame.domain.ContactsAdapter;
-import ro.tav.pavgame.presentation.PavGameBindingAdapter;
+import ro.tav.pavgame.presentation.PavGameViewModel;
 
 
 public class RecyclerViewActivity extends AppCompatActivity {
@@ -35,7 +35,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( this );
         mRecyclerViewContacts.setLayoutManager( layoutManager );
 
-        PavGameBindingAdapter.getGame().getAllGames().observe( this, new Observer < List < GameHistory > >() {
+        PavGameViewModel.getGame().getAllGames().observe( this, new Observer < List < GameHistory > >() {
             @Override
             public void onChanged( @Nullable final List < GameHistory > gameHistories ) {
                 contactsAdapter.setContacts( gameHistories );

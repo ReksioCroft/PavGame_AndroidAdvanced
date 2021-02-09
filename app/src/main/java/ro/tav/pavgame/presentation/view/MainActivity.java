@@ -21,7 +21,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -30,9 +29,7 @@ import java.util.Objects;
 
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.data.GameHistory;
-import ro.tav.pavgame.domain.gameViewModel;
-import ro.tav.pavgame.presentation.PavGameBindingAdapter;
+import ro.tav.pavgame.presentation.PavGameViewModel;
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 import ro.tav.pavgame.presentation.fragments.HomeFragment;
 import ro.tav.pavgame.presentation.fragments.SlideshowFragment;
@@ -54,15 +51,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static String userName = "Current User";
     public static final int NOTIFICATION_LAUNCH_CODE = 485;
     private NotificationManager notificationManager;
+    private PavGameViewModel viewModelInstance;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
+
+        ///adaugam instanta
         PavGameApplication.addActivity( this );
+
+        //ne afisam un mesaj cu timber
         Timber.i( "MainActivity created" );
+
+        //setam ce layout deschidem
         setContentView( R.layout.activity_main );
+
+        //toolbarul de sus
         Toolbar toolbar = findViewById( R.id.toolbar );
         setSupportActionBar( toolbar );
+
+        //butonul cu care vom accesa panoul cu scoruri
         FloatingActionButton fab = findViewById( R.id.fab );
         fab.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -70,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity( new Intent( MainActivity.this, RecyclerViewActivity.class ) );
             }
         } );
+
+        //navigation drawer
         DrawerLayout drawer = findViewById( R.id.drawer_layout );
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open,
@@ -77,18 +87,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener( toggle );
         toggle.syncState();
 
-        PavGameBindingAdapter.setGame( new ViewModelProvider( this ).get( gameViewModel.class ) );
+        //aici vom initializa variabila game din viewmodel (clasa singleton)
+        //pentru a putea opera cu repoul din domain
+        viewModelInstance = PavGameViewModel.getInstance( this );
 
+        //aduagam textul in navigation drwwer si adaugam listener pt a il putea folosi
         NavigationView navigationView = findViewById( R.id.nav_view );
         navigationView.setNavigationItemSelectedListener( this );
         View headerView = navigationView.getHeaderView( 0 );
         TextView textView = headerView.findViewById( R.id.nav_header_subtitle );
         textView.setText( Objects.requireNonNull( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() ).getEmail() );
 
+        //deschidem fragmentul acasa
         openFragment( new HomeFragment() );
         setTitle( "HOME" );
 
+        //ne initializam sistemul de notificari
         notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
+        //afisam o notificare de bun venit
         notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
                 PavGameNotificationFactory.createHelloNotification( this ) );
     }
@@ -179,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void startGame( View view ) {
+    public void startGame( View view ) {    //crearea si initializarea butoanelor jocului
         started = finished = Boolean.FALSE;
         input = findViewById( R.id.pavGameInputText );
         try {
@@ -224,7 +240,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         finish();
     }
 
-    private class handleClick implements View.OnClickListener {
+    private class handleClick implements View.OnClickListener { //controller-ele in joc
         private Button button;
 
         private void setButon( int nr ) {
@@ -318,12 +334,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 messege = getString( R.string.victorie ) + " :)";
                 Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
                 button = findViewById( R.id.startGameButton );
-                button.setText( getString( R.string.victorie ) + " :)" );
-                GameHistory mGame = new GameHistory();
-                mGame.setNume( userName );
-                mGame.setResult( "Win" );
-                mGame.setGameType( "Game Type: " + lat + "x" + lat );
-                PavGameBindingAdapter.addResul( findViewById( R.id.recycler_view_contacts_1 ), mGame );
+
+                button.setText( messege );
+
+                //adaugam jocul folosindu-ne de viewModel
+                PavGameViewModel.addResult( findViewById( R.id.recycler_view_contacts_1 ),
+                        userName, "Win", "Game Type: " + lat + "x" + lat );
                 notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
                         PavGameNotificationFactory.createCustomHelloNotification( PavGameApplication.getContext(),
                                 getString( R.string.Win ), getString( R.string.victorie ) + ", " + userName + "!" ) );
@@ -332,12 +348,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 messege = getString( R.string.esec ) + " :(";
                 Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
                 button = findViewById( R.id.startGameButton );
-                button.setText( getString( R.string.esec ) + " :(" );
-                GameHistory mGame = new GameHistory();
-                mGame.setNume( userName );
-                mGame.setResult( "Lose" );
-                mGame.setGameType( "Game Type: " + lat + "x" + lat );
-                PavGameBindingAdapter.addResul( findViewById( R.id.recycler_view_contacts_1 ), mGame );
+
+                button.setText( messege );
+
+                //adaugam jocul folosindu-ne de viewModel
+                PavGameViewModel.addResult( findViewById( R.id.recycler_view_contacts_1 ),
+                        userName, "Lose", "Game Type: " + lat + "x" + lat );
                 notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
                         PavGameNotificationFactory.createCustomHelloNotification( PavGameApplication.getContext(),
                                 getString( R.string.Lose ), getString( R.string.esec ) + ", " + userName + "!" ) );
@@ -350,4 +366,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             name = "Current User";
         userName = name;
     }
+
 }
