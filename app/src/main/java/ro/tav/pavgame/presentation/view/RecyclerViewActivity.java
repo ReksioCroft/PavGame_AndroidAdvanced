@@ -2,19 +2,13 @@ package ro.tav.pavgame.presentation.view;
 
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.List;
 
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.data.GameHistory;
-import ro.tav.pavgame.domain.ContactsAdapter;
-import ro.tav.pavgame.presentation.PavGameViewModel;
+import ro.tav.pavgame.domain.GamesAdapter;
+import ro.tav.pavgame.presentation.PavGameBindingAdapter;
 
 
 public class RecyclerViewActivity extends AppCompatActivity {
@@ -24,23 +18,14 @@ public class RecyclerViewActivity extends AppCompatActivity {
         setContentView( R.layout.activity_recycler_view );
         PavGameApplication.addActivity( this );
         // get recycler view from xml layout
-        RecyclerView mRecyclerViewContacts = findViewById( R.id.recycler_view_contacts_1 );
+        RecyclerView mRecyclerViewGames = findViewById( R.id.recycler_view_contacts_1 );
 
         // get the adapter instance
-        final ContactsAdapter contactsAdapter = new ContactsAdapter( this );
+        final GamesAdapter gamesAdapter = new GamesAdapter( mRecyclerViewGames.getContext() );
 
-        // set the adapter to the recycler view
-        mRecyclerViewContacts.setAdapter( contactsAdapter );
-        // define and set layout manager
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( this );
-        mRecyclerViewContacts.setLayoutManager( layoutManager );
+        //binding
+        PavGameBindingAdapter.recycleViewGamesBinding( mRecyclerViewGames, gamesAdapter );
 
-        PavGameViewModel.getGame().getAllGames().observe( this, new Observer < List < GameHistory > >() {
-            @Override
-            public void onChanged( @Nullable final List < GameHistory > gameHistories ) {
-                contactsAdapter.setContacts( gameHistories );
-            }
-        } );
     }
 
     @Override

@@ -13,27 +13,27 @@ import java.util.List;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.data.GameHistory;
 
-public class ContactsAdapter extends RecyclerView.Adapter < ContactsViewHolder > {
+public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
 
-    private List < GameHistory > mContacts;
+    private List < GameHistory > mGames;
     private final LayoutInflater mInflater;
     private View itemView;
 
-    public ContactsAdapter( Context context ) {
+    public GamesAdapter( Context context ) {
         mInflater = LayoutInflater.from( context );
     }
 
     @NonNull
     @Override
-    public ContactsViewHolder onCreateViewHolder( @NonNull ViewGroup parent, int viewType ) {
+    public GamesViewHolder onCreateViewHolder( @NonNull ViewGroup parent, int viewType ) {
         itemView = mInflater.inflate( R.layout.contact_item, parent, false );
-        return new ContactsViewHolder( itemView );
+        return new GamesViewHolder( itemView );
     }
 
     @Override
-    public void onBindViewHolder( @NonNull ContactsViewHolder contactsViewHolder, int i ) {
-        if ( mContacts != null ) {
-            GameHistory currentGame = mContacts.get( i );
+    public void onBindViewHolder( @NonNull GamesViewHolder contactsViewHolder, int i ) {
+        if ( mGames != null ) {
+            GameHistory currentGame = mGames.get( i );
             contactsViewHolder.mTextViewName.setText( currentGame.getNume() );
             contactsViewHolder.mTextViewResult.setText( currentGame.getResult() );
             contactsViewHolder.mTextViewType.setText( currentGame.getGameType() );
@@ -64,14 +64,14 @@ public class ContactsAdapter extends RecyclerView.Adapter < ContactsViewHolder >
 
     @Override
     public int getItemCount() {
-        if ( mContacts != null )
-            return mContacts.size();
+        if ( mGames != null )
+            return mGames.size();
         else
             return 0;
     }
 
-    public void setContacts( List < GameHistory > games ) {
-        mContacts = games;
+    public void setGames( List < GameHistory > games ) {
+        mGames = games;
         notifyDataSetChanged();
     }
 }
