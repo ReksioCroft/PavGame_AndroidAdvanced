@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 
 import java.util.concurrent.TimeUnit;
 
-import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;
 import timber.log.Timber;
 
 public class PavGameService extends Service {
@@ -26,29 +25,29 @@ public class PavGameService extends Service {
         startMillis = System.currentTimeMillis();
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        int type = intent.getIntExtra(TYPE_KEY, TYPE_BASIC);
-
-        if (type == TYPE_BASIC) {
-            startForeground(PavGameNotificationFactory.SERVICE_NOTIFICATION_ID, PavGameNotificationFactory.createProcessingWorkNotification(this));
-
-            Timber.i("Basic work in progress");
-
-        } else if (type == TYPE_ADVANCED) {
-            Timber.i("Advanced work in progress");
-
-        } else if (type == TYPE_FINISH) {
-            Timber.i("Finishing service");
-            stopSelf();
-
-        } else {
-            Timber.w("Unknown service type. Killing.");
-            stopSelf();
-        }
-
-        return super.onStartCommand(intent, flags, startId);
-    }
+//    @Override
+//    public int onStartCommand(Intent intent, int flags, int startId) {
+//        int type = intent.getIntExtra(TYPE_KEY, TYPE_BASIC);
+//
+//        if (type == TYPE_BASIC) {
+//            startForeground(PavGameNotificationFactory.SERVICE_NOTIFICATION_ID, PavGameNotificationFactory.createProcessingWorkNotification(this));
+//
+//            Timber.i("Basic work in progress");
+//
+//        } else if (type == TYPE_ADVANCED) {
+//            Timber.i("Advanced work in progress");
+//
+//        } else if (type == TYPE_FINISH) {
+//            Timber.i("Finishing service");
+//            stopSelf();
+//
+//        } else {
+//            Timber.w("Unknown service type. Killing.");
+//            stopSelf();
+//        }
+//
+//        return super.onStartCommand(intent, flags, startId);
+//    }
 
     @Override
     public void onDestroy() {

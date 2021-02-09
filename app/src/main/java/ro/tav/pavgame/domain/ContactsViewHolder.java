@@ -1,4 +1,4 @@
-package ro.tav.pavgame.recyleview;
+package ro.tav.pavgame.domain;
 
 import android.view.View;
 import android.widget.TextView;

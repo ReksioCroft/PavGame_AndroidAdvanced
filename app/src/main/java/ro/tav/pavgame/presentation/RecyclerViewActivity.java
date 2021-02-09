@@ -1,4 +1,4 @@
-package ro.tav.pavgame.recyleview;
+package ro.tav.pavgame.presentation;
 
 import android.os.Bundle;
 
@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.room.GameHistory;
-import ro.tav.pavgame.room.gameViewModel;
+import ro.tav.pavgame.data.GameHistory;
+import ro.tav.pavgame.domain.ContactsAdapter;
+import ro.tav.pavgame.domain.gameViewModel;
 
 public class RecyclerViewActivity extends AppCompatActivity {
 

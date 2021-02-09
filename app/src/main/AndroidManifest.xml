@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="ro.tav.pavgame.recyleview.RecyclerViewActivity"
+            android:name="ro.tav.pavgame.presentation.RecyclerViewActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name="ro.tav.pavgame.presentation.CreditsActivity"

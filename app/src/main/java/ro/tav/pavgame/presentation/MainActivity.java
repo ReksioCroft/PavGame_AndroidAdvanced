@@ -29,7 +29,6 @@ import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 import ro.tav.pavgame.presentation.fragments.HomeFragment;
 import ro.tav.pavgame.presentation.fragments.SlideshowFragment;
-import ro.tav.pavgame.recyleview.RecyclerViewActivity;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {

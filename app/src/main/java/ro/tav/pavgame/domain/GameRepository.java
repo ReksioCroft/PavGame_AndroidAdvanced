@@ -1,10 +1,14 @@
-package ro.tav.pavgame.room;
+package ro.tav.pavgame.domain;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+
+import ro.tav.pavgame.data.AppDatabase;
+import ro.tav.pavgame.data.GameDao;
+import ro.tav.pavgame.data.GameHistory;
 
 public class GameRepository {
     private final GameDao mGameDao;

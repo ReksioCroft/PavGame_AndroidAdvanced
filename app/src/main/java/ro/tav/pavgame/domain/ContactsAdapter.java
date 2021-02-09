@@ -1,4 +1,4 @@
-package ro.tav.pavgame.recyleview;
+package ro.tav.pavgame.domain;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.room.GameHistory;
+import ro.tav.pavgame.data.GameHistory;
 
 public class ContactsAdapter extends RecyclerView.Adapter < ContactsViewHolder > {
 
@@ -70,7 +70,7 @@ public class ContactsAdapter extends RecyclerView.Adapter < ContactsViewHolder >
             return 0;
     }
 
-    void setContacts( List < GameHistory > games ) {
+    public void setContacts( List < GameHistory > games ) {
         mContacts = games;
         notifyDataSetChanged();
     }

@@ -1,4 +1,4 @@
-package ro.tav.pavgame.room;
+package ro.tav.pavgame.data;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
