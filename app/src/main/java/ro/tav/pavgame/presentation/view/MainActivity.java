@@ -1,5 +1,7 @@
 package ro.tav.pavgame.presentation.view;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,6 +36,7 @@ import ro.tav.pavgame.presentation.PavGameBindingAdapter;
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 import ro.tav.pavgame.presentation.fragments.HomeFragment;
 import ro.tav.pavgame.presentation.fragments.SlideshowFragment;
+import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;
 import timber.log.Timber;
 
 
@@ -50,12 +53,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private final int[][] matrix = new int[ 256 ][ 256 ];
     private static String userName = "Current User";
     public static final int NOTIFICATION_LAUNCH_CODE = 485;
-
+    private NotificationManager notificationManager;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-        PavGameApplication.instance.activities.add( this );
+        PavGameApplication.addActivity( this );
         Timber.i( "MainActivity created" );
         setContentView( R.layout.activity_main );
         Toolbar toolbar = findViewById( R.id.toolbar );
@@ -84,6 +87,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         openFragment( new HomeFragment() );
         setTitle( "HOME" );
+
+        notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
+        notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
+                PavGameNotificationFactory.createHelloNotification( this ) );
     }
 
     @Override
@@ -240,10 +247,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 button = findViewById( R.id.startGameButton );
                 button.setText( R.string.alegeDala );
             } else if ( nrGreseli > nrGreseliMax ) {
-                messege = getString( R.string.esec );
+                messege = getString( R.string.esec ) + " :(";
                 Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
             } else if ( nrDala * 3 + 1 == lat * lat ) {
-                messege = getString( R.string.victorie );
+                messege = getString( R.string.victorie ) + " :)";
                 Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
             } else {
                 try {
@@ -307,28 +314,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             if ( nrDala * 3 + 1 == lat * lat && finished == Boolean.FALSE ) {
                 finished = Boolean.TRUE;
-                messege = getString( R.string.victorie );
+                messege = getString( R.string.victorie ) + " :)";
                 Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
                 button = findViewById( R.id.startGameButton );
-                button.setText( R.string.victorie );
+                button.setText( getString( R.string.victorie ) + " :)" );
                 GameHistory mGame = new GameHistory();
                 mGame.setNume( userName );
                 mGame.setResult( "Win" );
                 mGame.setGameType( "Game Type: " + lat + "x" + lat );
-                //  RecyclerViewActivity.addResult( userName, "Win", "Game Type: " + lat + "x" + lat );
                 PavGameBindingAdapter.addResul( findViewById( R.id.recycler_view_contacts_1 ), mGame );
+                notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
+                        PavGameNotificationFactory.createCustomHelloNotification( PavGameApplication.getContext(),
+                                getString( R.string.Win ), getString( R.string.victorie ) + ", " + userName + "!" ) );
             } else if ( nrGreseli > nrGreseliMax && finished == Boolean.FALSE ) {
                 finished = Boolean.TRUE;
-                messege = getString( R.string.esec );
+                messege = getString( R.string.esec ) + " :(";
                 Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
                 button = findViewById( R.id.startGameButton );
-                button.setText( R.string.esec );
+                button.setText( getString( R.string.esec ) + " :(" );
                 GameHistory mGame = new GameHistory();
                 mGame.setNume( userName );
                 mGame.setResult( "Lose" );
                 mGame.setGameType( "Game Type: " + lat + "x" + lat );
-                // RecyclerViewActivity.addResult( userName, "Lose", "Game Type: " + lat + "x" + lat );
                 PavGameBindingAdapter.addResul( findViewById( R.id.recycler_view_contacts_1 ), mGame );
+                notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
+                        PavGameNotificationFactory.createCustomHelloNotification( PavGameApplication.getContext(),
+                                getString( R.string.Lose ), getString( R.string.esec ) + ", " + userName + "!" ) );
             }
         }
     }

@@ -1,0 +1,52 @@
+<resources>
+   <string name="app_name">PAV GAME</string>
+   <string name="title_activity_main">MainActivity</string>
+   <string name="navigation_drawer_open">Deschide navigation drawer</string>
+   <string name="navigation_drawer_close">Inchide navigation drawer</string>
+   <string name="nav_header_title">PavGame by ReksioCroft</string>
+   <string name="nav_header_desc">Navigation header</string>
+
+   <string name="menu_home">Acasa</string>
+   <string name="menu_game">PAV GAME</string>
+   <string name="introduceti_nr">Introduceti lung. lat. 2^x</string>
+   <string name="start_game">START GAME</string>
+   <string name="errLipsaDimLatura">Introduceti un numar</string>
+   <string name="copac">Alegeti pozitia copacului!</string>
+   <string name="unknownError">Va rugam sa contactati dezvoltatorul!</string>
+   <string name="pozDala">Introduceti pozitie dala…</string>
+   <string name="alegeDala">Introdu Tipul Dalei si Pozitia!</string>
+   <string name="dalaIncorecta">Tip Dala Incorect!!!</string>
+   <string name="mutareIncorecta">Mutare incorecta…</string>
+   <string name="victorie">FELICITARI, AI CASTIGAT</string>
+   <string name="esec">Ai pierdut</string>
+   <string name="creditInfoarena">Programatori Adevarati</string>
+   <string name="creditsString">Credite</string>
+   <string name="credits">
+        Programator: Octavian-Florin Staicu\n
+        Email: reksio.imaginatie@gmail.com\n
+        Github: https://github.com/ReksioCroft\n
+    </string>
+   <string name="credits2">
+        Multumiri Speciale Atelierului Google Pentru Programatori\n
+        Proiect realizat in cadrul cursului "Android Advanced"\n
+        All rights reserved
+    </string>
+   <string name="confirmRegistration">Confirmati inregistrarea</string>
+   <string name="loginFromRegister">Aveti deja cont? Log in</string>
+   <string name="password">Parola</string>
+   <string name="email">Email</string>
+   <string name="register">Creere cont</string>
+   <string name="logout">LOGOUT</string>
+   <string name="login">Login</string>
+   <string name="confirm_login">Intrati</string>
+   <string name="not_registered_create_new_account">Nu aveti cont? Creati unul acum&#8230;</string>
+   <string name="noText">fara text</string>
+   <string name="total_points">Total Puncte:&#160;</string>
+   <string name="Win">Victorie</string>
+   <string name="Lose">Esec</string>
+   <string name="welcome">Bun venit,\n%s!</string>
+   <string name="hello">Buna</string>
+   <string name="saidHello">Cineva a spus buna:)</string>
+   <string name="work">Munca grea</string>
+   <string name="processing">Ceva greu se proceseaza&#8230;</string>
+</resources>

@@ -19,7 +19,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView( @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
         View root = inflater.inflate( R.layout.fragment_home, container, false );
         TextView textView = root.findViewById( R.id.text_home );
-        textView.setText( String.format( "Welcome Home,\n%s!", Objects.requireNonNull( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() ).getEmail() ) );
+        textView.setText( String.format( getString( R.string.welcome ), Objects.requireNonNull( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() ).getEmail() ) );
         return root;
     }
 }
