@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">PAV GAME</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">PavGame by ReksioCroft</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_game">PAV GAME</string>
+    <string name="introduceti_nr">Introduceti lung. lat. 2^x</string>
+    <string name="start_game">START GAME</string>
+    <string name="errLipsaDimLatura">Introduceti un numar</string>
+    <string name="copac">Alegeti pozitia copacului!</string>
+    <string name="unknownError">Please Contact The Developer!</string>
+    <string name="pozDala">Introduceti pozitie dala…</string>
+    <string name="alegeDala">Introdu Tipul Dalei si Pozitia!</string>
+    <string name="dalaIncorecta">Tip Dala Incorect!!!</string>
+    <string name="mutareIncorecta">Mutare incorecta…</string>
+    <string name="victorie">FELICITARI, AI CASTIGAT :)</string>
+    <string name="esec">Ai pierdut :(</string>
+    <string name="creditInfoarena">Programatori Adevarati</string>
+    <string name="creditsString">Credits</string>
+    <string name="credits">
+        Programator: Octavian-Florin Staicu\n
+        Email: reksio.imaginatie@gmail.com\n
+        Github: https://github.com/ReksioCroft\n
+    </string>
+    <string name="credits2">
+        Multumiri Speciale Atelierului Google Pentru Programatori\n
+        Proiect realizat in cadrul cursului "Android Fundamentals"\n
+        All rights reserved
+    </string>
+    <string name="confirmRegistration">Confirm registration</string>
+    <string name="loginFromRegister">Already registered? Log in</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="register">Register</string>
+    <string name="logout">LOGOUT</string>
+    <string name="login">Login</string>
+    <string name="confirm_login">Confirm Login</string>
+    <string name="not_registered_create_new_account">Not registered? Create new account</string>
+    <string name="noText">no text</string>
+    <string name="total_points">Total Points:&#160;</string>
+</resources>

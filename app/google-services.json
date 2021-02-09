@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "225635180692",
+    "firebase_url": "https://pav-game-tav.firebaseio.com",
+    "project_id": "pav-game-tav",
+    "storage_bucket": "pav-game-tav.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225635180692:android:68891901e46a2b1881d481",
+        "android_client_info": {
+          "package_name": "com.example.pavgametav"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225635180692-coejg0nd34msjpblmf09hqp7p2u0on5s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcWykNPuAyLekkVs_HVAv4zvnhkx-QSxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225635180692-coejg0nd34msjpblmf09hqp7p2u0on5s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225635180692:android:759481c6fe586c8a81d481",
+        "android_client_info": {
+          "package_name": "ro.tav.pavgame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225635180692-coejg0nd34msjpblmf09hqp7p2u0on5s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcWykNPuAyLekkVs_HVAv4zvnhkx-QSxc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225635180692-coejg0nd34msjpblmf09hqp7p2u0on5s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
