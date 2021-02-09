@@ -10,11 +10,11 @@ import ro.tav.pavgame.data.AppDatabase;
 import ro.tav.pavgame.data.GameDao;
 import ro.tav.pavgame.data.GameHistory;
 
-public class GameRepository {
+public class GameMediator {
     private final GameDao mGameDao;
     private final LiveData < List < GameHistory > > mAllGames;
 
-    GameRepository( Application application ) {
+    GameMediator( Application application ) {
         AppDatabase db = AppDatabase.getAppDatabase( application );
         mGameDao = db.gameDao();
         mAllGames = mGameDao.getAllGames();

@@ -10,12 +10,12 @@ import java.util.List;
 import ro.tav.pavgame.data.GameHistory;
 
 public class GameUseCase extends AndroidViewModel {
-    private final GameRepository mRepository;
+    private final GameMediator mRepository;
     private final LiveData < List < GameHistory > > mAllGames;
 
     public GameUseCase( Application application ) {
         super( application );
-        mRepository = new GameRepository( application );
+        mRepository = new GameMediator( application );
         mAllGames = mRepository.getAllGames();
     }
 
