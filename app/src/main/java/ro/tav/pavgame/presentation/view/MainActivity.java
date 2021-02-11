@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,8 @@ import java.util.Objects;
 
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
+import ro.tav.pavgame.presentation.PavGameFragmentStack;
+import ro.tav.pavgame.presentation.PavGameService;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 import ro.tav.pavgame.presentation.fragments.HomeFragment;
@@ -39,8 +42,6 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private EditText input;
-    private String s;
-    private String messege;
     private Boolean started;
     private Boolean finished;
     private int lat;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public static final int NOTIFICATION_LAUNCH_CODE = 485;
     private NotificationManager notificationManager;
     private PavGameViewModel viewModelInstance;
+    private Intent gameInProgressServiceIntent;
+    private final PavGameFragmentStack fragmentStack = new PavGameFragmentStack();
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -100,13 +103,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //deschidem fragmentul acasa
         openFragment( new HomeFragment() );
-        setTitle( "HOME" );
+        setTitle( getString( R.string.menu_home ).toUpperCase() );
 
         //ne initializam sistemul de notificari
         notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
         //afisam o notificare de bun venit
         notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
                 PavGameNotificationFactory.createHelloNotification( this ) );
+
+        //intent for the service of gameInProgress
+        gameInProgressServiceIntent = new Intent( this, PavGameService.class );
     }
 
     @Override
@@ -115,12 +121,28 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if ( drawer.isDrawerOpen( GravityCompat.START ) ) {
             drawer.closeDrawer( GravityCompat.START );
         } else {
-            while ( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() != null )
-                LoginActivity.getFireBaseCurrentInstance().signOut();
-            super.onBackPressed();
+
+            if ( fragmentStack.getNrOfItems() > 1 && fragmentStack.peek().getClass() != GameFragment.class ) {
+                popFragment();
+            } else {
+                Toast.makeText( MainActivity.this, getString( R.string.longPressFinishGame ), Toast.LENGTH_LONG ).show();
+            }
+
         }
     }
 
+    @Override
+    public boolean onKeyLongPress( int keyCode, KeyEvent event ) {
+        if ( keyCode == KeyEvent.KEYCODE_BACK ) {
+            popFragment();
+            if ( fragmentStack.empty() ) {
+                while ( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() != null )
+                    LoginActivity.getFireBaseCurrentInstance().signOut();
+                finish();
+            }
+        }
+        return super.onKeyLongPress( keyCode, event );
+    }
 
     @Override
     public boolean onOptionsItemSelected( MenuItem item ) {
@@ -144,13 +166,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         if ( id == R.id.nav_home ) {
             openFragment( new HomeFragment() );
-            setTitle( "HOME" );
+            setTitle( getString( R.string.menu_home ).toUpperCase() );
         } else if ( id == R.id.nav_game ) {
             openFragment( new GameFragment() );
-            setTitle( "PAV GAME" );
+            setTitle( getString( R.string.menu_game ).toUpperCase() );
         } else if ( id == R.id.nav_slideshow ) {
             openFragment( new SlideshowFragment() );
-            setTitle( "INFOARENA" );
+            setTitle( getString( R.string.menu_infoarena ).toUpperCase() );
         }
 
         DrawerLayout drawer = findViewById( R.id.drawer_layout );
@@ -165,7 +187,36 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // step 2: create an instance of FragmentTransaction
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         // step 3: replace container content with the fragment content
-        fragmentTransaction.replace( R.id.nav_host_fragment, fragment );
+        while ( !fragmentStack.empty() && fragmentStack.peek().getClass() != GameFragment.class ) {
+            fragmentTransaction.remove( fragmentStack.pop() );
+        }
+        //Pentru a nu adauga inca un joc peste jocul curent
+        if ( !fragmentStack.isGameInStack() || fragment.getClass() != GameFragment.class ) {
+            if ( !fragmentStack.empty() )
+                fragmentTransaction.hide( fragmentStack.peek() );
+            fragmentTransaction.add( R.id.nav_host_fragment, fragmentStack.push( fragment ) );
+        } else {
+            fragmentTransaction.show( fragmentStack.peek() );
+        }
+        // step 4: commit transaction
+        fragmentTransaction.commit();
+    }
+
+    private void popFragment() {
+        // 4 steps to add dynamically a fragment inside of an activity
+        // step 1: create an instance of FragmentManager
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        // step 2: create an instance of FragmentTransaction
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        // step 3: replace container content with the fragment content
+        if ( !fragmentStack.empty() ) {
+            if ( fragmentStack.peek().getClass() == GameFragment.class )
+                stopGameService();
+            fragmentTransaction.remove( fragmentStack.pop() );
+        }
+        if ( !fragmentStack.empty() ) {
+            fragmentTransaction.show( fragmentStack.peek() );
+        }
         // step 4: commit transaction
         fragmentTransaction.commit();
     }
@@ -186,30 +237,25 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         finish();
     }
 
-    private void initializeMatrix() {
-        nrDala = nrGreseli = 0;
-        for ( int i = 0; i < lat; i++ ) {
-            for ( int j = 0; j < lat; j++ ) {
-                matrix[ i ][ j ] = 0;
-            }
-        }
-    }
-
     public void startGame( View view ) {    //crearea si initializarea butoanelor jocului
+        String s = "", messege="";
         started = finished = Boolean.FALSE;
         input = findViewById( R.id.pavGameInputText );
+
         try {
             s = input.getText().toString();
             lat = 1 << Integer.parseInt( s );
             input.setHint( R.string.pozDala );
-            initializeMatrix();
+            nrDala = nrGreseli = 0;
             LinearLayout pavGameBoard = findViewById( R.id.pavGameBoard );
+            pavGameBoard.removeAllViews();
             int maxWidth = getResources().getDisplayMetrics().widthPixels / lat;
             for ( int i = 0; i < lat; i++ ) {
                 LinearLayout pavGameSubLayout = new LinearLayout( this );
                 pavGameSubLayout.setOrientation( LinearLayout.HORIZONTAL );
                 pavGameSubLayout.setLayoutParams( new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT ) );
                 for ( int j = 0; j < lat; j++ ) {
+                    matrix[ i ][ j ] = 0;
                     Button button = new Button( this );
                     button.setLayoutParams( new LinearLayout.LayoutParams( maxWidth, LinearLayout.LayoutParams.WRAP_CONTENT ) );
                     button.setId( lat * i + j );
@@ -218,9 +264,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
 
                 pavGameBoard.addView( pavGameSubLayout );
-                messege = getString( R.string.copac );
+
             }
-            findViewById( R.id.startGameButton ).setEnabled( false );
+            messege = getString( R.string.copac );
+            Button gameButton = findViewById( R.id.startGameButton );
+            gameButton.setEnabled( false );
+            gameButton.setText( getString( R.string.start_game ) );
+            startService( gameInProgressServiceIntent );
+
         } catch ( Exception e ) {
             if ( s.length() == 0 )
                 messege = getString( R.string.errLipsaDimLatura );
@@ -251,6 +302,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         public void onClick( View view ) {
+            String messege="", s1 = "", s2="", result="";
             button = ( Button ) view;
             input = findViewById( R.id.pavGameInputText );
             int l = button.getId() / lat;
@@ -271,8 +323,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
             } else {
                 try {
-                    s = input.getText().toString();
-                    int tipDala = Integer.parseInt( s );
+                    s1 = input.getText().toString();
+                    int tipDala = Integer.parseInt( s1 );
                     messege = getString( R.string.mutareIncorecta );
                     if ( tipDala < 1 || tipDala > 4 )
                         throw new Exception( getString( R.string.dalaIncorecta ) );
@@ -322,43 +374,46 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         }
                     }
                 } catch ( Exception e ) {
-                    if ( s.length() == 0 )
+                    if ( s1.length() == 0 )
                         messege = getString( R.string.errLipsaDimLatura );
                     else
                         messege = getString( R.string.dalaIncorecta );
                     Toast.makeText( MainActivity.this, messege, Toast.LENGTH_SHORT ).show();
                 }
             }
-            if ( nrDala * 3 + 1 == lat * lat && finished == Boolean.FALSE ) {
+            if ( finished == Boolean.FALSE && ( nrDala * 3 + 1 == lat * lat || nrGreseli > nrGreseliMax ) ) {
                 finished = Boolean.TRUE;
-                messege = getString( R.string.victorie ) + " :)";
-                Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
+                findViewById( R.id.startGameButton ).setEnabled( true );
                 button = findViewById( R.id.startGameButton );
-
-                button.setText( messege );
+                if ( nrDala * 3 + 1 == lat * lat ) {
+                    messege = getString( R.string.victorie ) + " :)";
+                    button.setText( messege );
+                    result = "Win";
+                    s1 = getString( R.string.Win );
+                    s2 = getString( R.string.victorie ) + ", " + userName + "!";
+                } else {
+                    messege = getString( R.string.esec ) + " :(";
+                    button.setText( messege );
+                    result = "Lose";
+                    s1 = getString( R.string.Lose );
+                    s2 = getString( R.string.esec ) + ", " + userName + "!";
+                }
 
                 //adaugam jocul folosindu-ne de viewModel
                 PavGameViewModel.addResult( findViewById( R.id.recycler_view_contacts_1 ),
-                        userName, "Win", "Game Type: " + lat + "x" + lat );
+                        userName, result, "Game Type: " + lat + "x" + lat );
                 notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
                         PavGameNotificationFactory.createCustomHelloNotification( PavGameApplication.getContext(),
-                                getString( R.string.Win ), getString( R.string.victorie ) + ", " + userName + "!" ) );
-            } else if ( nrGreseli > nrGreseliMax && finished == Boolean.FALSE ) {
-                finished = Boolean.TRUE;
-                messege = getString( R.string.esec ) + " :(";
+                                s1, s2 ) );
                 Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
-                button = findViewById( R.id.startGameButton );
-
-                button.setText( messege );
-
-                //adaugam jocul folosindu-ne de viewModel
-                PavGameViewModel.addResult( findViewById( R.id.recycler_view_contacts_1 ),
-                        userName, "Lose", "Game Type: " + lat + "x" + lat );
-                notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
-                        PavGameNotificationFactory.createCustomHelloNotification( PavGameApplication.getContext(),
-                                getString( R.string.Lose ), getString( R.string.esec ) + ", " + userName + "!" ) );
+                stopGameService();
             }
         }
+
+    }
+
+    public void stopGameService() {
+        stopService( gameInProgressServiceIntent );
     }
 
     protected static void setUserName( String name ) {

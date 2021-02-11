@@ -8,6 +8,7 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_game">PAV GAME</string>
+    <string name="menu_infoarena">INFOARENA</string>
     <string name="introduceti_nr">Type length like 2^x</string>
     <string name="start_game">START GAME</string>
     <string name="errLipsaDimLatura">Type a number</string>
@@ -50,4 +51,5 @@
     <string name="work">Heavy work</string>
     <string name="processing">Something heavy is being processed&#8230;</string>
     <string name="floatingButton">Floating Button for Score Board</string>
+    <string name="longPressFinishGame">Long press to finish game</string>
 </resources>
