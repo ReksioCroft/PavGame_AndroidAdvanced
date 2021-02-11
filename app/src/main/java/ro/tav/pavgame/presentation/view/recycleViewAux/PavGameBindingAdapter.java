@@ -5,13 +5,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ro.tav.pavgame.data.GameHistory;
-import ro.tav.pavgame.domain.GameUseCase;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 
 public class PavGameBindingAdapter {
-    @BindingAdapter( { "game_useCase", "gameToInsert" } )
-    public static void addGameResult( RecyclerView recyclerView, GameUseCase gameUseCase, GameHistory mGame ) {
-        gameUseCase.insert( mGame );
+    @BindingAdapter( { "gameToInsert" } )
+    public static void addGameResult( RecyclerView recyclerView, GameHistory mGame ) {
+        PavGameViewModel.getGameUseCase().insertGame( mGame );
     }
 
     @BindingAdapter( { "game_adapter", "user" } )

@@ -10,22 +10,22 @@ import java.util.List;
 import ro.tav.pavgame.data.GameHistory;
 
 public class GameUseCase extends AndroidViewModel {
-    private final GameMediator mRepository;
+    private final GameMediator mGameMediator;
 
     public GameUseCase( Application application ) {
         super( application );
-        mRepository = new GameMediator( application );
+        mGameMediator = new GameMediator( application );
     }
 
     public LiveData < List < GameHistory > > getAllGames() {
-        return mRepository.getAllGames();
+        return mGameMediator.getAllGames();
     }
 
     public LiveData < List < GameHistory > > getSpecificGames( String user ) {
-        return mRepository.getSpecificGames( user );
+        return mGameMediator.getSpecificGames( user );
     }
 
-    public void insert( GameHistory gamehistory ) {
-        mRepository.insert( gamehistory );
+    public void insertGame( GameHistory gamehistory ) {
+        mGameMediator.insertGame( gamehistory );
     }
 }

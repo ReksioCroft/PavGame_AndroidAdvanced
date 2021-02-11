@@ -21,7 +21,7 @@ public class PavGameViewModel extends ViewModel {
         mGame.setNume( userName );
         mGame.setResult( result );
         mGame.setGameType( gametype );
-        PavGameBindingAdapter.addGameResult( recyclerView, gameUseCase, mGame );
+        PavGameBindingAdapter.addGameResult( recyclerView, mGame );
     }
 
 
