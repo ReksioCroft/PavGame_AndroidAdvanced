@@ -1,13 +1,12 @@
 package ro.tav.pavgame.presentation.view;
 
+import android.app.Activity;
 import android.os.Bundle;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 
-public class CreditsActivity extends AppCompatActivity {
+public class CreditsActivity extends Activity {
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
