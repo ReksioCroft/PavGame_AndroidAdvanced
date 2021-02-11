@@ -41,6 +41,11 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".presentation.PavGameReplacedBroadcastReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
         <service android:name="ro.tav.pavgame.presentation.PavGameService" />
     </application>
 </manifest>

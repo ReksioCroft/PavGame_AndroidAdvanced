@@ -52,4 +52,6 @@
     <string name="processing">Something heavy is being processed&#8230;</string>
     <string name="floatingButton">Floating Button for Score Board</string>
     <string name="longPressFinishGame">Long press to finish game</string>
+    <string name="broadcast_s1">Replace Successful</string>
+    <string name="broadcast_s2">Broadcast received my_package_replace intent</string>
 </resources>

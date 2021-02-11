@@ -52,5 +52,6 @@
     <string name="processing">Ceva greu se proceseaza&#8230;</string>
     <string name="floatingButton">Buton pentru tabela cu scoruri</string>
     <string name="longPressFinishGame">Tineti apasat pt. a opri jocul</string>
-
+    <string name="broadcast_s1">Reinstalare cu succes!</string>
+    <string name="broadcast_s2">Broadcast Receiverul a fost activat prin intent-ul my_package_replace</string>
 </resources>
