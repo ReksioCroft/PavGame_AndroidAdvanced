@@ -26,7 +26,7 @@ public class PavGameBindingAdapter {
         if ( user == null )
             PavGameViewModel.getGameUseCase().getAllGames().observeForever( games -> gamesAdapter.setGames( games ) );
         else
-            PavGameViewModel.getGameUseCase().getSpecificGames( user ).observeForever( games -> gamesAdapter.setGames( games ) );
+            PavGameViewModel.getGameUseCase().getSpecificGamesbyUserName( user ).observeForever( games -> gamesAdapter.setGames( games ) );
     }
 
 

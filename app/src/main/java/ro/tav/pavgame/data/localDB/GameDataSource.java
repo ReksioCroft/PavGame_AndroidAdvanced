@@ -15,7 +15,7 @@ public abstract class GameDataSource {
 
     protected abstract LiveData < List < GameEntity > > getAllGames();
 
-    protected abstract LiveData < List < GameEntity > > getSpecificGames( String user );
+    protected abstract LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user );
 
     protected abstract void insertGame( GameEntity game );
 

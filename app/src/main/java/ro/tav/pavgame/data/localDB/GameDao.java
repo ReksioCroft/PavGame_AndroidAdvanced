@@ -16,8 +16,11 @@ public interface GameDao {
     LiveData < List < GameEntity > > getAllGames();
 
     @Query( "SELECT DISTINCT numeJucator, gameType, result, count(*) as gameId from gameEntity  group by numeJucator, gameType, result having numeJucator=:user order by gameType desc, result desc" )
-    LiveData < List < GameEntity > > getSpecificGames( String user );
+    LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user );
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Query( "SELECT * from gameEntity where gameId=:gameId" )
+    GameEntity getGameById( int gameId );
+
+    @Insert( onConflict = OnConflictStrategy.ABORT )
     void insertGame( GameEntity game );
 }

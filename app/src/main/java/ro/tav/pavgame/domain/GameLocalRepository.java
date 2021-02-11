@@ -1,6 +1,7 @@
 package ro.tav.pavgame.domain;
 
 import android.app.Application;
+import android.database.sqlite.SQLiteConstraintException;
 
 import androidx.lifecycle.LiveData;
 
@@ -20,16 +21,29 @@ public class GameLocalRepository extends GameDataSource {
         return mGameDao.getAllGames();
     }
 
-    protected LiveData < List < GameEntity > > getSpecificGames( String user ) {
-        return mGameDao.getSpecificGames( user );
+    protected LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
+        return mGameDao.getSpecificGamesbyUserName( user );
     }
 
     protected void insertGame( GameEntity game ) {
         AppDatabase.databaseWriteExecutor.execute( () -> {
             try {
                 mGameDao.insertGame( game );
-            } catch ( Exception e ) {
-                Timber.e( e );
+            } catch ( SQLiteConstraintException e ) {
+                try {
+                    GameEntity gameInDatabase = mGameDao.getGameById( game.getGameId() );
+                    if ( game != gameInDatabase ) {
+                        GameEntity newGame = new GameEntity();
+                        newGame.setNumeJucator( game.getNumeJucator() );
+                        newGame.setGameType( game.getGameType() );
+                        newGame.setResult( game.getResult() );
+                        mGameDao.insertGame( newGame );
+                    }
+                } catch ( Exception e1 ) {
+                    Timber.e( e1 );
+                }
+            } catch ( Exception e2 ) {
+                Timber.e( e2 );
             }
         } );
     }

@@ -21,8 +21,8 @@ public class GameUseCase extends AndroidViewModel {
         return mGameMediator.getAllGames();
     }
 
-    public LiveData < List < GameEntity > > getSpecificGames( String user ) {
-        return mGameMediator.getSpecificGames( user );
+    public LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
+        return mGameMediator.getSpecificGamesbyUserName( user );
     }
 
     public void insertGame( GameEntity game ) {

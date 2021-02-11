@@ -3,6 +3,7 @@ package ro.tav.pavgame.domain;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
+import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
@@ -23,16 +24,16 @@ public class GameWorker extends Worker {
     @NonNull
     @Override
     public Result doWork() {
-//        Data data = getInputData();
-//        String value = data.getString( "type" );
-//
+        Data data = getInputData();
+        String value = data.getString( "type" );
+
 //        if ( "get".equals( value ) ) {
 //            GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
 //            List < GameEntity > games = gameRemoteRepository.getAllGames();
 //            for ( GameEntity game : games ) {
 //                PavGameViewModel.getGameUseCase().insertGame( game );
 //            }
-//
+
 //        } else if ( "post".equals( value ) ) {
 //            // POST operation
 //            GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
