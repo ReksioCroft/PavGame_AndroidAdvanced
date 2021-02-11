@@ -1,8 +1,10 @@
-package ro.tav.pavgame.data;
+package ro.tav.pavgame.data.localDB;
 
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
+
+import ro.tav.pavgame.data.GameEntity;
 
 public abstract class GameDataSource {
     protected final GameDao mGameDao;

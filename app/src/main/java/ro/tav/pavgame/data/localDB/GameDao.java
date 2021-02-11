@@ -1,4 +1,4 @@
-package ro.tav.pavgame.data;
+package ro.tav.pavgame.data.localDB;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -6,6 +6,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import java.util.List;
+
+import ro.tav.pavgame.data.GameEntity;
 
 @Dao
 public interface GameDao {

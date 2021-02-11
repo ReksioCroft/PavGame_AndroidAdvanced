@@ -1,4 +1,4 @@
-package ro.tav.pavgame.data;
+package ro.tav.pavgame.data.localDB;
 
 import android.content.Context;
 
@@ -8,6 +8,8 @@ import androidx.room.RoomDatabase;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import ro.tav.pavgame.data.GameEntity;
 
 @Database( entities = { GameEntity.class }, version = 1 )
 public abstract class AppDatabase extends RoomDatabase {

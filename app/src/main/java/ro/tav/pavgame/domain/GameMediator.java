@@ -9,10 +9,10 @@ import java.util.List;
 import ro.tav.pavgame.data.GameEntity;
 
 public class GameMediator {
-    private final GameRepository mRepository;
+    private final GameLocalRepository mRepository;
 
     public GameMediator( Application application ) {
-        mRepository = new GameRepository( application );
+        mRepository = new GameLocalRepository( application );
     }
 
     protected LiveData < List < GameEntity > > getAllGames() {

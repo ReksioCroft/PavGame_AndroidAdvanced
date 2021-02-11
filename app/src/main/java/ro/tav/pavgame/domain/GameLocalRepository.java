@@ -6,12 +6,12 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import ro.tav.pavgame.data.AppDatabase;
-import ro.tav.pavgame.data.GameDataSource;
+import ro.tav.pavgame.data.localDB.AppDatabase;
+import ro.tav.pavgame.data.localDB.GameDataSource;
 import ro.tav.pavgame.data.GameEntity;
 
-public class GameRepository extends GameDataSource {
-    public GameRepository( Application application ) {
+public class GameLocalRepository extends GameDataSource {
+    public GameLocalRepository( Application application ) {
         super( AppDatabase.getAppDatabase( application ).gameDao() );
     }
 

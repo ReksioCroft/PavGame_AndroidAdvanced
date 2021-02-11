@@ -12,7 +12,7 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import ro.tav.pavgame.data.GameEntity;
 
-public interface FirebaseApi {
+public interface RetrofitApi {
     String BASE_URL = "https://pav-game-tav.firebaseio.com/";
 
     @GET( "items.json" )
@@ -21,7 +21,7 @@ public interface FirebaseApi {
     @POST( "items.json" )
     Call < GameEntity > insertGame( GameEntity game );
 
-    static FirebaseApi createApi() {
+    static RetrofitApi createApi() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addNetworkInterceptor( new StethoInterceptor() )
                 .build();
@@ -31,7 +31,7 @@ public interface FirebaseApi {
                 .client( okHttpClient )
                 .addConverterFactory( GsonConverterFactory.create() )
                 .build()
-                .create( FirebaseApi.class );
+                .create( RetrofitApi.class );
     }
 }
 
