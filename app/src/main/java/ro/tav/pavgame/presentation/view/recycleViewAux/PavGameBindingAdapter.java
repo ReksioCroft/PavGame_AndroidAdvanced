@@ -4,12 +4,12 @@ import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ro.tav.pavgame.data.GameHistory;
+import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 
 public class PavGameBindingAdapter {
     @BindingAdapter( { "gameToInsert" } )
-    public static void addGameResult( RecyclerView recyclerView, GameHistory mGame ) {
+    public static void addGameResult( RecyclerView recyclerView, GameEntity mGame ) {
         PavGameViewModel.getGameUseCase().insertGame( mGame );
     }
 

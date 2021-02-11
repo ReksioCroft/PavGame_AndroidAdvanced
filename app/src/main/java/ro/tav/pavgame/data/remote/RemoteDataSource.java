@@ -8,10 +8,10 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import ro.tav.pavgame.data.GameHistory;
+import ro.tav.pavgame.data.GameEntity;
 import timber.log.Timber;
 
-public class RemoteDataSource  {
+public class RemoteDataSource {
     private static final String TAG = "remote-source";
     private final FirebaseApi api;
 
@@ -19,26 +19,25 @@ public class RemoteDataSource  {
         this.api = api;
     }
 
-    public  List < GameHistory >  getAllGames() {
+    public List < GameEntity > getAllGames() {
         try {
             return api.getAllGames().execute().body();
         } catch ( IOException e ) {
             Timber.tag( TAG ).w( e, "Something went wrong" );
-            List < GameHistory > ceva;
             return null;
         }
     }
 
-    public void insertGame( GameHistory game ) {
-        Call < GameHistory > call = api.insertGame( game );
-        call.enqueue( new Callback < GameHistory >() {
+    public void insertGame( GameEntity game ) {
+        Call < GameEntity > call = api.insertGame( game );
+        call.enqueue( new Callback < GameEntity >() {
             @Override
-            public void onResponse( @NotNull Call < GameHistory > call, @NotNull Response < GameHistory > response ) {
+            public void onResponse( @NotNull Call < GameEntity > call, @NotNull Response < GameEntity > response ) {
                 Timber.d( "Success" );
             }
 
             @Override
-            public void onFailure( @NotNull Call < GameHistory > call, @NotNull Throwable t ) {
+            public void onFailure( @NotNull Call < GameEntity > call, @NotNull Throwable t ) {
                 Timber.d( "fail" );
             }
         } );

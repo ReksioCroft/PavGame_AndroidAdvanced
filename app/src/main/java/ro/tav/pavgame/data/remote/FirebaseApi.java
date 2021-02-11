@@ -10,16 +10,16 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import ro.tav.pavgame.data.GameHistory;
+import ro.tav.pavgame.data.GameEntity;
 
 public interface FirebaseApi {
     String BASE_URL = "https://pav-game-tav.firebaseio.com/";
 
     @GET( "items.json" )
-    Call < List < GameHistory > > getAllGames();
+    Call < List < GameEntity > > getAllGames();
 
     @POST( "items.json" )
-    Call < GameHistory > insertGame(GameHistory game);
+    Call < GameEntity > insertGame( GameEntity game );
 
     static FirebaseApi createApi() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()

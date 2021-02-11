@@ -7,7 +7,7 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import ro.tav.pavgame.data.GameHistory;
+import ro.tav.pavgame.data.GameEntity;
 
 public class GameUseCase extends AndroidViewModel {
     private final GameMediator mGameMediator;
@@ -17,15 +17,15 @@ public class GameUseCase extends AndroidViewModel {
         mGameMediator = new GameMediator( application );
     }
 
-    public LiveData < List < GameHistory > > getAllGames() {
+    public LiveData < List < GameEntity > > getAllGames() {
         return mGameMediator.getAllGames();
     }
 
-    public LiveData < List < GameHistory > > getSpecificGames( String user ) {
+    public LiveData < List < GameEntity > > getSpecificGames( String user ) {
         return mGameMediator.getSpecificGames( user );
     }
 
-    public void insertGame( GameHistory gamehistory ) {
-        mGameMediator.insertGame( gamehistory );
+    public void insertGame( GameEntity game ) {
+        mGameMediator.insertGame( game );
     }
 }

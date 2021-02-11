@@ -182,9 +182,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // step 2: create an instance of FragmentTransaction
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         // step 3: replace container content with the fragment content
-        while ( !fragmentStack.empty() && fragmentStack.peek().getClass() != GameFragment.class ) {
+
+        while ( fragmentStack.getNrOfItems() > 1 && fragmentStack.peek().getClass() != GameFragment.class ) {
             fragmentTransaction.remove( fragmentStack.pop() );
         }
+
         //Pentru a nu adauga inca un joc peste jocul curent
         if ( !fragmentStack.isGameInStack() || fragment.getClass() != GameFragment.class ) {
             if ( !fragmentStack.empty() )

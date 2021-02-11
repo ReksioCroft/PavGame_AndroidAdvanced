@@ -10,12 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.data.GameHistory;
+import ro.tav.pavgame.data.GameEntity;
 
 public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
 
-    private List < GameHistory > mGames;
+    private List < GameEntity > mGames;
     private final LayoutInflater mInflater;
     private View itemView;
 
@@ -33,8 +34,8 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
     @Override
     public void onBindViewHolder( @NonNull GamesViewHolder contactsViewHolder, int i ) {
         if ( mGames != null ) {
-            GameHistory currentGame = mGames.get( i );
-            contactsViewHolder.mTextViewName.setText( currentGame.getNume() );
+            GameEntity currentGame = mGames.get( i );
+            contactsViewHolder.mTextViewName.setText( currentGame.getNumeJucator() );
             contactsViewHolder.mTextViewResult.setText( currentGame.getResult() );
             contactsViewHolder.mTextViewType.setText( currentGame.getGameType() );
 
@@ -42,17 +43,17 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
             contactsViewHolder.mTextViewTotalPoints.setText( totalPoints );
 
             if ( contactsViewHolder.mTextViewResult.getText().equals( "Lose" ) ) {
-                contactsViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorAccent ) );
-                contactsViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorAccent ) );
-                contactsViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorAccent ) );
-                contactsViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorAccent ) );
-                contactsViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorPrimary ) );
+                contactsViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorAccent, PavGameApplication.getContext().getTheme() ) );
+                contactsViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorAccent, PavGameApplication.getContext().getTheme() ) );
+                contactsViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorAccent, PavGameApplication.getContext().getTheme() ) );
+                contactsViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorAccent, PavGameApplication.getContext().getTheme() ) );
+                contactsViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorPrimary, PavGameApplication.getContext().getTheme() ) );
             } else {
-                contactsViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorPrimary ) );
-                contactsViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorPrimary ) );
-                contactsViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorPrimary ) );
-                contactsViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorPrimary ) );
-                contactsViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorAccent ) );
+                contactsViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, PavGameApplication.getContext().getTheme() ) );
+                contactsViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, PavGameApplication.getContext().getTheme() ) );
+                contactsViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, PavGameApplication.getContext().getTheme() ) );
+                contactsViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, PavGameApplication.getContext().getTheme() ) );
+                contactsViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorAccent, PavGameApplication.getContext().getTheme() ) );
             }
         } else {
             contactsViewHolder.mTextViewName.setText( R.string.noText );
@@ -70,7 +71,7 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
             return 0;
     }
 
-    public void setGames( List < GameHistory > games ) {
+    public void setGames( List < GameEntity > games ) {
         mGames = games;
         notifyDataSetChanged();
     }

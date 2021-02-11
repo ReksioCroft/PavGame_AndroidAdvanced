@@ -4,27 +4,27 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity( tableName = "gameplay_history" )
-public class GameHistory {
+@Entity( tableName = "gameEntity" )
+public class GameEntity {
     @PrimaryKey( autoGenerate = true )
-    @ColumnInfo( name = "id" )
+    @ColumnInfo( name = "gameId" )
     private int gameId;
 
-    @ColumnInfo( name = "nume_jucator" )
-    private String nume;
+    @ColumnInfo( name = "numeJucator" )
+    private String numeJucator;
 
     @ColumnInfo( name = "result" )
     private String result;
 
-    @ColumnInfo( name = "game_type" )
+    @ColumnInfo( name = "gameType" )
     private String gameType;
 
     public int getGameId() {
         return gameId;
     }
 
-    public String getNume() {
-        return nume;
+    public String getNumeJucator() {
+        return numeJucator;
     }
 
     public String getResult() {
@@ -39,8 +39,8 @@ public class GameHistory {
         this.gameId = gameId;
     }
 
-    public void setNume( String nume ) {
-        this.nume = nume;
+    public void setNumeJucator( String nume ) {
+        this.numeJucator = nume;
     }
 
     public void setResult( String result ) {

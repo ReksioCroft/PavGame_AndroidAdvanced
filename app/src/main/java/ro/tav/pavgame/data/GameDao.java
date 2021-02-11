@@ -9,12 +9,12 @@ import java.util.List;
 
 @Dao
 public interface GameDao {
-    @Query( "SELECT DISTINCT nume_jucator, game_type, result, count(*) as id from gameplay_history  group by nume_jucator, game_type, result order by id desc, nume_jucator, game_type, result" )
-    LiveData < List < GameHistory > > getAllGames();
+    @Query( "SELECT DISTINCT numeJucator, gameType, result, count(*) as gameId from gameEntity  group by numeJucator, gameType, result order by gameId desc, numeJucator, gameType desc, result desc" )
+    LiveData < List < GameEntity > > getAllGames();
 
-    @Query( "SELECT DISTINCT nume_jucator, game_type, result, count(*) as id from gameplay_history  group by nume_jucator, game_type, result having nume_jucator=:user order by id desc, nume_jucator, game_type, result" )
-    LiveData < List < GameHistory > > getSpecificGames( String user );
+    @Query( "SELECT DISTINCT numeJucator, gameType, result, count(*) as gameId from gameEntity  group by numeJucator, gameType, result having numeJucator=:user order by gameType desc, result desc" )
+    LiveData < List < GameEntity > > getSpecificGames( String user );
 
     @Insert
-    void insertGame( GameHistory game );
+    void insertGame( GameEntity game );
 }

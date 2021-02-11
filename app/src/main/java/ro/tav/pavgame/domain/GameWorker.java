@@ -9,7 +9,7 @@ import androidx.work.WorkerParameters;
 
 import java.util.List;
 
-import ro.tav.pavgame.data.GameHistory;
+import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.data.remote.FirebaseApi;
 import ro.tav.pavgame.data.remote.RemoteDataSource;
 import ro.tav.pavgame.presentation.PavGameViewModel;
@@ -17,13 +17,13 @@ import ro.tav.pavgame.presentation.PavGameViewModel;
 
 public class GameWorker extends Worker {
     private Context context;
-    private GameHistory gameHistory;
+    private GameEntity game;
 
     public GameWorker( @NonNull Context context,
-                       @NonNull WorkerParameters workerParams, GameHistory gameHistory ) {
+                       @NonNull WorkerParameters workerParams, GameEntity game ) {
         super( context, workerParams );
         this.context = context;
-        this.gameHistory = gameHistory;
+        this.game = game;
     }
 
     @NonNull
@@ -34,15 +34,15 @@ public class GameWorker extends Worker {
 
         if ( "get".equals( value ) ) {
             RemoteDataSource remoteDataSource = new RemoteDataSource( FirebaseApi.createApi() );
-            List < GameHistory > gameHistories = remoteDataSource.getAllGames();
-            for ( GameHistory gameHistory : gameHistories ) {
-                PavGameViewModel.getGameUseCase().insertGame( gameHistory );
+            List < GameEntity > games = remoteDataSource.getAllGames();
+            for ( GameEntity game : games ) {
+                PavGameViewModel.getGameUseCase().insertGame( game );
             }
 
         } else if ( "post".equals( value ) ) {
             // POST operation
             RemoteDataSource remoteDataSource = new RemoteDataSource( FirebaseApi.createApi() );
-            remoteDataSource.insertGame( gameHistory );
+            remoteDataSource.insertGame( game );
         }
 
         return Result.success();

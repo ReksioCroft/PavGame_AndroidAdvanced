@@ -2,31 +2,28 @@ package ro.tav.pavgame.domain;
 
 import android.app.Application;
 
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import ro.tav.pavgame.data.GameDataSource;
-import ro.tav.pavgame.data.GameHistory;
+import ro.tav.pavgame.data.GameEntity;
 
-public class GameMediator extends AndroidViewModel {
-    private final GameDataSource mRepository;
+public class GameMediator {
+    private final GameRepository mRepository;
 
     public GameMediator( Application application ) {
-        super( application );
-        mRepository = new GameDataSource( application );
+        mRepository = new GameRepository( application );
     }
 
-    public LiveData < List < GameHistory > > getAllGames() {
+    protected LiveData < List < GameEntity > > getAllGames() {
         return mRepository.getAllGames();
     }
 
-    public LiveData < List < GameHistory > > getSpecificGames( String user ) {
+    protected LiveData < List < GameEntity > > getSpecificGames( String user ) {
         return mRepository.getSpecificGames( user );
     }
 
-    public void insertGame( GameHistory gamehistory ) {
-        mRepository.insertGame( gamehistory );
+    protected void insertGame( GameEntity game ) {
+        mRepository.insertGame( game );
     }
 }

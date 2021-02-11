@@ -2,21 +2,21 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "c11d1982babe17fe2b16d643f3ec952f",
+    "identityHash": "4a5352b023d2495a988c25af022dcc87",
     "entities": [
       {
-        "tableName": "gameplay_history",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nume_jucator` TEXT, `result` TEXT, `game_type` TEXT)",
+        "tableName": "gameEntity",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `numeJucator` TEXT, `result` TEXT, `gameType` TEXT)",
         "fields": [
           {
             "fieldPath": "gameId",
-            "columnName": "id",
+            "columnName": "gameId",
             "affinity": "INTEGER",
             "notNull": true
           },
           {
-            "fieldPath": "nume",
-            "columnName": "nume_jucator",
+            "fieldPath": "numeJucator",
+            "columnName": "numeJucator",
             "affinity": "TEXT",
             "notNull": false
           },
@@ -28,14 +28,14 @@
           },
           {
             "fieldPath": "gameType",
-            "columnName": "game_type",
+            "columnName": "gameType",
             "affinity": "TEXT",
             "notNull": false
           }
         ],
         "primaryKey": {
           "columnNames": [
-            "id"
+            "gameId"
           ],
           "autoGenerate": true
         },
@@ -46,7 +46,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'c11d1982babe17fe2b16d643f3ec952f')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '4a5352b023d2495a988c25af022dcc87')"
     ]
   }
 }

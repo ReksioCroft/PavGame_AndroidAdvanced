@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ro.tav.pavgame.PavGameApplication;
-import ro.tav.pavgame.data.GameHistory;
+import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.domain.GameUseCase;
 import ro.tav.pavgame.presentation.view.recycleViewAux.PavGameBindingAdapter;
 
@@ -17,8 +17,8 @@ public class PavGameViewModel extends ViewModel {
 
     public static void addResult( RecyclerView recyclerView, String userName, String result, String gametype ) {
         //construim jocul si apoi il trimitem in bindingAdapter pt a fi adaugat
-        GameHistory mGame = new GameHistory();
-        mGame.setNume( userName );
+        GameEntity mGame = new GameEntity();
+        mGame.setNumeJucator( userName );
         mGame.setResult( result );
         mGame.setGameType( gametype );
         PavGameBindingAdapter.addGameResult( recyclerView, mGame );
