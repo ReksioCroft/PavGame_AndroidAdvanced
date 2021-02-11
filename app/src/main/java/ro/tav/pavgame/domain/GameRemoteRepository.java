@@ -27,6 +27,15 @@ public class GameRemoteRepository extends RemoteDataSource {
         }
     }
 
+    public GameEntity  getGame() {
+        try {
+            return api.getGame().execute().body();
+        } catch ( IOException e ) {
+            Timber.tag( TAG ).w( e, "Something went wrong" );
+            return null;
+        }
+    }
+
     public void insertGame( GameEntity game ) {
         Call < GameEntity > call = api.insertGame( game );
         call.enqueue( new Callback < GameEntity >() {

@@ -14,5 +14,7 @@ public abstract class RemoteDataSource {
 
     protected abstract List < GameEntity > getAllGames();
 
+    protected abstract GameEntity getGame();
+
     protected abstract void insertGame( GameEntity game );
 }

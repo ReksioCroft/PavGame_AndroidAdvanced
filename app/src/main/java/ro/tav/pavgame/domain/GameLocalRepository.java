@@ -6,9 +6,10 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
+import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.data.localDB.AppDatabase;
 import ro.tav.pavgame.data.localDB.GameDataSource;
-import ro.tav.pavgame.data.GameEntity;
+import timber.log.Timber;
 
 public class GameLocalRepository extends GameDataSource {
     public GameLocalRepository( Application application ) {
@@ -25,7 +26,11 @@ public class GameLocalRepository extends GameDataSource {
 
     protected void insertGame( GameEntity game ) {
         AppDatabase.databaseWriteExecutor.execute( () -> {
-            mGameDao.insertGame( game );
+            try {
+                mGameDao.insertGame( game );
+            } catch ( Exception e ) {
+                Timber.e( e );
+            }
         } );
     }
 }

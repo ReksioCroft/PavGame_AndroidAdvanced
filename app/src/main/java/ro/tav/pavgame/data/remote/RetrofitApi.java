@@ -15,10 +15,16 @@ import ro.tav.pavgame.data.GameEntity;
 public interface RetrofitApi {
     String BASE_URL = "https://pav-game-tav.firebaseio.com/";
 
-    @GET( "items.json" )
+    //    static final ContentResolver contentResolver = PavGameApplication.getContext().getContentResolver();
+//    static final String androidId = Settings.Secure.ANDROID_ID;
+//    static final String json = Settings.Secure.getString( contentResolver,androidId);
+    @GET( "games/1.json" )
     Call < List < GameEntity > > getAllGames();
 
-    @POST( "items.json" )
+    @GET( "games/1.json" )
+    Call < GameEntity > getGame();
+
+    @POST( "games.json" )
     Call < GameEntity > insertGame( GameEntity game );
 
     static RetrofitApi createApi() {
