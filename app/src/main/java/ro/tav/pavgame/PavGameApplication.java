@@ -21,13 +21,13 @@ import ro.tav.pavgame.presentation.notification.PavGameNotificationChannelFactor
 import timber.log.Timber;
 
 public class PavGameApplication extends Application {
-    private static PavGameApplication context;
+    private static PavGameApplication pavGameApplication;
     private List < Activity > activities;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        context = this;
+        pavGameApplication = this;
         activities = new ArrayList <>();
 
         setupLibs();
@@ -63,14 +63,18 @@ public class PavGameApplication extends Application {
     }
 
     public static Context getContext() {
-        return context;
+        return pavGameApplication;
     }
 
     public static void addActivity( Activity a ) {
-        context.activities.add( a );
+        pavGameApplication.activities.add( a );
     }
 
     public static void removeActivity( Activity a ) {
-        context.activities.remove( a );
+        pavGameApplication.activities.remove( a );
+    }
+
+    public static PavGameApplication getApplication() {
+        return pavGameApplication;
     }
 }

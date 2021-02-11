@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static String userName = "Current User";
     public static final int NOTIFICATION_LAUNCH_CODE = 485;
     private NotificationManager notificationManager;
-    private PavGameViewModel viewModelInstance;
     private Intent gameInProgressServiceIntent;
     private final PavGameFragmentStack fragmentStack = new PavGameFragmentStack();
 
@@ -89,10 +88,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.string.navigation_drawer_close );
         drawer.addDrawerListener( toggle );
         toggle.syncState();
-
-        //aici vom initializa variabila game din viewmodel (clasa singleton)
-        //pentru a putea opera cu repoul din domain
-        viewModelInstance = PavGameViewModel.getInstance( this );
 
         //aduagam textul in navigation drwwer si adaugam listener pt a il putea folosi
         NavigationView navigationView = findViewById( R.id.nav_view );
@@ -238,7 +233,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void startGame( View view ) {    //crearea si initializarea butoanelor jocului
-        String s = "", messege="";
+        String s = "", messege = "";
         started = finished = Boolean.FALSE;
         input = findViewById( R.id.pavGameInputText );
 
@@ -302,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         public void onClick( View view ) {
-            String messege="", s1 = "", s2="", result="";
+            String messege = "", s1 = "", s2 = "", result = "";
             button = ( Button ) view;
             input = findViewById( R.id.pavGameInputText );
             int l = button.getId() / lat;

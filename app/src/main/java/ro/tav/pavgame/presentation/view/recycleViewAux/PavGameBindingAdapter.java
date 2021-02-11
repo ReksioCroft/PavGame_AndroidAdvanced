@@ -5,16 +5,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import ro.tav.pavgame.data.GameHistory;
+import ro.tav.pavgame.domain.GameUseCase;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 
 public class PavGameBindingAdapter {
-    @BindingAdapter( "pavGameInsert" )
-    public static void addGameResult( RecyclerView recyclerView, GameHistory mGame ) {
-        PavGameViewModel.getGame().insert( mGame );
+    @BindingAdapter( { "game_useCase", "gameToInsert" } )
+    public static void addGameResult( RecyclerView recyclerView, GameUseCase gameUseCase, GameHistory mGame ) {
+        gameUseCase.insert( mGame );
     }
 
-    @BindingAdapter( "pavGames" )
-    public static void recycleViewGamesBinding( RecyclerView mRecyclerViewGames, GamesAdapter gamesAdapter ) {
+    @BindingAdapter( { "game_adapter", "user" } )
+    public static void recycleViewGamesBinding( RecyclerView mRecyclerViewGames, GamesAdapter gamesAdapter, String user ) {
         if ( mRecyclerViewGames.getAdapter() == null ) {
             // set the adapter to the recycler view
             mRecyclerViewGames.setAdapter( gamesAdapter );
@@ -23,6 +24,11 @@ public class PavGameBindingAdapter {
             mRecyclerViewGames.setLayoutManager( layoutManager );
         }
         //pornim binduirea permanenta intre recyleview si baza de date
-        PavGameViewModel.getGame().getAllGames().observeForever( games -> gamesAdapter.setGames( games ) );
+        if ( user == null )
+            PavGameViewModel.getGameUseCase().getAllGames().observeForever( games -> gamesAdapter.setGames( games ) );
+        else
+            PavGameViewModel.getGameUseCase().getSpecificGames( user ).observeForever( games -> gamesAdapter.setGames( games ) );
     }
+
+
 }

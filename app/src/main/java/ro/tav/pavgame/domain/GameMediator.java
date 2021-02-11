@@ -12,16 +12,18 @@ import ro.tav.pavgame.data.GameHistory;
 
 public class GameMediator {
     private final GameDao mGameDao;
-    private final LiveData < List < GameHistory > > mAllGames;
 
     GameMediator( Application application ) {
         AppDatabase db = AppDatabase.getAppDatabase( application );
         mGameDao = db.gameDao();
-        mAllGames = mGameDao.getAllGames();
     }
 
     LiveData < List < GameHistory > > getAllGames() {
-        return mAllGames;
+        return mGameDao.getAllGames();
+    }
+
+    LiveData < List < GameHistory > > getSpecificGames( String user ) {
+        return mGameDao.getSpecificGames( user );
     }
 
     void insert( GameHistory gameHistory ) {
