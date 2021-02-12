@@ -1,6 +1,7 @@
 package ro.tav.pavgame.data.remote;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
+import com.google.gson.JsonObject;
 
 import java.util.List;
 
@@ -11,26 +12,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import ro.tav.pavgame.data.GameEntity;
 
 public interface RetrofitApi {
     String BASE_URL = "https://pav-game-tav.firebaseio.com/";
 
-    //    static final ContentResolver contentResolver = PavGameApplication.getContext().getContentResolver();
-//    static final String androidId = Settings.Secure.ANDROID_ID;
-//    static final String json = Settings.Secure.getString( contentResolver,androidId);
     @GET( "games.json" )
-    Call < List < GameEntity > > getAllGames();
+    Call < List < JsonObject > > getAllGames();
 
-//    @FormUrlEncoded
-//    @POST( "games.json" )
-//    Call < List < GameEntity > > insertGame( @Field( "gameId" ) String gameId,
-//                                             @Field( "gameType" ) String gameType,
-//                                             @Field( "numeJucator" ) String numeJucator,
-//                                             @Field( "result" ) String result );
-
-    @POST( "games.json" )
-    Call < List<GameEntity> > insertGame( @Body GameEntity gameEntity );
+    @POST( "games/{firebaseId}.json" )
+    Call < GameEntity > insertGame( @Path( "firebaseId" ) String firebaseId, @Body GameEntity gameEntity );
 
     static RetrofitApi createApi() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()

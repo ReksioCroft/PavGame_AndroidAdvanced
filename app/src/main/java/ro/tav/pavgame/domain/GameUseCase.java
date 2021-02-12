@@ -8,7 +8,7 @@ import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
 
-public class GameUseCase  {
+public class GameUseCase {
     private final GameMediator mGameMediator;
 
     public GameUseCase( Application application ) {

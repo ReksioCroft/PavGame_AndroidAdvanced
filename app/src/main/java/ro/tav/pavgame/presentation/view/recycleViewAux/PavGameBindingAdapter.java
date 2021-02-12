@@ -4,15 +4,9 @@ import androidx.databinding.BindingAdapter;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 
 public class PavGameBindingAdapter {
-    @BindingAdapter( { "gameToInsert" } )
-    public static void addGameResult( RecyclerView recyclerView, GameEntity mGame ) {
-        PavGameViewModel.getGameUseCase().insertGame( mGame );
-    }
-
     @BindingAdapter( { "game_adapter", "user" } )
     public static void recycleViewGamesBinding( RecyclerView mRecyclerViewGames, GamesAdapter gamesAdapter, String user ) {
         if ( mRecyclerViewGames.getAdapter() == null ) {

@@ -33,7 +33,7 @@ public class GameLocalRepository extends GameDataSource {
             } catch ( SQLiteConstraintException e ) {
                 try {
                     GameEntity gameInDatabase = mGameDao.getGameById( game.getGameId() );
-                    if ( game != gameInDatabase ) {                                     //daca a aparut conflict de unique id
+                    if ( !game.equals( gameInDatabase ) ) {                                     //daca a aparut conflict de unique id
                         GameEntity newGame = new GameEntity();                          //cand se preia un joc din firebase cu un id deja folosit local
                         newGame.setNumeJucator( game.getNumeJucator() );                //luam din bd local jocul cu care apare conflictul
                         newGame.setGameType( game.getGameType() );                      //verificam sa nu fie acelasi joc

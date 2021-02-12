@@ -1,6 +1,7 @@
 package ro.tav.pavgame.data;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
@@ -65,5 +66,17 @@ public class GameEntity {
 
     public void setGameType( @NotNull String gameType ) {
         this.gameType = gameType;
+    }
+
+    @Override
+    public boolean equals( @Nullable Object obj ) {
+        if ( obj.getClass() == GameEntity.class ) {
+            GameEntity gameToCompare = ( GameEntity ) obj;
+            return gameId.equals( gameToCompare.gameId ) &&
+                    gameType.equals( gameToCompare.gameType ) &&
+                    result.equals( gameToCompare.result ) &&
+                    numeJucator.equals( gameToCompare.numeJucator );
+        } else
+            return super.equals( obj );
     }
 }

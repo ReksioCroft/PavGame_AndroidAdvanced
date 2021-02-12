@@ -31,20 +31,18 @@ public class GameWorker extends Worker {
         String value = data.getString( "mode" );
 
         if ( "get".equals( value ) ) {
+            Timber.d( "GET Operation" );
             GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
             List < GameEntity > games = gameRemoteRepository.getAllGames();
-            if ( games != null ) {
-                for ( GameEntity game : games ) {
-                    PavGameViewModel.getGameUseCase().insertGame( game );
-                }
-                Timber.d( "worker finished downloading games" );
+
+            for ( GameEntity game : games ) {
+                PavGameViewModel.getGameUseCase().insertGame( game );
             }
-//            GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
-//            GameEntity game = gameRemoteRepository.getGame();
-//            Timber.v( game.getNumeJucator() );
-//            PavGameViewModel.getGameUseCase().insertGame( game );
+            Timber.d( "worker finished downloading games" );
+
+
         } else if ( "post".equals( value ) ) {
-//         POST operation
+            Timber.d( "POST Operation" );
             GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
             GameEntity game = new GameEntity();
             game.setResult( Objects.requireNonNull( data.getString( "result" ) ) );
@@ -52,8 +50,6 @@ public class GameWorker extends Worker {
             game.setGameId( Objects.requireNonNull( data.getString( "gameId" ) ) );//nu stim cu ce id se va introduce in bd locala si nici nu avem nevoie
             game.setNumeJucator( Objects.requireNonNull( data.getString( "numeJucator" ) ) );
             gameRemoteRepository.insertGame( game );
-//            gameRemoteRepository.insertGame( data.getString( "gameId" ), data.getString( "gameType" ) ,
-//                    data.getString( "numeJucator" ), data.getString( "result" ) );
 
             Timber.d( "Worker terminat cu succes pt upload firebase db" );
         }

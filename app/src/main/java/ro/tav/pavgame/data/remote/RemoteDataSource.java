@@ -14,10 +14,5 @@ public abstract class RemoteDataSource {
 
     protected abstract List < GameEntity > getAllGames();
 
-//    protected abstract void insertGame( @Field( "gameId" ) String gameId,
-//                                        @Field( "gameType" ) String gameType,
-//                                        @Field( "numeJucator" ) String numeJucator,
-//                                        @Field( "result" ) String result );
-
     protected abstract void insertGame( GameEntity gameEntity );
 }

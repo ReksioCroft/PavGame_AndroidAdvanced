@@ -1,9 +1,10 @@
 package ro.tav.pavgame.domain;
 
+import com.google.gson.JsonObject;
+
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -21,40 +22,49 @@ public class GameRemoteRepository extends RemoteDataSource {
 
     public List < GameEntity > getAllGames() {
         try {
-            return api.getAllGames().execute().body();
-        } catch ( IOException e ) {
+            List < JsonObject > response = api.getAllGames().execute().body();
+            List < GameEntity > gameEntities = new ArrayList <>();
+            for ( JsonObject jsonObjectofObjects : response ) {
+                for ( String jsonObjectKeys : jsonObjectofObjects.keySet() ) {
+                    GameEntity gameEntity = new GameEntity();
+                    JsonObject jsonObject = jsonObjectofObjects.getAsJsonObject( jsonObjectKeys );
+                    gameEntity.setGameId( jsonObject.get( "gameId" ).getAsString() );
+                    gameEntity.setGameType( jsonObject.get( "gameType" ).getAsString() );
+                    gameEntity.setResult( jsonObject.get( "result" ).getAsString() );
+                    gameEntity.setNumeJucator( jsonObject.get( "numeJucator" ).getAsString() );
+                    gameEntities.add( gameEntity );
+                }
+            }
+            return gameEntities;
+        } catch ( Exception e ) {
             Timber.tag( TAG ).w( e, "Something went wrong" );
-            return null;
+            return new ArrayList <>();
         }
     }
 
-//    public GameEntity  getGame() {
-//        try {
-//            return api.getGame().execute().body();
-//        } catch ( IOException e ) {
-//            Timber.tag( TAG ).w( e, "Something went wrong" );
-//            return null;
-//        }
-//    }
 
-    //    public void insertGame( @Field( "gameId" ) String gameId,
-//                            @Field( "gameType" ) String gameType,
-//                            @Field( "numeJucator" ) String numeJucator,
-//                            @Field( "result" ) String result ) {
-//        Call < List < GameEntity > > call = api.insertGame( gameId, gameType, numeJucator, result );
     public void insertGame( GameEntity gameEntity ) {
-        List<GameEntity> l = Arrays.asList( gameEntity );
-        Call <  List < GameEntity  > > call = api.insertGame( gameEntity );
-        call.enqueue( new Callback <  List<GameEntity > >() {
-            @Override
-            public void onResponse( @NotNull Call <List < GameEntity >> call, @NotNull Response <List < GameEntity  > > response ) {
-                Timber.d( "Success inserting game in firebase db" );
+        try {
+            int id;
+            try {
+                id = api.getAllGames().execute().body().size();
+            } catch ( Exception e ) {
+                id = 0;
             }
+            Call < GameEntity > call = api.insertGame( String.valueOf( id ), gameEntity );
+            call.enqueue( new Callback < GameEntity >() {
+                @Override
+                public void onResponse( @NotNull Call < GameEntity > call, @NotNull Response < GameEntity > response ) {
+                    Timber.d( "Success inserting game in firebase db" );
+                }
 
-            @Override
-            public void onFailure( @NotNull Call < List < GameEntity > > call, @NotNull Throwable t ) {
-                Timber.d( "fail inserting game in firebase db" );
-            }
-        } );
+                @Override
+                public void onFailure( @NotNull Call < GameEntity > call, @NotNull Throwable t ) {
+                    Timber.d( "fail inserting game in firebase db" );
+                }
+            } );
+        } catch ( Exception e ) {
+            Timber.d( e );
+        }
     }
 }

@@ -12,7 +12,7 @@ import ro.tav.pavgame.data.GameEntity;
 
 @Dao
 public interface GameDao {
-    @Query( "SELECT DISTINCT numeJucator, gameType, result, cast (count(*) as text) as gameId from gameEntity  group by numeJucator, gameType, result order by gameId desc, numeJucator, gameType desc, result desc" )
+    @Query( "SELECT DISTINCT numeJucator, gameType, result, cast (count(*) as text) as gameId from gameEntity  group by numeJucator, gameType, result order by count(*) desc, numeJucator, gameType desc, result desc" )
     LiveData < List < GameEntity > > getAllGames();
 
     @Query( "SELECT DISTINCT numeJucator, gameType, result, cast ( count(*) as text) as gameId from gameEntity  group by numeJucator, gameType, result having numeJucator=:user order by gameType desc, result desc" )

@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.domain.GameUseCase;
-import ro.tav.pavgame.presentation.view.recycleViewAux.PavGameBindingAdapter;
 
 public class PavGameViewModel extends ViewModel {
     private static final GameUseCase gameUseCase = new GameUseCase( PavGameApplication.getApplication() );///gameUseCase face legatura cu repo-ul din domain
@@ -22,8 +21,7 @@ public class PavGameViewModel extends ViewModel {
         mGame.setResult( result );
         mGame.setGameType( gametype );
         mGame.setGameId( "" );//va fi setat in mediator pt a evita ca ce se descarca de pe firebase sa fie uploadat inca o data
-        PavGameBindingAdapter.addGameResult( recyclerView, mGame );
+        gameUseCase.insertGame( mGame );
     }
-
 
 }
