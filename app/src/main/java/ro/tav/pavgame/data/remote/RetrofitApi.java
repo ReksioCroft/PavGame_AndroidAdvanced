@@ -8,6 +8,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import ro.tav.pavgame.data.GameEntity;
@@ -18,14 +19,18 @@ public interface RetrofitApi {
     //    static final ContentResolver contentResolver = PavGameApplication.getContext().getContentResolver();
 //    static final String androidId = Settings.Secure.ANDROID_ID;
 //    static final String json = Settings.Secure.getString( contentResolver,androidId);
-    @GET( "games/1.json" )
+    @GET( "games.json" )
     Call < List < GameEntity > > getAllGames();
 
-    @GET( "games/1.json" )
-    Call < GameEntity > getGame();
+//    @FormUrlEncoded
+//    @POST( "games.json" )
+//    Call < List < GameEntity > > insertGame( @Field( "gameId" ) String gameId,
+//                                             @Field( "gameType" ) String gameType,
+//                                             @Field( "numeJucator" ) String numeJucator,
+//                                             @Field( "result" ) String result );
 
     @POST( "games.json" )
-    Call < GameEntity > insertGame( GameEntity game );
+    Call < List<GameEntity> > insertGame( @Body GameEntity gameEntity );
 
     static RetrofitApi createApi() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()

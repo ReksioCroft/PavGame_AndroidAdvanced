@@ -21,6 +21,7 @@ public class PavGameViewModel extends ViewModel {
         mGame.setNumeJucator( userName );
         mGame.setResult( result );
         mGame.setGameType( gametype );
+        mGame.setGameId( "" );//va fi setat in mediator pt a evita ca ce se descarca de pe firebase sa fie uploadat inca o data
         PavGameBindingAdapter.addGameResult( recyclerView, mGame );
     }
 

@@ -2,16 +2,16 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e7dcbb12b2265f15de1843330558aaa1",
+    "identityHash": "bfbfb4332fb4d31344063a8c675fc44a",
     "entities": [
       {
         "tableName": "gameEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `numeJucator` TEXT NOT NULL, `result` TEXT NOT NULL, `gameType` TEXT NOT NULL)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameId` TEXT NOT NULL, `numeJucator` TEXT NOT NULL, `result` TEXT NOT NULL, `gameType` TEXT NOT NULL, PRIMARY KEY(`gameId`, `numeJucator`))",
         "fields": [
           {
             "fieldPath": "gameId",
             "columnName": "gameId",
-            "affinity": "INTEGER",
+            "affinity": "TEXT",
             "notNull": true
           },
           {
@@ -35,9 +35,10 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "gameId"
+            "gameId",
+            "numeJucator"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": []
@@ -46,7 +47,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'e7dcbb12b2265f15de1843330558aaa1')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'bfbfb4332fb4d31344063a8c675fc44a')"
     ]
   }
 }

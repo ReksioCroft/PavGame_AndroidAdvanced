@@ -3,29 +3,39 @@ package ro.tav.pavgame.data;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import org.jetbrains.annotations.NotNull;
 
-@Entity( tableName = "gameEntity" )
+@Entity( tableName = "gameEntity", primaryKeys = { "gameId", "numeJucator" } )
 public class GameEntity {
-    @PrimaryKey( autoGenerate = true )
     @ColumnInfo( name = "gameId" )
-    private int gameId;
+    @NonNull
+    @Expose
+    @SerializedName( "gameId" )
+    private String gameId;
 
     @ColumnInfo( name = "numeJucator" )
     @NonNull
+    @Expose
+    @SerializedName( "numeJucator" )
     private String numeJucator;
 
     @ColumnInfo( name = "result" )
     @NonNull
+    @Expose
+    @SerializedName( "result" )
     private String result;
 
     @ColumnInfo( name = "gameType" )
     @NonNull
+    @Expose
+    @SerializedName( "gameType" )
     private String gameType;
 
-    public int getGameId() {
+    public @NotNull String getGameId() {
         return gameId;
     }
 
@@ -41,7 +51,7 @@ public class GameEntity {
         return gameType;
     }
 
-    public void setGameId( int gameId ) {
+    public void setGameId( @NotNull String gameId ) {
         this.gameId = gameId;
     }
 
