@@ -21,9 +21,9 @@ public class GameRemoteRepository extends RemoteDataSource {
     }
 
     public List < GameEntity > getAllGames() {
+        List < GameEntity > gameEntities = new ArrayList <>();
         try {
             List < JsonObject > response = api.getAllGames().execute().body();
-            List < GameEntity > gameEntities = new ArrayList <>();
             for ( JsonObject jsonObjectofObjects : response ) {
                 for ( String jsonObjectKeys : jsonObjectofObjects.keySet() ) {
                     GameEntity gameEntity = new GameEntity();
@@ -35,36 +35,26 @@ public class GameRemoteRepository extends RemoteDataSource {
                     gameEntities.add( gameEntity );
                 }
             }
-            return gameEntities;
         } catch ( Exception e ) {
-            Timber.tag( TAG ).w( e, "Something went wrong" );
-            return new ArrayList <>();
+            Timber.tag( TAG ).d( e, "Something happened" );
         }
+        return gameEntities;
     }
 
 
     public void insertGame( GameEntity gameEntity ) {
-        try {
-            int id;
-            try {
-                id = api.getAllGames().execute().body().size();
-            } catch ( Exception e ) {
-                id = 0;
+        Call < GameEntity > call = api.insertGame( gameEntity );
+        call.enqueue( new Callback < GameEntity >() {
+            @Override
+            public void onResponse( @NotNull Call < GameEntity > call, @NotNull Response < GameEntity > response ) {
+                Timber.tag( TAG ).d( "Success inserting game in firebase db" );
             }
-            Call < GameEntity > call = api.insertGame( String.valueOf( id ), gameEntity );
-            call.enqueue( new Callback < GameEntity >() {
-                @Override
-                public void onResponse( @NotNull Call < GameEntity > call, @NotNull Response < GameEntity > response ) {
-                    Timber.d( "Success inserting game in firebase db" );
-                }
 
-                @Override
-                public void onFailure( @NotNull Call < GameEntity > call, @NotNull Throwable t ) {
-                    Timber.d( "fail inserting game in firebase db" );
-                }
-            } );
-        } catch ( Exception e ) {
-            Timber.d( e );
-        }
+            @Override
+            public void onFailure( @NotNull Call < GameEntity > call, @NotNull Throwable t ) {
+                Timber.tag( TAG ).d( "fail inserting game in firebase db" );
+            }
+        } );
+
     }
 }

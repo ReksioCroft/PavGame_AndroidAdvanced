@@ -4,11 +4,14 @@ import android.app.Application;
 
 import androidx.lifecycle.LiveData;
 import androidx.work.Data;
+import androidx.work.ExistingPeriodicWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
+import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import ro.tav.pavgame.data.GameEntity;
 
@@ -23,11 +26,21 @@ public class GameMediator {
         Data.Builder builder = new Data.Builder();
         builder.putString( "mode", "get" );
         Data data = builder.build();
+
+        //Vrem ca primul get sa se faca instant cand se deschide aplicatia
         OneTimeWorkRequest downloadWorkRequest =
                 new OneTimeWorkRequest.Builder( GameWorker.class )
                         .setInputData( data )
                         .build();
         WorkManager.getInstance( mApplication.getApplicationContext() ).enqueue( downloadWorkRequest );
+
+        //De asemenea, vrem sa facem get pe parcurs
+        PeriodicWorkRequest downloadWorkRequestLoop =
+                new PeriodicWorkRequest.Builder( GameWorker.class, PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS )
+                        .setInputData( data )
+                        .build();
+        WorkManager.getInstance( mApplication.getApplicationContext() )
+                .enqueueUniquePeriodicWork( "getFirebaseGames", ExistingPeriodicWorkPolicy.KEEP, downloadWorkRequestLoop );
     }
 
     protected LiveData < List < GameEntity > > getAllGames() {

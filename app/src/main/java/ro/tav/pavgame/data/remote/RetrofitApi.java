@@ -12,7 +12,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import ro.tav.pavgame.data.GameEntity;
 
 public interface RetrofitApi {
@@ -21,8 +20,8 @@ public interface RetrofitApi {
     @GET( "games.json" )
     Call < List < JsonObject > > getAllGames();
 
-    @POST( "games/{firebaseId}.json" )
-    Call < GameEntity > insertGame( @Path( "firebaseId" ) String firebaseId, @Body GameEntity gameEntity );
+    @POST( "games/0.json" )
+    Call < GameEntity > insertGame( @Body GameEntity gameEntity );
 
     static RetrofitApi createApi() {
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
