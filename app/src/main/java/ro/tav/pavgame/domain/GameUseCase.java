@@ -23,6 +23,10 @@ public class GameUseCase {
         return mGameMediator.getSpecificGamesbyUserName( user );
     }
 
+    public List < GameEntity > getSpecificGamesbyUserNameStatic( String user ) {
+        return mGameMediator.getSpecificGamesbyUserNameStatic( user );
+    }
+
     public void insertGame( GameEntity game ) {
         mGameMediator.insertGame( game );
     }

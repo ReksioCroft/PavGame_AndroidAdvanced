@@ -29,6 +29,10 @@ public class GameLocalRepository extends GameDataSource {
         return mGameDao.getSpecificGamesbyUserName( user );
     }
 
+    protected List < GameEntity > getSpecificGamesbyUserNameStatic( String user ) {
+        return mGameDao.getSpecificGamesbyUserNameStatic( user );
+    }
+
     protected void insertGame( GameEntity game ) {
         AppDatabase.databaseWriteExecutor.execute( () -> {
             try {

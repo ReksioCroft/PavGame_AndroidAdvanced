@@ -51,6 +51,10 @@ public class GameMediator {
         return mRepository.getSpecificGamesbyUserName( user );
     }
 
+    protected List < GameEntity > getSpecificGamesbyUserNameStatic( String user ) {
+        return mRepository.getSpecificGamesbyUserNameStatic( user );
+    }
+
     protected void insertGame( GameEntity game ) {
         if ( game.getGameId().equals( "" ) ) {
             game.setGameId( new Timestamp( System.currentTimeMillis() ).toString() );

@@ -2,6 +2,7 @@ package ro.tav.pavgame;
 
 import android.content.Context;
 
+import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
@@ -12,14 +13,16 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.localDB.AppDatabase;
+import ro.tav.pavgame.data.localDB.GameDao;
 import ro.tav.pavgame.domain.GameRemoteRepository;
+import ro.tav.pavgame.domain.GameUseCase;
 
 @RunWith( RobolectricTestRunner.class )
 
 //@RunWith( AndroidJUnit4.class )
 public class jUnitTests {
-    //    private GameDao gameDao;
-//    private AppDatabase db;
+
     Context context;
     GameEntity mGame;
 
@@ -48,52 +51,31 @@ public class jUnitTests {
         assert ok;
     }
 
-//    @Test
-//    public void test2() {
-//        GameUseCase gameUseCase = new GameUseCase(ApplicationProvider.getApplicationContext());
-//        gameUseCase.insertGame( mGame );
-//        GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
-//        List < GameEntity > l = gameRemoteRepository.getAllGames();
-//        boolean ok = false;
-//        for ( GameEntity gameEntity : l ) {
-//            if ( gameEntity.equals( mGame ) ) {
-//                ok = true;
-//                break;
-//            }
-//        }
-//        assert ok;
-//    }
-//
-//    @Test
-//    public void test3() {
-//        db = Room.inMemoryDatabaseBuilder( context, AppDatabase.class ).allowMainThreadQueries().build();
-//        gameDao = db.gameDao();
-//        gameDao.insertGame( mGame );
-//
-//        AppDatabase.databaseWriteExecutor.execute( new Runnable() {
-//            @Override
-//            public void run() {
-//                gameDao.insertGame( mGame );
-//            }
-//        } );
-//        PavGameApplication pavGameApplication = mock(PavGameApplication.class);
-//        GameLocalRepository gameLocalRepository = new GameLocalRepository(context);
-//
+    @Test
+    public void test2() {
+        AppDatabase db = Room.inMemoryDatabaseBuilder( context, AppDatabase.class ).allowMainThreadQueries().build();
+        GameDao gameDao = db.gameDao();
+        gameDao.insertGame( mGame );
+
+        List < GameEntity > l = gameDao.getSpecificGamesbyUserNameStatic( "myTest" );
+
+        try {
+            assert !l.isEmpty();
+        } catch ( Exception e ) {
+            assert false;
+        }
+        db.close();
+    }
+
+    @Test    //TODO
+    public void test3() {
+//        GameLocalRepository gameLocalRepository = new GameLocalRepository( ApplicationProvider.getApplicationContext() );
 //        gameLocalRepository.insertGame( mGame );
-//        List < GameEntity > l = gameLocalRepository.getAllGames().getValue();
-//        try {
-//            Boolean ok = false;
-//            for ( GameEntity gameEntity : l ) {
-//                if ( gameEntity.equals( mGame ) ) {
-//                    ok = true;
-//                }
-//            }
-//            db.close();
-//            assert ok;
-//        } catch ( Exception e ) {
-//            assert false;
-//        }
-//        assert gameDao.getSpecificGamesbyUserName( "myTest" ).getValue().isEmpty();
-//    }
+//        List < GameEntity > l = gameLocalRepository.getSpecificGamesbyUserNameStatic( "myTest" );
+        GameUseCase gameUseCase = new GameUseCase( ApplicationProvider.getApplicationContext() );
+        gameUseCase.insertGame( mGame );
+        List < GameEntity > l = gameUseCase.getSpecificGamesbyUserNameStatic( "myTest" );
+        assert !l.isEmpty();
+    }
 }
 
