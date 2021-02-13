@@ -271,9 +271,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     if ( j == 0 ) {//left->leftOfParrent
                         constraintSet.connect( button.getId(), ConstraintSet.START, R.id.pavGameBoard, ConstraintSet.START );
                     } else {//left->rightOfButton
-                        constraintSet.connect( button.getId(), ConstraintSet.START, button.getId() - 1, ConstraintSet.END );
+                        constraintSet.connect( button.getId(), ConstraintSet.START, button.getId() - ( 1 ), ConstraintSet.END );
                         //rightOfButton->left
-                        constraintSet.connect( button.getId() - 1, ConstraintSet.END, button.getId(), ConstraintSet.START );
+                        constraintSet.connect( button.getId() - ( 1 ), ConstraintSet.END, button.getId(), ConstraintSet.START );
                     }
                     //legatura la dreapta
                     //right->endOfParrent
@@ -318,8 +318,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         private void setButon( int nr ) {
             button = findViewById( nr );
             button.setText( String.valueOf( nrDala ) );
-            button.setBackgroundColor( getResources().getColor( R.color.colorPrimary ) );
-            button.setTextColor( getResources().getColor( R.color.colorAccent ) );
+            button.setBackgroundColor( getResources().getColor( R.color.colorPrimary, getTheme() ) );
+            button.setTextColor( getResources().getColor( R.color.colorAccent, getTheme() ) );
         }
 
         public void onClick( View view ) {
@@ -330,9 +330,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             int c = button.getId() % lat;
             if ( !started ) {
                 started = true;
-                button.setBackgroundColor( getResources().getColor( R.color.colorAccent ) );
+                button.setBackgroundColor( getResources().getColor( R.color.colorAccent, getTheme() ) );
                 button.setText( "0" );
-                button.setTextColor( getResources().getColor( R.color.colorPrimary ) );
+                button.setTextColor( getResources().getColor( R.color.colorPrimary, getTheme() ) );
                 matrix[ l ][ c ] = -1;
                 button = findViewById( R.id.startGameButton );
                 button.setText( R.string.alegeDala );
