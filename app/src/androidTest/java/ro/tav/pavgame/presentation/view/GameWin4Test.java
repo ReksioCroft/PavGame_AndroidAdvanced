@@ -34,7 +34,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith( AndroidJUnit4.class )
-public class GameWin4 {
+public class GameWin4Test {
 
     @Rule
     public ActivityTestRule < LoginActivity > mActivityTestRule = new ActivityTestRule <>( LoginActivity.class );

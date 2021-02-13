@@ -35,7 +35,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith( AndroidJUnit4.class )
-public class LoginActivityTest {
+public class RecycleViewTest {
 
     @Rule
     public ActivityTestRule < LoginActivity > mActivityTestRule = new ActivityTestRule <>( LoginActivity.class );
@@ -80,7 +80,7 @@ public class LoginActivityTest {
         floatingActionButton.perform( click() );
 
         ViewInteraction appCompatTextView = onView(
-                allOf( withId( R.id.textview_name ), withText( "myTest" ),
+                allOf( withId( R.id.textview_name ), withText( "tavi.imaginatie@yahoo.com" ),
                         childAtPosition(
                                 childAtPosition(
                                         withId( R.id.cardViewResults ),

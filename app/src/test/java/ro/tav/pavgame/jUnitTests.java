@@ -16,11 +16,8 @@ import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.data.localDB.AppDatabase;
 import ro.tav.pavgame.data.localDB.GameDao;
 import ro.tav.pavgame.domain.GameRemoteRepository;
-import ro.tav.pavgame.domain.GameUseCase;
 
 @RunWith( RobolectricTestRunner.class )
-
-//@RunWith( AndroidJUnit4.class )
 public class jUnitTests {
 
     Context context;
@@ -65,16 +62,5 @@ public class jUnitTests {
             assert false;
         }
         db.close();
-    }
-
-    @Test    //TODO
-    public void test3() {
-//        GameLocalRepository gameLocalRepository = new GameLocalRepository( ApplicationProvider.getApplicationContext() );
-//        gameLocalRepository.insertGame( mGame );
-//        List < GameEntity > l = gameLocalRepository.getSpecificGamesbyUserNameStatic( "myTest" );
-        GameUseCase gameUseCase = new GameUseCase( ApplicationProvider.getApplicationContext() );
-        gameUseCase.insertGame( mGame );
-        List < GameEntity > l = gameUseCase.getSpecificGamesbyUserNameStatic( "myTest" );
-        assert !l.isEmpty();
     }
 }
