@@ -9,6 +9,7 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -51,21 +52,21 @@ public class GameMediator {
     }
 
     protected void insertGame( GameEntity game ) {
-//        if ( game.getGameId().equals( "" ) ) {
-//            game.setGameId( new Timestamp( System.currentTimeMillis() ).toString() );
-//            Data.Builder builder = new Data.Builder();
-//            builder.putString( "mode", "post" );
-//            builder.putString( "numeJucator", game.getNumeJucator() );
-//            builder.putString( "gameType", game.getGameType() );
-//            builder.putString( "result", game.getResult() );
-//            builder.putString( "gameId", game.getGameId() );
-//            Data data = builder.build();
-//            OneTimeWorkRequest uploadWorkRequest =
-//                    new OneTimeWorkRequest.Builder( GameWorker.class )
-//                            .setInputData( data )
-//                            .build();
-//            WorkManager.getInstance( mApplication.getApplicationContext() ).enqueue( uploadWorkRequest );
-//        }
+        if ( game.getGameId().equals( "" ) ) {
+            game.setGameId( new Timestamp( System.currentTimeMillis() ).toString() );
+            Data.Builder builder = new Data.Builder();
+            builder.putString( "mode", "post" );
+            builder.putString( "numeJucator", game.getNumeJucator() );
+            builder.putString( "gameType", game.getGameType() );
+            builder.putString( "result", game.getResult() );
+            builder.putString( "gameId", game.getGameId() );
+            Data data = builder.build();
+            OneTimeWorkRequest uploadWorkRequest =
+                    new OneTimeWorkRequest.Builder( GameWorker.class )
+                            .setInputData( data )
+                            .build();
+            WorkManager.getInstance( mApplication.getApplicationContext() ).enqueue( uploadWorkRequest );
+        }
         mRepository.insertGame( game );
     }
 }
