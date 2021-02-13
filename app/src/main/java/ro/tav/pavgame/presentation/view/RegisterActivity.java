@@ -91,6 +91,15 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        email = findViewById( R.id.emailReg );
+        email.setText( "" );
+        password = findViewById( R.id.passwordReg );
+        password.setText( "" );
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         PavGameApplication.removeActivity( this );

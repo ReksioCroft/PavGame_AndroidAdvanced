@@ -2,9 +2,12 @@ package ro.tav.pavgame.presentation.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,7 +24,14 @@ public class RecyclerViewActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_recycler_view );
+
+        //butonul de sus pentru a inchide activitatea
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled( true );
+
+        //adaugam activitatea in lista
         PavGameApplication.addActivity( this );
+
         // get recycler view from xml layout
         RecyclerView mRecyclerViewGames = findViewById( R.id.recycler_view_contacts_1 );
 
@@ -53,5 +63,14 @@ public class RecyclerViewActivity extends AppCompatActivity {
         b.putString( "user", textView.getText().toString() ); //user_email
         intent.putExtras( b ); //Put your id to your next Intent
         startActivity( intent );//cream o noua activitate pt utilizatorul specific
+    }
+
+    @Override
+    public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
+        if ( item.getItemId() == android.R.id.home ) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected( item );
     }
 }

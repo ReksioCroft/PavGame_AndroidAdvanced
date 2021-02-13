@@ -10,13 +10,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
@@ -229,9 +230,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onDestroy() {
         super.onDestroy();
-        LoginActivity.getFireBaseCurrentInstance().signOut();
         PavGameApplication.removeActivity( this );
-        finish();
     }
 
     public void startGame( View view ) {    //crearea si initializarea butoanelor jocului
@@ -244,24 +243,49 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             lat = 1 << Integer.parseInt( s );
             input.setHint( R.string.pozDala );
             nrDala = nrGreseli = 0;
-            LinearLayout pavGameBoard = findViewById( R.id.pavGameBoard );
+            ConstraintLayout pavGameBoard = findViewById( R.id.pavGameBoard );
             pavGameBoard.removeAllViews();
-            int maxWidth = getResources().getDisplayMetrics().widthPixels / lat;
+
             for ( int i = 0; i < lat; i++ ) {
-                LinearLayout pavGameSubLayout = new LinearLayout( this );
-                pavGameSubLayout.setOrientation( LinearLayout.HORIZONTAL );
-                pavGameSubLayout.setLayoutParams( new LinearLayout.LayoutParams( LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT ) );
                 for ( int j = 0; j < lat; j++ ) {
                     matrix[ i ][ j ] = 0;
                     Button button = new Button( this );
-                    button.setLayoutParams( new LinearLayout.LayoutParams( maxWidth, LinearLayout.LayoutParams.WRAP_CONTENT ) );
+                    button.setLayoutParams( new ConstraintLayout.LayoutParams( ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD, ConstraintLayout.LayoutParams.WRAP_CONTENT ) );
                     button.setId( lat * i + j );
                     button.setOnClickListener( new handleClick() );
-                    pavGameSubLayout.addView( button );
+                    pavGameBoard.addView( button );
+                    //setam constraint-urile
+                    ConstraintSet constraintSet = new ConstraintSet();
+                    constraintSet.clone( pavGameBoard );
+
+                    //legatura in sus
+                    if ( i == 0 ) { //top->topOfParrent
+                        constraintSet.connect( button.getId(), ConstraintSet.TOP, R.id.pavGameBoard, ConstraintSet.TOP );
+                    } else {//top->bottomOfButton
+                        constraintSet.connect( button.getId(), ConstraintSet.TOP, button.getId() - lat, ConstraintSet.BOTTOM );
+                        //bottomOfButton->top
+                        constraintSet.connect( button.getId() - lat, ConstraintSet.BOTTOM, button.getId(), ConstraintSet.TOP );
+                    }
+
+                    //legatura la stanga
+                    if ( j == 0 ) {//left->leftOfParrent
+                        constraintSet.connect( button.getId(), ConstraintSet.START, R.id.pavGameBoard, ConstraintSet.START );
+                    } else {//left->rightOfButton
+                        constraintSet.connect( button.getId(), ConstraintSet.START, button.getId() - 1, ConstraintSet.END );
+                        //rightOfButton->left
+                        constraintSet.connect( button.getId() - 1, ConstraintSet.END, button.getId(), ConstraintSet.START );
+                    }
+                    //legatura la dreapta
+                    //right->endOfParrent
+                    constraintSet.connect( button.getId(), ConstraintSet.END, R.id.pavGameBoard, ConstraintSet.END );
+
+                    //legatura in jos
+                    //bottom->bottomOfParrent
+                    constraintSet.connect( button.getId(), ConstraintSet.BOTTOM, R.id.pavGameBoard, ConstraintSet.BOTTOM );
+
+                    //aplicam modificarile
+                    constraintSet.applyTo( pavGameBoard );
                 }
-
-                pavGameBoard.addView( pavGameSubLayout );
-
             }
             messege = getString( R.string.copac );
             Button gameButton = findViewById( R.id.startGameButton );

@@ -109,11 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity( intent );
             }
         } );
-    }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
         if ( mFirebaseAuth.getCurrentUser() != null )
             mFirebaseAuth.addAuthStateListener( mAuthStateListener );
     }
@@ -130,9 +126,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mFirebaseAuth.signOut();
         PavGameApplication.removeActivity( this );
-        finish();
     }
 
     public static FirebaseAuth getFireBaseCurrentInstance() {
