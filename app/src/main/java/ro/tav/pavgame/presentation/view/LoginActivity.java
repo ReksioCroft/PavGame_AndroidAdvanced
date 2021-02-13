@@ -22,6 +22,7 @@ import java.util.Objects;
 
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
+import ro.tav.pavgame.presentation.PavGameViewModel;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText email, password;
@@ -44,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
                 if ( mFirebaseUser != null ) {
                     Toast.makeText( LoginActivity.this, "You are logged in", Toast.LENGTH_SHORT ).show();
-                    MainActivity.setUserName( mFirebaseUser.getEmail() );
+                    PavGameViewModel.setUserName( mFirebaseUser.getEmail() );
                     Intent i = new Intent( LoginActivity.this, MainActivity.class );
                     startActivity( i );
                 } else
@@ -90,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
                         if ( !task.isSuccessful() ) {
                             Toast.makeText( LoginActivity.this, "Login Error. Please try again", Toast.LENGTH_SHORT ).show();
                         } else {
-                            MainActivity.setUserName( Objects.requireNonNull( mFirebaseAuth.getCurrentUser() ).getEmail() );
+                            PavGameViewModel.setUserName( Objects.requireNonNull( mFirebaseAuth.getCurrentUser() ).getEmail() );
                             Intent intent = new Intent( LoginActivity.this, MainActivity.class );
                             startActivity( intent );
                         }

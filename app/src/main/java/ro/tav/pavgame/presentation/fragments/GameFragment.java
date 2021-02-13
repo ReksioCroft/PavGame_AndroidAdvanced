@@ -25,9 +25,8 @@ import com.google.gson.Gson;
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.PavGameService;
-import ro.tav.pavgame.presentation.PavGameViewModelI;
+import ro.tav.pavgame.presentation.PavGameViewModel;
 import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;
-import ro.tav.pavgame.presentation.view.MainActivity;
 import timber.log.Timber;
 
 public class GameFragment extends Fragment {
@@ -60,7 +59,7 @@ public class GameFragment extends Fragment {
         long timeSpent;   //timpul petrecut(cu precizie de minute) in joc
         sharedPreferences = super.requireContext().getSharedPreferences( pavGameSharedPreference, Context.MODE_PRIVATE );
         try {
-            String s = sharedPreferences.getString( MainActivity.getUserName(), "0" );//preluam timpul utilizatorului
+            String s = sharedPreferences.getString( PavGameViewModel.getUserName(), "0" );//preluam timpul utilizatorului
             timeSpent = Long.parseLong( s );
         } catch ( Exception e ) {
             Timber.d( e );
@@ -97,7 +96,7 @@ public class GameFragment extends Fragment {
         //si ii fac update in shared preferances
         Gson gson = new Gson();
         String json = gson.toJson( newTime );       ///convertim acest timp la un json string
-        sharedPreferences.edit().putString( MainActivity.getUserName() + "", json ).apply(); ///updatam valoarea in shared preferances
+        sharedPreferences.edit().putString( PavGameViewModel.getUserName() + "", json ).apply(); ///updatam valoarea in shared preferances
 
         stopGameService();
     }
@@ -278,17 +277,17 @@ public class GameFragment extends Fragment {
                     button.setText( messege );
                     result = "Win";
                     s1 = getString( R.string.Win );
-                    s2 = getString( R.string.victorie ) + ", " + MainActivity.getUserName() + "!";
+                    s2 = getString( R.string.victorie ) + ", " + PavGameViewModel.getUserName() + "!";
                 } else {
                     messege = getString( R.string.esec ) + " :(";
                     button.setText( messege );
                     result = "Lose";
                     s1 = getString( R.string.Lose );
-                    s2 = getString( R.string.esec ) + ", " + MainActivity.getUserName() + "!";
+                    s2 = getString( R.string.esec ) + ", " + PavGameViewModel.getUserName() + "!";
                 }
 
                 //adaugam jocul folosindu-ne de viewModel
-                PavGameViewModelI.addResult( MainActivity.getUserName(), result, "Game Type: " + lat + "x" + lat );
+                PavGameViewModel.addResult( PavGameViewModel.getUserName(), result, "Game Type: " + lat + "x" + lat );
                 PavGameApplication.getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
                         PavGameNotificationFactory.createCustomHelloNotification( getContext(),
                                 s1, s2 ) );

@@ -34,7 +34,6 @@ import timber.log.Timber;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private static String userName = "Current User";
     private final PavGameFragmentStack fragmentStack = new PavGameFragmentStack();
 
     @Override
@@ -218,16 +217,4 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             LoginActivity.getFireBaseCurrentInstance().signOut();
         finish();
     }
-
-
-    protected static void setUserName( String name ) {
-        if ( name == null )
-            name = "Current User";
-        userName = name;
-    }
-
-    public static String getUserName() {
-        return userName;
-    }
-
 }
