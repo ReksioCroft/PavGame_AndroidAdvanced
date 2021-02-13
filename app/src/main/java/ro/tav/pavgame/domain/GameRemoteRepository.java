@@ -24,15 +24,17 @@ public class GameRemoteRepository extends RemoteDataSource {
         List < GameEntity > gameEntities = new ArrayList <>();
         try {
             List < JsonObject > response = api.getAllGames().execute().body();
-            for ( JsonObject jsonObjectofObjects : response ) {
-                for ( String jsonObjectKeys : jsonObjectofObjects.keySet() ) {
-                    GameEntity gameEntity = new GameEntity();
-                    JsonObject jsonObject = jsonObjectofObjects.getAsJsonObject( jsonObjectKeys );
-                    gameEntity.setGameId( jsonObject.get( "gameId" ).getAsString() );
-                    gameEntity.setGameType( jsonObject.get( "gameType" ).getAsString() );
-                    gameEntity.setResult( jsonObject.get( "result" ).getAsString() );
-                    gameEntity.setNumeJucator( jsonObject.get( "numeJucator" ).getAsString() );
-                    gameEntities.add( gameEntity );
+            if ( response != null ) {
+                for ( JsonObject jsonObjectofObjects : response ) {
+                    for ( String jsonObjectKeys : jsonObjectofObjects.keySet() ) {
+                        GameEntity gameEntity = new GameEntity();
+                        JsonObject jsonObject = jsonObjectofObjects.getAsJsonObject( jsonObjectKeys );
+                        gameEntity.setGameId( jsonObject.get( "gameId" ).getAsString() );
+                        gameEntity.setGameType( jsonObject.get( "gameType" ).getAsString() );
+                        gameEntity.setResult( jsonObject.get( "result" ).getAsString() );
+                        gameEntity.setNumeJucator( jsonObject.get( "numeJucator" ).getAsString() );
+                        gameEntities.add( gameEntity );
+                    }
                 }
             }
         } catch ( Exception e ) {

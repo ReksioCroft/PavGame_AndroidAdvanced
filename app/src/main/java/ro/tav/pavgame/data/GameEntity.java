@@ -70,7 +70,7 @@ public class GameEntity {
 
     @Override
     public boolean equals( @Nullable Object obj ) {
-        if ( obj.getClass() == GameEntity.class ) {
+        if ( obj != null && obj.getClass() == GameEntity.class ) {
             GameEntity gameToCompare = ( GameEntity ) obj;
             return gameId.equals( gameToCompare.gameId ) &&
                     gameType.equals( gameToCompare.gameType ) &&

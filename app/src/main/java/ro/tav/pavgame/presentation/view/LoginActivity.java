@@ -28,7 +28,6 @@ public class LoginActivity extends AppCompatActivity {
     static FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
@@ -110,6 +109,11 @@ public class LoginActivity extends AppCompatActivity {
             }
         } );
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         if ( mFirebaseAuth.getCurrentUser() != null )
             mFirebaseAuth.addAuthStateListener( mAuthStateListener );
     }

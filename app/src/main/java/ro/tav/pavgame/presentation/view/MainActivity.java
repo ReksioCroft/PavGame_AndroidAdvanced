@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void startGame( View view ) {    //crearea si initializarea butoanelor jocului
-        String s = "", messege = "";
+        String s = "", messege;
         started = finished = Boolean.FALSE;
         input = findViewById( R.id.pavGameInputText );
 
@@ -288,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
             messege = getString( R.string.copac );
-            Button gameButton = findViewById( R.id.startGameButton );
+            Button gameButton = ( Button ) view;
             gameButton.setEnabled( false );
             gameButton.setText( getString( R.string.start_game ) );
             startService( gameInProgressServiceIntent );
@@ -323,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         public void onClick( View view ) {
-            String messege = "", s1 = "", s2 = "", result = "";
+            String messege, s1 = "", s2, result;
             button = ( Button ) view;
             input = findViewById( R.id.pavGameInputText );
             int l = button.getId() / lat;
@@ -421,8 +421,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
 
                 //adaugam jocul folosindu-ne de viewModel
-                PavGameViewModel.addResult( findViewById( R.id.recycler_view_contacts_1 ),
-                        userName, result, "Game Type: " + lat + "x" + lat );
+                PavGameViewModel.addResult( userName, result, "Game Type: " + lat + "x" + lat );
                 notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
                         PavGameNotificationFactory.createCustomHelloNotification( PavGameApplication.getContext(),
                                 s1, s2 ) );

@@ -3,7 +3,6 @@ package ro.tav.pavgame.data.localDB;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
-import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
@@ -21,6 +20,6 @@ public interface GameDao {
     @Query( "SELECT * from gameEntity where gameId=:gameId" )
     GameEntity getGameById( String gameId );
 
-    @Insert( onConflict = OnConflictStrategy.ABORT )
+    @Insert()
     void insertGame( GameEntity game );
 }

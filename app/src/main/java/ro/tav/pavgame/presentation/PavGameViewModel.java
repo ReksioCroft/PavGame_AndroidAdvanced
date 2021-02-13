@@ -1,7 +1,6 @@
 package ro.tav.pavgame.presentation;
 
 import androidx.lifecycle.ViewModel;
-import androidx.recyclerview.widget.RecyclerView;
 
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.data.GameEntity;
@@ -14,7 +13,7 @@ public class PavGameViewModel extends ViewModel {
         return gameUseCase;
     }
 
-    public static void addResult( RecyclerView recyclerView, String userName, String result, String gametype ) {
+    public static void addResult( String userName, String result, String gametype ) {
         //construim jocul si apoi il trimitem in bindingAdapter pt a fi adaugat
         GameEntity mGame = new GameEntity();
         mGame.setNumeJucator( userName );
@@ -23,5 +22,4 @@ public class PavGameViewModel extends ViewModel {
         mGame.setGameId( "" );//va fi setat in mediator pt a evita ca ce se descarca de pe firebase sa fie uploadat inca o data
         gameUseCase.insertGame( mGame );
     }
-
 }

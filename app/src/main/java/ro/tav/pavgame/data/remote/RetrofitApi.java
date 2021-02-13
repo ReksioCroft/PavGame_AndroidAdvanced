@@ -36,4 +36,3 @@ public interface RetrofitApi {
                 .create( RetrofitApi.class );
     }
 }
-

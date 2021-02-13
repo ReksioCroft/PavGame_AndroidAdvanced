@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Chronometer;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
@@ -46,8 +47,8 @@ public class GameFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
+        super.onActivityCreated( savedInstanceState );
         chronometer = requireView().findViewById( R.id.chronometer );
         chronometer.setBase( SystemClock.elapsedRealtime() - timeSpent * 60000 );//asa se initializeaza cronometrul
         chronometer.start();

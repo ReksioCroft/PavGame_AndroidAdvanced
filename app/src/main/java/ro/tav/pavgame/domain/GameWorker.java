@@ -16,12 +16,10 @@ import timber.log.Timber;
 
 
 public class GameWorker extends Worker {
-    private Context context;
 
     public GameWorker( @NonNull Context context,
                        @NonNull WorkerParameters workerParams ) {
         super( context, workerParams );
-        this.context = context;
     }
 
     @NonNull
@@ -57,4 +55,3 @@ public class GameWorker extends Worker {
         return Result.success();
     }
 }
-

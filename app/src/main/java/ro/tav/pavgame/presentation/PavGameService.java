@@ -12,11 +12,11 @@ import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;
 import timber.log.Timber;
 
 public class PavGameService extends Service {
-    public static String TYPE_KEY = "type";
+    public static final String TYPE_KEY = "type";
 
-    public static int TYPE_BASIC = 0;
-    public static int TYPE_ADVANCED = 1;
-    public static int TYPE_FINISH = 2;
+    public static final int TYPE_BASIC = 0;
+    public static final int TYPE_ADVANCED = 1;
+    public static final int TYPE_FINISH = 2;
 
     private long startMillis;
 

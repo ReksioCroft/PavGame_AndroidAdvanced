@@ -22,13 +22,17 @@ import timber.log.Timber;
 
 public class PavGameApplication extends Application {
     private static PavGameApplication pavGameApplication;
-    private List < Activity > activities;
+    private final List < Activity > activities;
+
+    public PavGameApplication() {
+        super();
+        pavGameApplication = this;
+        activities = new ArrayList <>();
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        pavGameApplication = this;
-        activities = new ArrayList <>();
 
         setupLibs();
 

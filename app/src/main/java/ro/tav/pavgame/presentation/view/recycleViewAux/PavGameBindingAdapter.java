@@ -1,9 +1,14 @@
 package ro.tav.pavgame.presentation.view.recycleViewAux;
 
+import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
+import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 
 public class PavGameBindingAdapter {
@@ -17,11 +22,20 @@ public class PavGameBindingAdapter {
             mRecyclerViewGames.setLayoutManager( layoutManager );
         }
         //pornim binduirea permanenta intre recyleview si baza de date
-        if ( user == null )
-            PavGameViewModel.getGameUseCase().getAllGames().observeForever( games -> gamesAdapter.setGames( games ) );
-        else
-            PavGameViewModel.getGameUseCase().getSpecificGamesbyUserName( user ).observeForever( games -> gamesAdapter.setGames( games ) );
+        if ( user == null ) {
+            PavGameViewModel.getGameUseCase().getAllGames().observeForever( new Observer < List < GameEntity > >() {
+                @Override
+                public void onChanged( @Nullable final List < GameEntity > games ) {
+                    gamesAdapter.setGames( games );
+                }
+            } );
+        } else {
+            PavGameViewModel.getGameUseCase().getSpecificGamesbyUserName( user ).observeForever( new Observer < List < GameEntity > >() {
+                @Override
+                public void onChanged( @Nullable final List < GameEntity > games ) {
+                    gamesAdapter.setGames( games );
+                }
+            } );
+        }
     }
-
-
 }

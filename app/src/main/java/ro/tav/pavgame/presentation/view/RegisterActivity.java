@@ -40,10 +40,10 @@ public class RegisterActivity extends AppCompatActivity {
         } );
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        email = findViewById( R.id.email );
-        password = findViewById( R.id.password );
+        email = findViewById( R.id.emailReg );
+        password = findViewById( R.id.passwordReg );
 
-        Button registrationButton = findViewById( R.id.registrationButton );
+        Button registrationButton = findViewById( R.id.registrationButton);
         registrationButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View view ) {

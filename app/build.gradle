@@ -23,7 +23,6 @@ android {
 
         // use these functions to have BuildConfig additional flags or '@string/' resources
         buildConfigField("boolean", "my_flag", "${rootProject.hasProperty("withCustomFlag")}")
-        resValue("string", "gen_string", "my generated string")
     }
 
     compileOptions {
@@ -75,5 +74,4 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
     implementation "androidx.work:work-runtime:2.5.0"
-
 }

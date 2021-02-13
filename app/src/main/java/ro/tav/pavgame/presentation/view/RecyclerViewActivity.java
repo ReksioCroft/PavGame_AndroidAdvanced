@@ -27,7 +27,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
         //butonul de sus pentru a inchide activitatea
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled( true );
+        if ( actionBar != null )
+            actionBar.setDisplayHomeAsUpEnabled( true );
 
         //adaugam activitatea in lista
         PavGameApplication.addActivity( this );
