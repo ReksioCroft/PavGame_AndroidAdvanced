@@ -1,4 +1,4 @@
-package ro.tav.pavgame.domain;
+package ro.tav.pavgame;
 
 import android.content.Context;
 
@@ -12,6 +12,7 @@ import org.robolectric.RobolectricTestRunner;
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.domain.GameRemoteRepository;
 
 @RunWith( RobolectricTestRunner.class )
 
