@@ -17,10 +17,4 @@
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/creditInfoarena" />
     </group>
-    <group android:checkableBehavior="single">
-        <item
-            android:icon="@drawable/ic_baseline_exit_to_app_24"
-            android:onClick="makeLogout"
-            android:title="@string/logout" />
-    </group>
 </menu>

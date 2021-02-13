@@ -306,7 +306,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startActivity( new Intent( MainActivity.this, CreditsActivity.class ) );
     }
 
-    public void makeLogout( MenuItem logOutButton ) {
+    public void makeLogout( View view ) {
         while ( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() != null )
             LoginActivity.getFireBaseCurrentInstance().signOut();
         finish();
