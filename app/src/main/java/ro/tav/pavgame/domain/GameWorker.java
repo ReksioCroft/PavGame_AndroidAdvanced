@@ -11,15 +11,16 @@ import java.util.List;
 import java.util.Objects;
 
 import ro.tav.pavgame.data.GameEntity;
-import ro.tav.pavgame.presentation.PavGameViewModel;
 import timber.log.Timber;
 
 
 public class GameWorker extends Worker {
+    private Context context;
 
     public GameWorker( @NonNull Context context,
                        @NonNull WorkerParameters workerParams ) {
         super( context, workerParams );
+        this.context = context;
     }
 
     @NonNull
@@ -33,8 +34,9 @@ public class GameWorker extends Worker {
             GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
             List < GameEntity > games = gameRemoteRepository.getAllGames();
 
+            GameLocalRepository gameLocalRepository = new GameLocalRepository( context );
             for ( GameEntity game : games ) {
-                PavGameViewModel.getGameUseCase().insertGame( game );
+                gameLocalRepository.insertGame( game );
             }
             Timber.d( "worker finished downloading games" );
 

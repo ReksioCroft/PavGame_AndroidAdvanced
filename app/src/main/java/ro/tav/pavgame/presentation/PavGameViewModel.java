@@ -7,10 +7,15 @@ import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.domain.GameUseCase;
 
 public class PavGameViewModel extends ViewModel {
-    private static final GameUseCase gameUseCase = new GameUseCase( PavGameApplication.getApplication() );///gameUseCase face legatura cu repo-ul din domain
+    private static GameUseCase gameUseCase;///gameUseCase face legatura cu repo-ul din domain
 
     public static GameUseCase getGameUseCase() {  ///pentru a putea accesa repoul din domain
         return gameUseCase;
+    }
+
+    public PavGameViewModel( PavGameApplication pavGameApplication ) {
+        super();
+        gameUseCase = new GameUseCase( pavGameApplication );
     }
 
     public static void addResult( String userName, String result, String gametype ) {
