@@ -16,15 +16,12 @@ import androidx.fragment.app.Fragment;
 
 import com.google.gson.Gson;
 
-import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.view.MainActivity;
 import timber.log.Timber;
 
 public class GameFragment extends Fragment {
-    private final Gson gson;
-    private final SharedPreferences sharedPreferences;      ///folosim sharedPreferences pt a stoca pt fiecare utilizator timpul total de joc (de cand a instalat aplicatia)
-    private final long timeSpent;
+    private SharedPreferences sharedPreferences;      ///folosim sharedPreferences pt a stoca pt fiecare utilizator timpul total de joc (de cand a instalat aplicatia)
     private final static String pavGameSharedPreference = "pavGameSharedPreference";
     private Chronometer chronometer;
 
@@ -33,22 +30,22 @@ public class GameFragment extends Fragment {
     }
 
     public GameFragment() {
-        gson = new Gson();
-        sharedPreferences = PavGameApplication.getContext().getSharedPreferences( pavGameSharedPreference, Context.MODE_PRIVATE );
-        long tAux;
-        try {
-            String s = sharedPreferences.getString( MainActivity.getUserName(), "0" );//preluam timpul utilizatorului
-            tAux = Long.parseLong( s );
-        } catch ( Exception e ) {
-            Timber.d( e );
-            tAux = 0;
-        }
-        timeSpent = tAux;       ///timpul petrecut(cu precizie de minute) in joc
+        // Required empty public constructor
     }
 
     @Override
     public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
         super.onActivityCreated( savedInstanceState );
+        long timeSpent;   //timpul petrecut(cu precizie de minute) in joc
+        sharedPreferences = super.requireContext().getSharedPreferences( pavGameSharedPreference, Context.MODE_PRIVATE );
+        try {
+            String s = sharedPreferences.getString( MainActivity.getUserName(), "0" );//preluam timpul utilizatorului
+            timeSpent = Long.parseLong( s );
+        } catch ( Exception e ) {
+            Timber.d( e );
+            timeSpent = 0;
+        }
+
         chronometer = requireView().findViewById( R.id.chronometer );
         chronometer.setBase( SystemClock.elapsedRealtime() - timeSpent * 60000 );//asa se initializeaza cronometrul
         chronometer.start();
@@ -61,6 +58,7 @@ public class GameFragment extends Fragment {
         newTime /= 1000; //secunde
         newTime /= 60; //minute
 
+        Gson gson = new Gson();
         String json = gson.toJson( newTime );       ///convertim acest timp la un json string
         sharedPreferences.edit().putString( MainActivity.getUserName() + "", json ).apply(); ///updatam valoarea in shared preferances
     }

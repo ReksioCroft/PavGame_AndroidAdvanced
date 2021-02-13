@@ -17,14 +17,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import ro.tav.pavgame.presentation.PavGameViewModel;
 import ro.tav.pavgame.presentation.notification.PavGameNotificationChannelFactory;
 import timber.log.Timber;
 
 public class PavGameApplication extends Application {
     private static PavGameApplication pavGameApplication;
     private final List < Activity > activities;
-    private static PavGameViewModel pavGameViewModel = null;
 
     public PavGameApplication() {
         super();
@@ -42,7 +40,6 @@ public class PavGameApplication extends Application {
             NotificationManager notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
             notificationManager.createNotificationChannel( PavGameNotificationChannelFactory.createProcessingWorkNotificationChannel() );
         }
-        getPavGameViewModel();
     }
 
     private void setupLibs() {
@@ -69,10 +66,6 @@ public class PavGameApplication extends Application {
         }
     }
 
-    public static Context getContext() {
-        return pavGameApplication;
-    }
-
     public static void addActivity( Activity a ) {
         pavGameApplication.activities.add( a );
     }
@@ -85,9 +78,4 @@ public class PavGameApplication extends Application {
         return pavGameApplication;
     }
 
-    public static PavGameViewModel getPavGameViewModel() {
-        if ( pavGameViewModel == null )
-            pavGameViewModel = new PavGameViewModel( pavGameApplication );
-        return pavGameViewModel;
-    }
 }

@@ -7,7 +7,6 @@ import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
 
-import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.PavGameService;
 import ro.tav.pavgame.presentation.view.MainActivity;
@@ -23,8 +22,8 @@ public class PavGameNotificationFactory {
                 .setSmallIcon( android.R.drawable.ic_popup_sync )
                 .setCategory( NotificationCompat.CATEGORY_SERVICE )
                 .setPriority( Notification.PRIORITY_MAX )
-                .setContentTitle( PavGameApplication.getContext().getString( R.string.work ) )
-                .setContentText( PavGameApplication.getContext().getString( R.string.processing ) )
+                .setContentTitle( context.getString( R.string.work ) )
+                .setContentText( context.getString( R.string.processing ) )
                 .setAutoCancel( true )
                 .setContentIntent( createContentIntent( context ) )
                 .addAction( createStopAction( context ) );
@@ -37,8 +36,8 @@ public class PavGameNotificationFactory {
                 .setSmallIcon( android.R.drawable.star_on )
                 .setCategory( NotificationCompat.CATEGORY_STATUS )
                 .setPriority( Notification.PRIORITY_DEFAULT )
-                .setContentTitle( PavGameApplication.getContext().getString( R.string.hello ) )
-                .setContentText( PavGameApplication.getContext().getString( R.string.saidHello ) )
+                .setContentTitle( context.getString( R.string.hello ) )
+                .setContentText( context.getString( R.string.saidHello ) )
                 .setAutoCancel( true )
                 .setContentIntent( createContentIntent( context ) );
 

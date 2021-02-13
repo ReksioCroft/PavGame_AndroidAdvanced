@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.data.GameEntity;
 
@@ -19,9 +18,11 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
     private List < GameEntity > mGames;
     private final LayoutInflater mInflater;
     private View itemView;
+    private final Context context;
 
     public GamesAdapter( Context context ) {
         mInflater = LayoutInflater.from( context );
+        this.context = context;
     }
 
     @NonNull
@@ -43,17 +44,17 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
             contactsViewHolder.mTextViewTotalPoints.setText( totalPoints );
 
             if ( contactsViewHolder.mTextViewResult.getText().equals( "Lose" ) ) {
-                contactsViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorAccent, PavGameApplication.getContext().getTheme() ) );
-                contactsViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorAccent, PavGameApplication.getContext().getTheme() ) );
-                contactsViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorAccent, PavGameApplication.getContext().getTheme() ) );
-                contactsViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorAccent, PavGameApplication.getContext().getTheme() ) );
-                contactsViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorPrimary, PavGameApplication.getContext().getTheme() ) );
+                contactsViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                contactsViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                contactsViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                contactsViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                contactsViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
             } else {
-                contactsViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, PavGameApplication.getContext().getTheme() ) );
-                contactsViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, PavGameApplication.getContext().getTheme() ) );
-                contactsViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, PavGameApplication.getContext().getTheme() ) );
-                contactsViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, PavGameApplication.getContext().getTheme() ) );
-                contactsViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorAccent, PavGameApplication.getContext().getTheme() ) );
+                contactsViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                contactsViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                contactsViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                contactsViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                contactsViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
             }
         } else {
             contactsViewHolder.mTextViewName.setText( R.string.noText );

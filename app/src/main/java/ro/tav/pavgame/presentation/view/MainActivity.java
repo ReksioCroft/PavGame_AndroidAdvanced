@@ -45,6 +45,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private EditText input;
     private Boolean started;
     private Boolean finished;
+    private Context context;
     private int lat;
     private int nrDala;
     private static final int nrGreseliMax = 5;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
-
+        this.context=super.getApplicationContext();
         ///adaugam instanta
         PavGameApplication.addActivity( this );
 
@@ -423,7 +424,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 //adaugam jocul folosindu-ne de viewModel
                 PavGameViewModel.addResult( userName, result, "Game Type: " + lat + "x" + lat );
                 notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
-                        PavGameNotificationFactory.createCustomHelloNotification( PavGameApplication.getContext(),
+                        PavGameNotificationFactory.createCustomHelloNotification( context,
                                 s1, s2 ) );
                 Toast.makeText( MainActivity.this, messege, Toast.LENGTH_LONG ).show();
                 stopGameService();

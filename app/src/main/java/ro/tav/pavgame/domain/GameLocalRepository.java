@@ -2,11 +2,9 @@ package ro.tav.pavgame.domain;
 
 import android.app.Application;
 import android.content.Context;
-import android.database.sqlite.SQLiteConstraintException;
 
 import androidx.lifecycle.LiveData;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
@@ -35,22 +33,8 @@ public class GameLocalRepository extends GameDataSource {
         AppDatabase.databaseWriteExecutor.execute( () -> {
             try {
                 mGameDao.insertGame( game );
-            } catch ( SQLiteConstraintException e ) {
-                try {
-                    GameEntity gameInDatabase = mGameDao.getGameById( game.getGameId() );
-                    if ( !game.equals( gameInDatabase ) ) {                                     //daca a aparut conflict de unique id
-                        GameEntity newGame = new GameEntity();                          //cand se preia un joc din firebase cu un id deja folosit local
-                        newGame.setNumeJucator( game.getNumeJucator() );                //luam din bd local jocul cu care apare conflictul
-                        newGame.setGameType( game.getGameType() );                      //verificam sa nu fie acelasi joc
-                        newGame.setResult( game.getResult() );                          //iar daca nu e, ne creeam o alta variabila,
-                        newGame.setGameId( new Timestamp( System.currentTimeMillis() ).toString() );
-                        mGameDao.insertGame( newGame );                                 //careia i se va atribui alt id
-                    }
-                } catch ( Exception e1 ) {
-                    Timber.e( e1 );
-                }
-            } catch ( Exception e2 ) {
-                Timber.e( e2 );
+            } catch ( Exception e ) {
+                Timber.e( e );
             }
         } );
     }
