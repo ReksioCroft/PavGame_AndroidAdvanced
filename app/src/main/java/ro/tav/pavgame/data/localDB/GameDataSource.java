@@ -20,5 +20,4 @@ public abstract class GameDataSource {
     protected abstract List < GameEntity > getSpecificGamesbyUserNameStatic( String user );
 
     protected abstract void insertGame( GameEntity game );
-
 }

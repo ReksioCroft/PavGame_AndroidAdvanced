@@ -17,7 +17,7 @@ public class PavGameReplacedBroadcastReceiver extends BroadcastReceiver {
             //ne initializam sistemul de notificari
             NotificationManager notificationManager = ( NotificationManager ) context.getSystemService( Context.NOTIFICATION_SERVICE );
             //afisam o notificare de bun venit
-            notificationManager.notify( PavGameNotificationFactory.HELLO_NOTIFICATION_ID,
+            notificationManager.notify( PavGameNotificationFactory.getHelloNotificationId(),
                     PavGameNotificationFactory.createCustomHelloNotification( context,
                             context.getString( R.string.broadcast_s1 ), context.getString( R.string.broadcast_s2 ) ) );
         }

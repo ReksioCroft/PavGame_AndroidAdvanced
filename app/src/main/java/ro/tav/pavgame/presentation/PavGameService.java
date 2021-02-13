@@ -31,7 +31,7 @@ public class PavGameService extends Service {
         int type = intent.getIntExtra( TYPE_KEY, TYPE_BASIC );
 
         if ( type == TYPE_BASIC ) {
-            startForeground( PavGameNotificationFactory.SERVICE_NOTIFICATION_ID, PavGameNotificationFactory.createProcessingWorkNotification( this ) );
+            startForeground( PavGameNotificationFactory.getServiceNotificationId(), PavGameNotificationFactory.createProcessingWorkNotification( this ) );
 
             Timber.i( "Basic work in progress" );
 

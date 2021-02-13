@@ -23,6 +23,7 @@ import timber.log.Timber;
 public class PavGameApplication extends Application {
     private static PavGameApplication pavGameApplication;
     private final List < Activity > activities;
+    private static NotificationManager notificationManager = null;
 
     public PavGameApplication() {
         super();
@@ -37,7 +38,7 @@ public class PavGameApplication extends Application {
         setupLibs();
 
         if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
-            NotificationManager notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
+            notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
             notificationManager.createNotificationChannel( PavGameNotificationChannelFactory.createProcessingWorkNotificationChannel() );
         }
     }
@@ -78,4 +79,7 @@ public class PavGameApplication extends Application {
         return pavGameApplication;
     }
 
+    public static NotificationManager getNotificationManager() {
+        return notificationManager;
+    }
 }
