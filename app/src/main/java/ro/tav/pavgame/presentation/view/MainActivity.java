@@ -443,4 +443,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userName = name;
     }
 
+    public static String getUserName() {
+        return userName;
+    }
+
 }
