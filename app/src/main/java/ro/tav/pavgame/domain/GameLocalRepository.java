@@ -1,7 +1,6 @@
 package ro.tav.pavgame.domain;
 
 import android.app.Application;
-import android.content.Context;
 import android.database.sqlite.SQLiteConstraintException;
 
 import androidx.lifecycle.LiveData;
@@ -17,10 +16,6 @@ import timber.log.Timber;
 public class GameLocalRepository extends GameDataSource {
     public GameLocalRepository( Application application ) {
         super( AppDatabase.getAppDatabase( application ).gameDao() );
-    }
-
-    public GameLocalRepository( Context context ) {
-        super( AppDatabase.getAppDatabase( context ).gameDao() );
     }
 
     protected LiveData < List < GameEntity > > getAllGames() {
