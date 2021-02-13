@@ -4,12 +4,8 @@ import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.domain.GameUseCase;
 
-public interface PavGameViewModel {
+public interface PavGameViewModelI {
     GameUseCase gameUseCase = new GameUseCase( PavGameApplication.getApplication() );///gameUseCase face legatura cu repo-ul din domain
-
-    static GameUseCase getGameUseCase() {  ///pentru a putea accesa repoul din domain
-        return gameUseCase;
-    }
 
     static void addResult( String userName, String result, String gametype ) {
         //construim jocul si apoi il trimitem in bindingAdapter pt a fi adaugat

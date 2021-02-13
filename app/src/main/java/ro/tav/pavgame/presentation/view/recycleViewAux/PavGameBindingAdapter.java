@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
-import ro.tav.pavgame.presentation.PavGameViewModel;
+import ro.tav.pavgame.presentation.PavGameViewModelI;
 
 public class PavGameBindingAdapter {
     @BindingAdapter( { "game_adapter", "user" } )
@@ -23,14 +23,14 @@ public class PavGameBindingAdapter {
         }
         //pornim binduirea permanenta intre recyleview si baza de date
         if ( user == null ) {
-            PavGameViewModel.getGameUseCase().getAllGames().observeForever( new Observer < List < GameEntity > >() {
+            PavGameViewModelI.gameUseCase.getAllGames().observeForever( new Observer < List < GameEntity > >() {
                 @Override
                 public void onChanged( @Nullable final List < GameEntity > games ) {
                     gamesAdapter.setGames( games );
                 }
             } );
         } else {
-            PavGameViewModel.getGameUseCase().getSpecificGamesbyUserName( user ).observeForever( new Observer < List < GameEntity > >() {
+            PavGameViewModelI.gameUseCase.getSpecificGamesbyUserName( user ).observeForever( new Observer < List < GameEntity > >() {
                 @Override
                 public void onChanged( @Nullable final List < GameEntity > games ) {
                     gamesAdapter.setGames( games );

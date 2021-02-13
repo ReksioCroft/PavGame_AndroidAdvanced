@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.PavGameService;
-import ro.tav.pavgame.presentation.PavGameViewModel;
+import ro.tav.pavgame.presentation.PavGameViewModelI;
 import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;
 import ro.tav.pavgame.presentation.view.MainActivity;
 import timber.log.Timber;
@@ -288,7 +288,7 @@ public class GameFragment extends Fragment {
                 }
 
                 //adaugam jocul folosindu-ne de viewModel
-                PavGameViewModel.addResult( MainActivity.getUserName(), result, "Game Type: " + lat + "x" + lat );
+                PavGameViewModelI.addResult( MainActivity.getUserName(), result, "Game Type: " + lat + "x" + lat );
                 PavGameApplication.getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
                         PavGameNotificationFactory.createCustomHelloNotification( getContext(),
                                 s1, s2 ) );

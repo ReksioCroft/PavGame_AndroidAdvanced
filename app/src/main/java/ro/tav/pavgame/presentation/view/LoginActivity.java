@@ -91,8 +91,8 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText( LoginActivity.this, "Login Error. Please try again", Toast.LENGTH_SHORT ).show();
                         } else {
                             MainActivity.setUserName( Objects.requireNonNull( mFirebaseAuth.getCurrentUser() ).getEmail() );
-                            Intent intToMain = new Intent( LoginActivity.this, MainActivity.class );
-                            startActivity( intToMain );
+                            Intent intent = new Intent( LoginActivity.this, MainActivity.class );
+                            startActivity( intent );
                         }
                     }
                 } );
