@@ -1,4 +1,4 @@
-package ro.tav.pavgame.data.remote;
+package ro.tav.pavgame.data.remoteDB;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.JsonObject;

@@ -9,7 +9,7 @@ import ro.tav.pavgame.data.GameEntity;
 public abstract class GameDataSource {
     protected final GameDao mGameDao;
 
-    public GameDataSource( GameDao gameDao ) {
+    protected GameDataSource( GameDao gameDao ) {
         mGameDao = gameDao;
     }
 

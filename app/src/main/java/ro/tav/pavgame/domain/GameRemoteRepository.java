@@ -11,8 +11,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import ro.tav.pavgame.data.GameEntity;
-import ro.tav.pavgame.data.remote.RemoteDataSource;
-import ro.tav.pavgame.data.remote.RetrofitApi;
+import ro.tav.pavgame.data.remoteDB.RemoteDataSource;
+import ro.tav.pavgame.data.remoteDB.RetrofitApi;
 import timber.log.Timber;
 
 public class GameRemoteRepository extends RemoteDataSource {
@@ -55,6 +55,8 @@ public class GameRemoteRepository extends RemoteDataSource {
             @Override
             public void onFailure( @NotNull Call < GameEntity > call, @NotNull Throwable t ) {
                 Timber.tag( TAG ).d( "fail inserting game in firebase db" );
+                GameInMemoryRepository gameInMemoryRepository = new GameInMemoryRepository();
+                gameInMemoryRepository.addInMemory( gameEntity );
             }
         } );
 

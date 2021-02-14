@@ -54,4 +54,5 @@
     <string name="longPressFinishGame">Long press to finish game</string>
     <string name="broadcast_s1">Replace Successful</string>
     <string name="broadcast_s2">Broadcast received my_package_replace intent</string>
+    <string name="invalidInput">Invalid Input</string>
 </resources>

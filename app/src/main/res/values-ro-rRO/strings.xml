@@ -54,4 +54,5 @@
     <string name="longPressFinishGame">Tineti apasat pt. a opri jocul</string>
     <string name="broadcast_s1">Reinstalare cu succes!</string>
     <string name="broadcast_s2">Broadcast Receiverul a fost activat prin intent-ul my_package_replace</string>
+    <string name="invalidInput">Input Invalid</string>
 </resources>

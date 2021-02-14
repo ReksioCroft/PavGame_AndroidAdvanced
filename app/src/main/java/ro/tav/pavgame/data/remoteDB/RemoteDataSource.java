@@ -1,4 +1,4 @@
-package ro.tav.pavgame.data.remote;
+package ro.tav.pavgame.data.remoteDB;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ public abstract class RemoteDataSource {
     protected static final String TAG = "remote-source";
     protected final RetrofitApi api;
 
-    public RemoteDataSource( RetrofitApi api ) {
+    protected RemoteDataSource( RetrofitApi api ) {
         this.api = api;
     }
 

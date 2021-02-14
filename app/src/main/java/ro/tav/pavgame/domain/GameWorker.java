@@ -8,7 +8,6 @@ import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 import java.util.List;
-import java.util.Objects;
 
 import ro.tav.pavgame.data.GameEntity;
 import timber.log.Timber;
@@ -41,17 +40,15 @@ public class GameWorker extends Worker {
             Timber.d( "worker finished downloading games" );
 
 
-        } else if ( "post".equals( value ) ) {
-            Timber.d( "POST Operation" );
+        } else if ( "sync".equals( value ) ) {
+            Timber.d( "SYNC Operation" );
+            GameInMemoryRepository gameInMemoryRepository = new GameInMemoryRepository();
             GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
-            GameEntity game = new GameEntity();
-            game.setResult( Objects.requireNonNull( data.getString( "result" ) ) );
-            game.setGameType( Objects.requireNonNull( data.getString( "gameType" ) ) );
-            game.setGameId( Objects.requireNonNull( data.getString( "gameId" ) ) );//nu stim cu ce id se va introduce in bd locala si nici nu avem nevoie
-            game.setNumeJucator( Objects.requireNonNull( data.getString( "numeJucator" ) ) );
-            gameRemoteRepository.insertGame( game );
 
-            Timber.d( "Worker terminat cu succes pt upload firebase db" );
+            final int nrOfSyncs = gameInMemoryRepository.getNrOfElements();
+            for ( int i = 0; i < nrOfSyncs; i++ ) {         ///pt a nu face ciclu infinit; ex:nu merge netul=> worst case n insert failed
+                gameRemoteRepository.insertGame( gameInMemoryRepository.removeInMemory() );
+            }
         }
 
         return Result.success();

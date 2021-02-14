@@ -103,13 +103,17 @@ public class GameFragment extends Fragment {
 
     public void startGame( View view ) {    //crearea si initializarea butoanelor jocului
         String s = "", messege;
+        int nrInt = 0;
         started = finished = Boolean.FALSE;
         input = requireView().findViewById( R.id.pavGameInputText );
 
         try {
             //obtinem nr introdus si calculam latura
             s = input.getText().toString();
-            lat = 1 << Integer.parseInt( s );
+            nrInt = Integer.parseInt( s );
+            if ( nrInt < 0 || nrInt > 4 )
+                throw new Exception( getString( R.string.invalidInput ) );
+            lat = 1 << nrInt;
             input.setHint( R.string.pozDala );
             nrDala = nrGreseli = 0;
             ConstraintLayout pavGameBoard = requireView().findViewById( R.id.pavGameBoard );
@@ -169,6 +173,8 @@ public class GameFragment extends Fragment {
         } catch ( Exception e ) {
             if ( s.length() == 0 )  //daca s-a introdus stringul vid
                 messege = getString( R.string.errLipsaDimLatura );
+            else if ( nrInt < 0 || nrInt > 4 )
+                messege = getString( R.string.invalidInput );
             else
                 messege = getString( R.string.unknownError );
         }

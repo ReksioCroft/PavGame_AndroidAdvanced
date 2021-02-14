@@ -14,33 +14,35 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.inMemoryDB.InMemoryDatabase;
 
 public class GameMediator {
     private final GameLocalRepository mRepository;
     private final Application mApplication;
+    private final Data dataforBuilder = ( new Data.Builder().putString( "mode", "get" ) ).build();
+    private final Data syncDataforBuilder = ( new Data.Builder().putString( "mode", "sync" ) ).build();
 
     public GameMediator( Application application ) {
         this.mApplication = application;
         mRepository = new GameLocalRepository( application );
 
-        Data.Builder builder = new Data.Builder();
-        builder.putString( "mode", "get" );
-        Data data = builder.build();
-
         //Vrem ca primul get sa se faca instant cand se deschide aplicatia
-        OneTimeWorkRequest downloadWorkRequest =
-                new OneTimeWorkRequest.Builder( GameWorker.class )
-                        .setInputData( data )
-                        .build();
-        WorkManager.getInstance( mApplication ).enqueue( downloadWorkRequest );
+        getFromRemoteRepository();
 
         //De asemenea, vrem sa facem get pe parcurs
         PeriodicWorkRequest downloadWorkRequestLoop =
                 new PeriodicWorkRequest.Builder( GameWorker.class, PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS )
-                        .setInputData( data )
+                        .setInputData( dataforBuilder )
                         .build();
         WorkManager.getInstance( mApplication )
                 .enqueueUniquePeriodicWork( "getFirebaseGames", ExistingPeriodicWorkPolicy.KEEP, downloadWorkRequestLoop );
+
+        //In caz ca vreun joc nu ajunge in Firebase, vrem sa il sincronizam
+        PeriodicWorkRequest syncWorkRequest =
+                new PeriodicWorkRequest.Builder( GameWorker.class, PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS )
+                        .setInputData( syncDataforBuilder )
+                        .build();
+        WorkManager.getInstance( mApplication ).enqueueUniquePeriodicWork( "syncInMemoryGames", ExistingPeriodicWorkPolicy.KEEP, syncWorkRequest );
     }
 
     protected LiveData < List < GameEntity > > getAllGames() {
@@ -57,20 +59,28 @@ public class GameMediator {
 
     protected void insertGame( GameEntity game ) {
         if ( game.getGameId().equals( "" ) ) {
+            //adaugam timpul la care s-a terminat jocul
             game.setGameId( new Timestamp( System.currentTimeMillis() ).toString() );
-            Data.Builder builder = new Data.Builder();
-            builder.putString( "mode", "post" );
-            builder.putString( "numeJucator", game.getNumeJucator() );
-            builder.putString( "gameType", game.getGameType() );
-            builder.putString( "result", game.getResult() );
-            builder.putString( "gameId", game.getGameId() );
-            Data data = builder.build();
-            OneTimeWorkRequest uploadWorkRequest =
+
+            //inseram jocul in coada repo-ului local
+            InMemoryDatabase inMemoryDatabase = new InMemoryDatabase();
+            inMemoryDatabase.addInMemery( game );
+
+            //dupa ce am inserat acest joc, il vom trimite (pe el si ce mai e in coada) in repo-ul firebase
+            OneTimeWorkRequest syncWorkRequest =
                     new OneTimeWorkRequest.Builder( GameWorker.class )
-                            .setInputData( data )
+                            .setInputData( syncDataforBuilder )
                             .build();
-            WorkManager.getInstance( mApplication.getApplicationContext() ).enqueue( uploadWorkRequest );
+            WorkManager.getInstance( mApplication.getApplicationContext() ).enqueue( syncWorkRequest );
         }
         mRepository.insertGame( game );
+    }
+
+    private void getFromRemoteRepository() {
+        OneTimeWorkRequest downloadWorkRequest =
+                new OneTimeWorkRequest.Builder( GameWorker.class )
+                        .setInputData( dataforBuilder )
+                        .build();
+        WorkManager.getInstance( mApplication.getApplicationContext() ).enqueue( downloadWorkRequest );
     }
 }
