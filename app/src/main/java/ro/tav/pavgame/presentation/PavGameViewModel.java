@@ -2,6 +2,8 @@ package ro.tav.pavgame.presentation;
 
 import androidx.lifecycle.ViewModel;
 
+import java.sql.Timestamp;
+
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.domain.GameUseCase;
@@ -25,13 +27,10 @@ public class PavGameViewModel extends ViewModel {
         return gameUseCase;
     }
 
-    public static void addResult( String userName, String result, String gametype ) {
+    public static void addResult( String userName, boolean result, int gametype ) {
         //construim jocul si apoi il trimitem in bindingAdapter pt a fi adaugat
-        GameEntity mGame = new GameEntity();
-        mGame.setNumeJucator( userName );
-        mGame.setResult( result );
-        mGame.setGameType( gametype );
-        mGame.setGameId( "" );//va fi setat in mediator pt a evita ca ce se descarca de pe firebase sa fie uploadat inca o data
+        String timeStamp = new Timestamp( System.currentTimeMillis() ).toString();
+        GameEntity mGame = new GameEntity( userName, gametype, result, timeStamp );
         gameUseCase.insertGame( mGame );
     }
 }

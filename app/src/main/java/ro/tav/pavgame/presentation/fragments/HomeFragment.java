@@ -7,22 +7,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import java.util.Objects;
 
-import ro.tav.pavgame.presentation.view.LoginActivity;
 import ro.tav.pavgame.R;
+import ro.tav.pavgame.presentation.view.LoginActivity;
 
 public class HomeFragment extends Fragment {
-    public View onCreateView( @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
-        View root = inflater.inflate( R.layout.fragment_home, container, false );
+    @Nullable
+    @Override
+    public View onCreateView( @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState ) {
+        View root = super.onCreateView( inflater, container, savedInstanceState );
         TextView textView = root.findViewById( R.id.text_home );
         textView.setText( String.format( getString( R.string.welcome ), Objects.requireNonNull( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() ).getEmail() ) );
         return root;
     }
 
-    public HomeFragment() {
-        // Required empty public constructor
+    public HomeFragment( int contentLayoutId ) {
+        super( contentLayoutId );
     }
 }

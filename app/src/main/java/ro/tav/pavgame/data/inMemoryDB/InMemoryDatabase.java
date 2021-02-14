@@ -9,15 +9,13 @@ public class InMemoryDatabase {
     private static int nrOfElements = 0;
 
     public void addInMemery( GameEntity gameEntity ) {
-        if ( q.isEmpty() || !gameEntity.equals( q.element() ) ) {
-            q.add( gameEntity );
-            nrOfElements++;
-        }
+        q.add( gameEntity );
+        nrOfElements++;
     }
 
     public GameEntity removeInMemory() {
         GameEntity gameEntity = q.remove();
-        nrOfElements--;
+        nrOfElements--;          //daca mu s-a aruncat exceptie, inseamna ca putem scadea nr de elemente
         return gameEntity;
     }
 

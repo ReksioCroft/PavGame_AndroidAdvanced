@@ -6,18 +6,16 @@ import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
 
-public abstract class GameDataSource {
+public abstract class LocalGameDataSource {
     protected final GameDao mGameDao;
 
-    protected GameDataSource( GameDao gameDao ) {
+    protected LocalGameDataSource( GameDao gameDao ) {
         mGameDao = gameDao;
     }
 
     protected abstract LiveData < List < GameEntity > > getAllGames();
 
     protected abstract LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user );
-
-    protected abstract List < GameEntity > getSpecificGamesbyUserNameStatic( String user );
 
     protected abstract void insertGame( GameEntity game );
 }

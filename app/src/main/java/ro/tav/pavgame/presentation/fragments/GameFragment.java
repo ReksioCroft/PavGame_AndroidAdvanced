@@ -39,16 +39,18 @@ public class GameFragment extends Fragment {
     private int nrGreseli;
     private final int[][] matrix = new int[ 256 ][ 256 ];
     private EditText input;
-    private Boolean started;
-    private Boolean finished;
+    private boolean started;
+    private boolean finished;
     private Intent gameInProgressServiceIntent;
 
-    public View onCreateView( @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState ) {
-        return inflater.inflate( R.layout.fragment_game, container, false );
+    @Nullable
+    @Override
+    public View onCreateView( @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState ) {
+        return super.onCreateView( inflater, container, savedInstanceState );
     }
 
-    public GameFragment() {
-        // Required empty public constructor
+    public GameFragment( int contentLayoutId ) {
+        super( contentLayoutId );
     }
 
     @Override
@@ -104,7 +106,7 @@ public class GameFragment extends Fragment {
     public void startGame( View view ) {    //crearea si initializarea butoanelor jocului
         String s = "", messege;
         int nrInt = 0;
-        started = finished = Boolean.FALSE;
+        started = finished = false;
         input = requireView().findViewById( R.id.pavGameInputText );
 
         try {
@@ -194,7 +196,8 @@ public class GameFragment extends Fragment {
         }
 
         public void onClick( View view ) {
-            String messege, s1 = "", s2, result;
+            String messege, s1 = "", s2;
+            boolean result;
             button = ( Button ) view;
             //luam pozitia dalei de inserare
             input = requireView().findViewById( R.id.pavGameInputText );
@@ -274,26 +277,26 @@ public class GameFragment extends Fragment {
                     Toast.makeText( getContext(), messege, Toast.LENGTH_SHORT ).show();
                 }
             }
-            if ( finished == Boolean.FALSE && ( nrDala * 3 + 1 == lat * lat || nrGreseli > nrGreseliMax ) ) {
-                finished = Boolean.TRUE;//daca se ajunge la finish
+            if ( !finished && ( nrDala * 3 + 1 == lat * lat || nrGreseli > nrGreseliMax ) ) {
+                finished = true;//daca se ajunge la finish
                 requireView().findViewById( R.id.startGameButton ).setEnabled( true );
                 button = requireView().findViewById( R.id.startGameButton );
                 if ( nrDala * 3 + 1 == lat * lat ) {
                     messege = getString( R.string.victorie ) + " :)";
                     button.setText( messege );
-                    result = "Win";
+                    result = true;
                     s1 = getString( R.string.Win );
                     s2 = getString( R.string.victorie ) + ", " + PavGameViewModel.getUserName() + "!";
                 } else {
                     messege = getString( R.string.esec ) + " :(";
                     button.setText( messege );
-                    result = "Lose";
+                    result = false;
                     s1 = getString( R.string.Lose );
                     s2 = getString( R.string.esec ) + ", " + PavGameViewModel.getUserName() + "!";
                 }
 
                 //adaugam jocul folosindu-ne de viewModel
-                PavGameViewModel.addResult( PavGameViewModel.getUserName(), result, "Game Type: " + lat + "x" + lat );
+                PavGameViewModel.addResult( PavGameViewModel.getUserName(), result, lat );
                 PavGameApplication.getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
                         PavGameNotificationFactory.createCustomHelloNotification( getContext(),
                                 s1, s2 ) );
@@ -307,5 +310,4 @@ public class GameFragment extends Fragment {
     private void stopGameService() {
         requireActivity().stopService( gameInProgressServiceIntent );//oprirea serviciului
     }
-
 }

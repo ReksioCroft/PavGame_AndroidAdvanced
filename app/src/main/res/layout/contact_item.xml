@@ -34,26 +34,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="showSpecificUserGames"
-                app:layout_constraintBottom_toTopOf="@id/textview_result"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/textview_result"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/textview_gameType"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_name" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/textview_gameType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintBottom_toTopOf="@id/textview_result"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textview_name" />
+
+            <TextView
+                android:id="@+id/textview_result"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toTopOf="@id/textView_totalPoints"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textview_result" />
-
+                app:layout_constraintTop_toBottomOf="@id/textview_gameType" />
 
             <TextView
                 android:id="@+id/textView_totalPoints"

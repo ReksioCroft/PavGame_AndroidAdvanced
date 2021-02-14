@@ -1,5 +1,6 @@
 package ro.tav.pavgame.domain;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.jetbrains.annotations.NotNull;
@@ -22,19 +23,15 @@ public class GameRemoteRepository extends RemoteDataSource {
 
     public List < GameEntity > getAllGames() {
         List < GameEntity > gameEntities = new ArrayList <>();
+        Gson gson = new Gson();
         try {
-            List < JsonObject > response = api.getAllGames().execute().body();
+            JsonObject response = api.getAllGames().execute().body();
             if ( response != null ) {
-                for ( JsonObject jsonObjectofObjects : response ) {
-                    for ( String jsonObjectKeys : jsonObjectofObjects.keySet() ) {
-                        GameEntity gameEntity = new GameEntity();
-                        JsonObject jsonObject = jsonObjectofObjects.getAsJsonObject( jsonObjectKeys );
-                        gameEntity.setGameId( jsonObject.get( "gameId" ).getAsString() );
-                        gameEntity.setGameType( jsonObject.get( "gameType" ).getAsString() );
-                        gameEntity.setResult( jsonObject.get( "result" ).getAsString() );
-                        gameEntity.setNumeJucator( jsonObject.get( "numeJucator" ).getAsString() );
+                for ( String jsonObjectKeys : response.keySet() ) {
+                    JsonObject jsonObject = response.getAsJsonObject( jsonObjectKeys );
+                    GameEntity gameEntity = gson.fromJson( jsonObject, GameEntity.class );
+                    if ( gameEntity != null )
                         gameEntities.add( gameEntity );
-                    }
                 }
             }
         } catch ( Exception e ) {
@@ -42,7 +39,6 @@ public class GameRemoteRepository extends RemoteDataSource {
         }
         return gameEntities;
     }
-
 
     public void insertGame( GameEntity gameEntity ) {
         Call < GameEntity > call = api.insertGame( gameEntity );
@@ -59,6 +55,5 @@ public class GameRemoteRepository extends RemoteDataSource {
                 gameInMemoryRepository.addInMemory( gameEntity );
             }
         } );
-
     }
 }

@@ -13,28 +13,33 @@ import org.jetbrains.annotations.NotNull;
 @Entity( tableName = "gameEntity", primaryKeys = { "gameId", "numeJucator" } )
 public class GameEntity {
     @ColumnInfo( name = "gameId" )
+    @SerializedName( "gameId" )
     @NonNull
     @Expose
-    @SerializedName( "gameId" )
-    private String gameId;
+    private final String gameId;
 
     @ColumnInfo( name = "numeJucator" )
-    @NonNull
-    @Expose
     @SerializedName( "numeJucator" )
-    private String numeJucator;
-
-    @ColumnInfo( name = "result" )
     @NonNull
     @Expose
-    @SerializedName( "result" )
-    private String result;
+    private final String numeJucator;
 
     @ColumnInfo( name = "gameType" )
-    @NonNull
-    @Expose
     @SerializedName( "gameType" )
-    private String gameType;
+    @Expose
+    private final int gameType;
+
+    @ColumnInfo( name = "result" )
+    @SerializedName( "result" )
+    @Expose
+    private final boolean result;
+
+    public GameEntity( @NotNull String numeJucator, int gameType, boolean result, @NotNull String gameId ) {
+        this.numeJucator = numeJucator;
+        this.gameType = gameType;
+        this.result = result;
+        this.gameId = gameId;
+    }
 
     public @NotNull String getGameId() {
         return gameId;
@@ -44,28 +49,12 @@ public class GameEntity {
         return numeJucator;
     }
 
-    public @NotNull String getResult() {
+    public boolean getResult() {
         return result;
     }
 
-    public @NotNull String getGameType() {
+    public int getGameType() {
         return gameType;
-    }
-
-    public void setGameId( @NotNull String gameId ) {
-        this.gameId = gameId;
-    }
-
-    public void setNumeJucator( @NotNull String nume ) {
-        this.numeJucator = nume;
-    }
-
-    public void setResult( @NotNull String result ) {
-        this.result = result;
-    }
-
-    public void setGameType( @NotNull String gameType ) {
-        this.gameType = gameType;
     }
 
     @Override
@@ -73,8 +62,8 @@ public class GameEntity {
         if ( obj != null && obj.getClass() == GameEntity.class ) {
             GameEntity gameToCompare = ( GameEntity ) obj;
             return gameId.equals( gameToCompare.gameId ) &&
-                    gameType.equals( gameToCompare.gameType ) &&
-                    result.equals( gameToCompare.result ) &&
+                    gameType == gameToCompare.gameType &&
+                    result == gameToCompare.result &&
                     numeJucator.equals( gameToCompare.numeJucator );
         } else
             return super.equals( obj );

@@ -14,7 +14,7 @@ import timber.log.Timber;
 
 
 public class GameWorker extends Worker {
-    private Context context;
+    private final Context context;
 
     public GameWorker( @NonNull Context context,
                        @NonNull WorkerParameters workerParams ) {
@@ -40,7 +40,7 @@ public class GameWorker extends Worker {
             Timber.d( "worker finished downloading games" );
 
 
-        } else if ( "sync".equals( value ) ) {
+        } else if ( "post".equals( value ) ) {
             Timber.d( "SYNC Operation" );
             GameInMemoryRepository gameInMemoryRepository = new GameInMemoryRepository();
             GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();

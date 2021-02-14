@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         textView.setText( Objects.requireNonNull( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() ).getEmail() );
 
         //deschidem fragmentul acasa
-        openFragment( new HomeFragment() );
+        openFragment( new HomeFragment( R.layout.fragment_home ) );
         setTitle( getString( R.string.menu_home ).toUpperCase() );
 
 
@@ -137,13 +137,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if ( id == R.id.nav_home ) {
-            openFragment( new HomeFragment() );
+            openFragment( new HomeFragment( R.layout.fragment_home ) );
             setTitle( getString( R.string.menu_home ).toUpperCase() );
         } else if ( id == R.id.nav_game ) {
-            openFragment( new GameFragment() );
+            openFragment( new GameFragment( R.layout.fragment_game ) );
             setTitle( getString( R.string.menu_game ).toUpperCase() );
         } else if ( id == R.id.nav_slideshow ) {
-            openFragment( new SlideshowFragment() );
+            openFragment( new SlideshowFragment( R.layout.fragment_slideshow ) );
             setTitle( getString( R.string.menu_infoarena ).toUpperCase() );
         }
 

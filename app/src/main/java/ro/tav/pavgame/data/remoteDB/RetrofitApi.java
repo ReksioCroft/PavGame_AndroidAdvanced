@@ -3,8 +3,6 @@ package ro.tav.pavgame.data.remoteDB;
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.JsonObject;
 
-import java.util.List;
-
 import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Retrofit;
@@ -18,9 +16,9 @@ public interface RetrofitApi {
     String BASE_URL = "https://pav-game-tav.firebaseio.com/";
 
     @GET( "games.json" )
-    Call < List < JsonObject > > getAllGames();
+    Call < JsonObject > getAllGames();
 
-    @POST( "games/0.json" )
+    @POST( "games.json" )
     Call < GameEntity > insertGame( @Body GameEntity gameEntity );
 
     static RetrofitApi createApi() {
