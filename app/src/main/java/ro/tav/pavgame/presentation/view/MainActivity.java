@@ -27,7 +27,7 @@ import ro.tav.pavgame.presentation.PavGameFragmentStack;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 import ro.tav.pavgame.presentation.fragments.HomeFragment;
-import ro.tav.pavgame.presentation.fragments.SlideshowFragment;
+import ro.tav.pavgame.presentation.fragments.WebViewFragment;
 import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;
 import timber.log.Timber;
 
@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             openFragment( new GameFragment( R.layout.fragment_game ) );
             setTitle( getString( R.string.menu_game ).toUpperCase() );
         } else if ( id == R.id.nav_slideshow ) {
-            openFragment( new SlideshowFragment( R.layout.fragment_slideshow ) );
+            openFragment( new WebViewFragment( R.layout.fragment_slideshow ) );
             setTitle( getString( R.string.menu_infoarena ).toUpperCase() );
         }
 

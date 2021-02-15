@@ -12,19 +12,21 @@ import androidx.fragment.app.Fragment;
 
 import ro.tav.pavgame.R;
 
-public class SlideshowFragment extends Fragment {
+public class WebViewFragment extends Fragment {
     private static final String PAV_GAME_INSPIRATION = "https://infoarena.ro/problema/pav";
 
     @Nullable
     @Override
     public View onCreateView( @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState ) {
         View root = super.onCreateView( inflater, container, savedInstanceState );
-        WebView mWebViewExample = root.findViewById( R.id.webview_example );
-        mWebViewExample.loadUrl( PAV_GAME_INSPIRATION );
+        if ( root != null ) {
+            WebView mWebViewExample = root.findViewById( R.id.webview_example );
+            mWebViewExample.loadUrl( PAV_GAME_INSPIRATION );
+        }
         return root;
     }
 
-    public SlideshowFragment( int contentLayoutId ) {
+    public WebViewFragment( int contentLayoutId ) {
         super( contentLayoutId );
     }
 }

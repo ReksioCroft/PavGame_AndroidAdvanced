@@ -1,6 +1,8 @@
 package ro.tav.pavgame.presentation.view.recycleViewAux;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import java.util.List;
 
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.presentation.view.RecyclerViewActivity;
 
 public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
 
@@ -58,6 +61,17 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
                 contactsViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
                 contactsViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
             }
+
+            contactsViewHolder.mCard.setOnClickListener( new View.OnClickListener() {
+                @Override
+                public void onClick( View view ) {
+                    Intent intent = new Intent( context, RecyclerViewActivity.class );
+                    Bundle b = new Bundle();
+                    b.putString( "user", currentGame.getNumeJucator() ); //user_email
+                    intent.putExtras( b ); //Put your id to your next Intent
+                    context.startActivity( intent );//cream o noua activitate pt utilizatorul specific
+                }
+            } );
         } else {
             contactsViewHolder.mTextViewName.setText( R.string.noText );
             contactsViewHolder.mTextViewResult.setText( R.string.noText );

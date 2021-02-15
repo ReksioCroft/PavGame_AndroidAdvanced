@@ -1,10 +1,7 @@
 package ro.tav.pavgame.presentation.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -15,7 +12,6 @@ import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.view.recycleViewAux.GamesAdapter;
 import ro.tav.pavgame.presentation.view.recycleViewAux.PavGameBindingAdapter;
-import timber.log.Timber;
 
 
 public class RecyclerViewActivity extends AppCompatActivity {
@@ -56,15 +52,6 @@ public class RecyclerViewActivity extends AppCompatActivity {
         PavGameApplication.removeActivity( this );
     }
 
-    public void showSpecificUserGames( View view ) {//clickListener pt user din cardView
-        Timber.d( "Specific game activity creating" );
-        Intent intent = new Intent( RecyclerViewActivity.this, RecyclerViewActivity.class );
-        Bundle b = new Bundle();
-        TextView textView = ( TextView ) view;  //suntem siguri ca primim textView
-        b.putString( "user", textView.getText().toString() ); //user_email
-        intent.putExtras( b ); //Put your id to your next Intent
-        startActivity( intent );//cream o noua activitate pt utilizatorul specific
-    }
 
     @Override
     public boolean onOptionsItemSelected( @NonNull MenuItem item ) {
