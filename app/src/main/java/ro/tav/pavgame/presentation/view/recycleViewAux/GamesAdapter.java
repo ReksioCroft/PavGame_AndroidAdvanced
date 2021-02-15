@@ -36,33 +36,33 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
     }
 
     @Override
-    public void onBindViewHolder( @NonNull GamesViewHolder contactsViewHolder, int i ) {
+    public void onBindViewHolder( @NonNull GamesViewHolder gamesViewHolder, int i ) {
         if ( mGames != null ) {
             GameEntity currentGame = mGames.get( i );
-            contactsViewHolder.mTextViewName.setText( currentGame.getNumeJucator() );
+            gamesViewHolder.mTextViewName.setText( currentGame.getNumeJucator() );
             String result = itemView.getResources().getString( currentGame.getResult() ? R.string.Win : R.string.Lose );
-            contactsViewHolder.mTextViewResult.setText( result );
+            gamesViewHolder.mTextViewResult.setText( result );
             String gameType = currentGame.getGameType() + "x" + currentGame.getGameType();
-            contactsViewHolder.mTextViewType.setText( gameType );
+            gamesViewHolder.mTextViewType.setText( gameType );
 
             String totalPoints = itemView.getResources().getString( R.string.total_points ) + currentGame.getGameId();
-            contactsViewHolder.mTextViewTotalPoints.setText( totalPoints );
+            gamesViewHolder.mTextViewTotalPoints.setText( totalPoints );
 
-            if ( contactsViewHolder.mTextViewResult.getText().equals( itemView.getResources().getString( R.string.Lose ) ) ) {
-                contactsViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
-                contactsViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
-                contactsViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
-                contactsViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
-                contactsViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+            if ( gamesViewHolder.mTextViewResult.getText().equals( itemView.getResources().getString( R.string.Lose ) ) ) {
+                gamesViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                gamesViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                gamesViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                gamesViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                gamesViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
             } else {
-                contactsViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
-                contactsViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
-                contactsViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
-                contactsViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
-                contactsViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                gamesViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                gamesViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                gamesViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                gamesViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                gamesViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
             }
 
-            contactsViewHolder.mCard.setOnClickListener( new View.OnClickListener() {
+            gamesViewHolder.mCard.setOnClickListener( new View.OnClickListener() {
                 @Override
                 public void onClick( View view ) {
                     Intent intent = new Intent( context, RecyclerViewActivity.class );
@@ -73,10 +73,10 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
                 }
             } );
         } else {
-            contactsViewHolder.mTextViewName.setText( R.string.noText );
-            contactsViewHolder.mTextViewResult.setText( R.string.noText );
-            contactsViewHolder.mTextViewType.setText( R.string.noText );
-            contactsViewHolder.mTextViewTotalPoints.setText( R.string.noText );
+            gamesViewHolder.mTextViewName.setText( R.string.noText );
+            gamesViewHolder.mTextViewResult.setText( R.string.noText );
+            gamesViewHolder.mTextViewType.setText( R.string.noText );
+            gamesViewHolder.mTextViewTotalPoints.setText( R.string.noText );
         }
     }
 
