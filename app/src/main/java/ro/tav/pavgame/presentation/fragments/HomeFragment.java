@@ -20,8 +20,10 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView( @NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState ) {
         View root = super.onCreateView( inflater, container, savedInstanceState );
-        TextView textView = root.findViewById( R.id.text_home );
-        textView.setText( String.format( getString( R.string.welcome ), Objects.requireNonNull( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() ).getEmail() ) );
+        if ( root != null ) {
+            TextView textView = root.findViewById( R.id.text_home );
+            textView.setText( String.format( getString( R.string.welcome ), Objects.requireNonNull( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() ).getEmail() ) );
+        }
         return root;
     }
 
