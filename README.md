@@ -1,13 +1,22 @@
 # PavGame_AndroidAdvanced
 
-App name: Pav Game
+#### Game name: Pav Game
 
-Location: https://github.com/ReksioCroft/PavGame_AndroidAdvanced
+Poject Description: Fork of original PavGame ( https://github.com/ReksioCroft/PavGame_Android ) to ilustrate the concepts learned in the Android Advanced Course. The idea of the game came from National Olympiad in Informatics
 
-Backend: https://console.firebase.google.com/u/1/project/pav-game-tav/overview
+Project Mentor: Marius Bardan (https://github.com/marius-bardan)
 
-Reviewers: Cristi Popa
+Project Mentor of the forked app: Magda Miu (https://github.com/magdamiu)
 
-Reviewed: https://github.com/mihneacristian/Report-It-Android-Advanced/
+### Android Advanced Project Requirements:
 
-Poject Description: Fork of original PavGame ( https://github.com/ReksioCroft/PavGame_Android ) to ilustrate the concepts learned in the Android Advanced Course
+1. ViewModel + WorkManager + ConstraintLayout + Notification + Logging
+1. ViewModel -> DataSource, RecyclerView, UnitTests
+1. Firebase + APIs
+1. LeakCanary + Timber + Crashlytics
+1. Localization
+1. Foreground Service
+1. Custom View (Canvas, Paint) + Day/Night mode
+1. Room integration, Shared Preferences
+1. BroadcastReceveiver
+1. Espresso
