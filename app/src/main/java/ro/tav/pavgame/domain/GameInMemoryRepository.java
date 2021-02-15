@@ -3,19 +3,23 @@ package ro.tav.pavgame.domain;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.data.inMemoryDB.InMemoryDataSource;
 
-public class GameInMemoryRepository implements InMemoryDataSource {
-    @Override
-    public void addInMemory( GameEntity gameEntity ) {
-        inMemoryDatabase.addInMemery( gameEntity );
+public class GameInMemoryRepository extends InMemoryDataSource {
+    protected GameInMemoryRepository() {
+        super();
     }
 
     @Override
-    public GameEntity removeInMemory() {
+    protected void addInMemory( GameEntity gameEntity ) {
+        inMemoryDatabase.addInMemory( gameEntity );
+    }
+
+    @Override
+    protected GameEntity removeInMemory() {
         return inMemoryDatabase.removeInMemory();
     }
 
     @Override
-    public int getNrOfElements() {
+    protected int getNrOfElements() {
         return inMemoryDatabase.getNrOfElements();
     }
 }

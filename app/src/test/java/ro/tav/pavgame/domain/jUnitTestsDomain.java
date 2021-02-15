@@ -1,8 +1,5 @@
-package ro.tav.pavgame;
+package ro.tav.pavgame.domain;
 
-import android.content.Context;
-
-import androidx.room.Room;
 import androidx.test.core.app.ApplicationProvider;
 
 import org.junit.Before;
@@ -14,25 +11,17 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
-import ro.tav.pavgame.data.inMemoryDB.InMemoryDatabase;
-import ro.tav.pavgame.data.localDB.AppDatabase;
-import ro.tav.pavgame.data.localDB.GameDao;
-import ro.tav.pavgame.domain.GameRemoteRepository;
-import ro.tav.pavgame.domain.GameUseCase;
 import timber.log.Timber;
 
 @RunWith( RobolectricTestRunner.class )
-public class jUnitTests {
-    private Context context;
+public class jUnitTestsDomain {
     private GameEntity mGame;
-    private final String numeJucator = "myJUnitTest";
-
 
     @Before
     public void createGameEntity() {
         String timeStamp = new Timestamp( System.currentTimeMillis() ).toString();
+        String numeJucator = "myJUnitTest";
         mGame = new GameEntity( numeJucator, 4096, true, timeStamp );
-        context = ApplicationProvider.getApplicationContext();
     }
 
     @Test
@@ -40,7 +29,7 @@ public class jUnitTests {
         GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
         gameRemoteRepository.insertGame( mGame );
         try {
-            Thread.sleep( 1000 );
+            Thread.sleep( 1500 );
         } catch ( Exception e ) {
             Timber.d( e );
         }
@@ -57,26 +46,10 @@ public class jUnitTests {
 
     @Test
     public void test2() {
-        AppDatabase db = Room.inMemoryDatabaseBuilder( context, AppDatabase.class ).allowMainThreadQueries().build();
-        GameDao gameDao = db.gameDao();
-        gameDao.insertGame( mGame );
-
-        List < GameEntity > l = gameDao.getSpecificGamesbyUserNameStatic( numeJucator );
-
-        try {
-            assert !l.isEmpty();
-        } catch ( Exception e ) {
-            assert false;
-        }
-        db.close();
-    }
-
-    @Test
-    public void test3() {
         GameUseCase gameUseCase = new GameUseCase( ApplicationProvider.getApplicationContext() );
         gameUseCase.insertGame( mGame );
-        InMemoryDatabase inMemoryDatabase = new InMemoryDatabase();
-        GameEntity gameFromRemoteRepository = inMemoryDatabase.removeInMemory();
+        GameInMemoryRepository gameInMemoryRepository = new GameInMemoryRepository();
+        GameEntity gameFromRemoteRepository = gameInMemoryRepository.removeInMemory();
         assert gameFromRemoteRepository == mGame;
     }
 }

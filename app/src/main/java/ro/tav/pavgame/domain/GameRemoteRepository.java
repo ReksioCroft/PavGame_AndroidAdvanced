@@ -15,9 +15,13 @@ import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.data.remoteDB.RemoteDataSource;
 import timber.log.Timber;
 
-public class GameRemoteRepository implements RemoteDataSource {
+public class GameRemoteRepository extends RemoteDataSource {
+    protected GameRemoteRepository() {
+        super();
+    }
+
     @Override
-    public List < GameEntity > getAllGames() {
+    protected List < GameEntity > getAllGames() {
         List < GameEntity > gameEntities = new ArrayList <>();
         Gson gson = new Gson();
         try {
@@ -37,7 +41,7 @@ public class GameRemoteRepository implements RemoteDataSource {
     }
 
     @Override
-    public void insertGame( GameEntity gameEntity ) {
+    protected void insertGame( GameEntity gameEntity ) {
         Call < GameEntity > call = api.insertGame( gameEntity );
         call.enqueue( new Callback < GameEntity >() {
             @Override

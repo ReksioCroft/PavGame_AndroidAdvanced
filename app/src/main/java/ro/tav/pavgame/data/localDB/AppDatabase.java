@@ -15,7 +15,7 @@ import ro.tav.pavgame.data.GameEntity;
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
 
-    public abstract GameDao gameDao();
+    protected abstract LocalGameDataSource.GameDao gameDao();
 
     private static final int NUMBER_OF_THREADS = 4;
 
@@ -31,5 +31,9 @@ public abstract class AppDatabase extends RoomDatabase {
             }
         }
         return INSTANCE;
+    }
+
+    protected AppDatabase() {
+        //empty constructor for making class protected
     }
 }

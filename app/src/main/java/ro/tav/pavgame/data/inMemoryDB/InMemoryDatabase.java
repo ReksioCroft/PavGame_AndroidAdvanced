@@ -8,7 +8,11 @@ public class InMemoryDatabase {
     private static final LinkedList < GameEntity > q = new LinkedList <>();
     private static int nrOfElements = 0;
 
-    public void addInMemery( GameEntity gameEntity ) {
+    protected InMemoryDatabase() {
+        //empty constructor for making it protected
+    }
+
+    public void addInMemory( GameEntity gameEntity ) {
         q.add( gameEntity );
         nrOfElements++;
     }

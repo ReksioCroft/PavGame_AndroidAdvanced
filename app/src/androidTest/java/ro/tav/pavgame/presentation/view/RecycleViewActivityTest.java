@@ -35,13 +35,13 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith( AndroidJUnit4.class )
-public class RecycleViewTest {
+public class RecycleViewActivityTest {
 
     @Rule
     public ActivityTestRule < LoginActivity > mActivityTestRule = new ActivityTestRule <>( LoginActivity.class );
 
     @Test
-    public void loginActivityTest() {
+    public void recycleViewActivityTest() {
         ViewInteraction appCompatEditText = onView(
                 allOf( withId( R.id.email ),
                         childAtPosition(
@@ -49,7 +49,7 @@ public class RecycleViewTest {
                                         withClassName( is( "android.widget.ScrollView" ) ),
                                         0 ),
                                 1 ) ) );
-        appCompatEditText.perform( scrollTo(), replaceText( "reksio.imaginatie@gmail.com" ), closeSoftKeyboard() );
+        appCompatEditText.perform( scrollTo(), replaceText( "tavi.imaginatie@yahoo.com" ), closeSoftKeyboard() );
 
         ViewInteraction appCompatEditText2 = onView(
                 allOf( withId( R.id.password ),
@@ -58,7 +58,7 @@ public class RecycleViewTest {
                                         withClassName( is( "android.widget.ScrollView" ) ),
                                         0 ),
                                 2 ) ) );
-        appCompatEditText2.perform( scrollTo(), replaceText( "Octav-pavgame1!" ), closeSoftKeyboard() );
+        appCompatEditText2.perform( scrollTo(), replaceText( "tav713" ), closeSoftKeyboard() );
 
         ViewInteraction appCompatButton = onView(
                 allOf( withId( R.id.logInButton ), withText( "Intrati" ),
@@ -79,15 +79,15 @@ public class RecycleViewTest {
                         isDisplayed() ) );
         floatingActionButton.perform( click() );
 
-        ViewInteraction appCompatTextView = onView(
-                allOf( withId( R.id.textview_name ), withText( "tavi.imaginatie@yahoo.com" ),
+        ViewInteraction cardView = onView(
+                allOf( withId( R.id.cardViewResults ),
                         childAtPosition(
                                 childAtPosition(
-                                        withId( R.id.cardViewResults ),
+                                        withId( R.id.recycler_view_contacts_1 ),
                                         0 ),
                                 0 ),
                         isDisplayed() ) );
-        appCompatTextView.perform( click() );
+        cardView.perform( click() );
 
         ViewInteraction appCompatImageButton = onView(
                 allOf( withContentDescription( "Navigați în sus" ),

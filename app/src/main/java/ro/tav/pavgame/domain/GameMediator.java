@@ -1,6 +1,6 @@
 package ro.tav.pavgame.domain;
 
-import android.app.Application;
+import android.content.Context;
 
 import androidx.lifecycle.LiveData;
 import androidx.work.Data;
@@ -13,18 +13,17 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import ro.tav.pavgame.data.GameEntity;
-import ro.tav.pavgame.data.inMemoryDB.InMemoryDatabase;
 import timber.log.Timber;
 
 public class GameMediator {
     private final GameLocalRepository mRepository;
-    private final Application mApplication;
+    private final Context mContext;
     private final Data dataforBuilder = ( new Data.Builder().putString( "mode", "get" ) ).build();
     private final Data postDataforBuilder = ( new Data.Builder().putString( "mode", "post" ) ).build();
 
-    protected GameMediator( Application application ) {
-        this.mApplication = application;
-        mRepository = new GameLocalRepository( application );
+    protected GameMediator( Context context ) {
+        this.mContext = context;
+        mRepository = new GameLocalRepository( mContext );
 
         //Vrem ca primul get sa se faca instant cand se deschide aplicatia
         getFromRemoteRepository();
@@ -40,7 +39,7 @@ public class GameMediator {
                             PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS )
                             .setInputData( dataforBuilder )
                             .build();
-            WorkManager.getInstance( mApplication )
+            WorkManager.getInstance( mContext )
                     .enqueueUniquePeriodicWork( "getFirebaseGames",
                             ExistingPeriodicWorkPolicy.KEEP, downloadWorkRequestLoop );
         } catch ( Exception e ) {
@@ -53,7 +52,7 @@ public class GameMediator {
                             PeriodicWorkRequest.MIN_PERIODIC_INTERVAL_MILLIS, TimeUnit.MILLISECONDS )
                             .setInputData( postDataforBuilder )
                             .build();
-            WorkManager.getInstance( mApplication ).enqueueUniquePeriodicWork( "postInMemoryGames",
+            WorkManager.getInstance( mContext ).enqueueUniquePeriodicWork( "postInMemoryGames",
                     ExistingPeriodicWorkPolicy.KEEP, postWorkRequest );
         } catch ( Exception e ) {
             Timber.d( e );
@@ -70,8 +69,8 @@ public class GameMediator {
 
     protected void insertGame( GameEntity game ) {
         //inseram jocul in coada repo-ului local
-        InMemoryDatabase inMemoryDatabase = new InMemoryDatabase();
-        inMemoryDatabase.addInMemery( game );
+        GameInMemoryRepository gameInMemoryRepository = new GameInMemoryRepository();
+        gameInMemoryRepository.addInMemory( game );
 
         //dupa ce am inserat acest joc, il vom trimite (pe el si ce mai e in coada) in repo-ul firebase
         try {
@@ -79,11 +78,12 @@ public class GameMediator {
                     new OneTimeWorkRequest.Builder( GameWorker.class )
                             .setInputData( postDataforBuilder )
                             .build();
-            WorkManager.getInstance( mApplication ).enqueue( postWorkRequest );
+            WorkManager.getInstance( mContext ).enqueue( postWorkRequest );
         } catch ( Exception e ) {
             Timber.d( e );
         }
 
+        //Inseram jocul in roomDatabase
         mRepository.insertGame( game );
     }
 
@@ -93,7 +93,7 @@ public class GameMediator {
                     new OneTimeWorkRequest.Builder( GameWorker.class )
                             .setInputData( dataforBuilder )
                             .build();
-            WorkManager.getInstance( mApplication ).enqueue( downloadWorkRequest );
+            WorkManager.getInstance( mContext ).enqueue( downloadWorkRequest );
         } catch ( Exception e ) {
             Timber.d( e );
         }

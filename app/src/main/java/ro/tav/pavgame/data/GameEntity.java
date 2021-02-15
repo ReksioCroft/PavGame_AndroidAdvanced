@@ -14,14 +14,14 @@ import org.jetbrains.annotations.NotNull;
 public class GameEntity {
     @ColumnInfo( name = "gameId" )
     @SerializedName( "gameId" )
-    @NonNull
     @Expose
+    @NonNull
     private final String gameId;
 
     @ColumnInfo( name = "numeJucator" )
     @SerializedName( "numeJucator" )
-    @NonNull
     @Expose
+    @NonNull
     private final String numeJucator;
 
     @ColumnInfo( name = "gameType" )

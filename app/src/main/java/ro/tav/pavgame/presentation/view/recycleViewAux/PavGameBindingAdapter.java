@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 
@@ -22,15 +23,16 @@ public class PavGameBindingAdapter {
             mRecyclerViewGames.setLayoutManager( layoutManager );
         }
         //pornim binduirea permanenta intre recyleview si baza de date
+        PavGameViewModel pavGameViewModel = new PavGameViewModel( PavGameApplication.getApplication() );
         if ( user == null ) {
-            PavGameViewModel.getGameUseCase().getAllGames().observeForever( new Observer < List < GameEntity > >() {
+            pavGameViewModel.getAllGames().observeForever( new Observer < List < GameEntity > >() {
                 @Override
                 public void onChanged( @Nullable final List < GameEntity > games ) {
                     gamesAdapter.setGames( games );
                 }
             } );
         } else {
-            PavGameViewModel.getGameUseCase().getSpecificGamesbyUserName( user ).observeForever( new Observer < List < GameEntity > >() {
+            pavGameViewModel.getSpecificGamesbyUserName( user ).observeForever( new Observer < List < GameEntity > >() {
                 @Override
                 public void onChanged( @Nullable final List < GameEntity > games ) {
                     gamesAdapter.setGames( games );

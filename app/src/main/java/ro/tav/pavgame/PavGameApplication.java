@@ -67,6 +67,15 @@ public class PavGameApplication extends Application {
         }
     }
 
+    @Override
+    public void onTerminate() {
+        super.onTerminate();
+        if ( !activities.isEmpty() )
+            Timber.wtf( "aplicatia inca are activitati, desi a fost terminata" );
+        else
+            Timber.d( "Aplicatia -> onTerminate() nu mai are activitati" );
+    }
+
     public static void addActivity( Activity a ) {
         pavGameApplication.activities.add( a );
     }

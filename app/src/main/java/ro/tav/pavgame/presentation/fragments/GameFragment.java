@@ -77,7 +77,7 @@ public class GameFragment extends Fragment {
         gameInProgressServiceIntent = new Intent( requireContext(), PavGameService.class );
 
         //adaugam listener pt butonul de joc, pt a putea incepe jocul
-        Button button = ( Button ) requireView().findViewById( R.id.startGameButton );
+        Button button = requireView().findViewById( R.id.startGameButton );
         button.setOnClickListener( new Button.OnClickListener() {
             @Override
             public void onClick( View v ) {
@@ -296,7 +296,8 @@ public class GameFragment extends Fragment {
                 }
 
                 //adaugam jocul folosindu-ne de viewModel
-                PavGameViewModel.addResult( PavGameViewModel.getUserName(), result, lat );
+                PavGameViewModel pavGameViewModel = new PavGameViewModel( PavGameApplication.getApplication() );
+                pavGameViewModel.addResult( PavGameViewModel.getUserName(), result, lat );
                 PavGameApplication.getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
                         PavGameNotificationFactory.createCustomHelloNotification( getContext(),
                                 s1, s2 ) );

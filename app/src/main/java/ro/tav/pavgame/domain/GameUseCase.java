@@ -3,15 +3,17 @@ package ro.tav.pavgame.domain;
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
 
-public class GameUseCase {
+public class GameUseCase extends ViewModel {
     private final GameMediator mGameMediator;
 
-    public GameUseCase( Application application ) {
+    protected GameUseCase( Application application ) {
+        super();
         mGameMediator = new GameMediator( application );
     }
 

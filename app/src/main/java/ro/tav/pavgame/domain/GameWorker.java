@@ -16,8 +16,8 @@ import timber.log.Timber;
 public class GameWorker extends Worker {
     private final Context context;
 
-    public GameWorker( @NonNull Context context,
-                       @NonNull WorkerParameters workerParams ) {
+    protected GameWorker( @NonNull Context context,
+                          @NonNull WorkerParameters workerParams ) {
         super( context, workerParams );
         this.context = context;
     }
