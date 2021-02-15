@@ -1,25 +1,18 @@
 package ro.tav.pavgame.domain;
 
 import ro.tav.pavgame.data.GameEntity;
-import ro.tav.pavgame.data.inMemoryDB.InMemoryDataSource;
+import ro.tav.pavgame.data.inMemoryDB.InMemoryDatabase;
 
-public class GameInMemoryRepository extends InMemoryDataSource {
-    protected GameInMemoryRepository() {
-        super();
+public abstract class GameInMemoryRepository {
+    protected final InMemoryDatabase inMemoryDatabase;
+
+    protected GameInMemoryRepository( InMemoryDatabase inMemoryDatabase ) {
+        this.inMemoryDatabase = inMemoryDatabase;
     }
 
-    @Override
-    protected void addInMemory( GameEntity gameEntity ) {
-        inMemoryDatabase.addInMemory( gameEntity );
-    }
+    protected abstract void addInMemory( GameEntity gameEntity );
 
-    @Override
-    protected GameEntity removeInMemory() {
-        return inMemoryDatabase.removeInMemory();
-    }
+    protected abstract GameEntity removeInMemory();
 
-    @Override
-    protected int getNrOfElements() {
-        return inMemoryDatabase.getNrOfElements();
-    }
+    protected abstract int getNrOfElements();
 }

@@ -10,6 +10,9 @@ import androidx.work.WorkerParameters;
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.inMemoryDB.InMemoryDataSource;
+import ro.tav.pavgame.data.localDB.LocalGameDataSource;
+import ro.tav.pavgame.data.remoteDB.RemoteDataSource;
 import timber.log.Timber;
 
 
@@ -30,10 +33,10 @@ public class GameWorker extends Worker {
 
         if ( "get".equals( value ) ) {
             Timber.d( "GET Operation" );
-            GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
+            GameRemoteRepository gameRemoteRepository = new RemoteDataSource();
             List < GameEntity > games = gameRemoteRepository.getAllGames();
 
-            GameLocalRepository gameLocalRepository = new GameLocalRepository( context );
+            GameLocalRepository gameLocalRepository = new LocalGameDataSource( context );
             for ( GameEntity game : games ) {
                 gameLocalRepository.insertGame( game );
             }
@@ -42,8 +45,8 @@ public class GameWorker extends Worker {
 
         } else if ( "post".equals( value ) ) {
             Timber.d( "SYNC Operation" );
-            GameInMemoryRepository gameInMemoryRepository = new GameInMemoryRepository();
-            GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
+            GameInMemoryRepository gameInMemoryRepository = new InMemoryDataSource();
+            GameRemoteRepository gameRemoteRepository = new RemoteDataSource();
 
             final int nrOfSyncs = gameInMemoryRepository.getNrOfElements();
             for ( int i = 0; i < nrOfSyncs; i++ ) {         ///pt a nu face ciclu infinit; ex:nu merge netul=> worst case n insert failed

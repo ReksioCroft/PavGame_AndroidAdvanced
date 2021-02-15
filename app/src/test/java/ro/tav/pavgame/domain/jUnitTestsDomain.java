@@ -11,6 +11,8 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.inMemoryDB.InMemoryDataSource;
+import ro.tav.pavgame.data.remoteDB.RemoteDataSource;
 import timber.log.Timber;
 
 @RunWith( RobolectricTestRunner.class )
@@ -26,10 +28,10 @@ public class jUnitTestsDomain {
 
     @Test
     public void test1() {
-        GameRemoteRepository gameRemoteRepository = new GameRemoteRepository();
+        GameRemoteRepository gameRemoteRepository = new RemoteDataSource();
         gameRemoteRepository.insertGame( mGame );
         try {
-            Thread.sleep( 1500 );
+            Thread.sleep( 2000 );
         } catch ( Exception e ) {
             Timber.d( e );
         }
@@ -48,7 +50,7 @@ public class jUnitTestsDomain {
     public void test2() {
         GameUseCase gameUseCase = new GameUseCase( ApplicationProvider.getApplicationContext() );
         gameUseCase.insertGame( mGame );
-        GameInMemoryRepository gameInMemoryRepository = new GameInMemoryRepository();
+        GameInMemoryRepository gameInMemoryRepository = new InMemoryDataSource();
         GameEntity gameFromRemoteRepository = gameInMemoryRepository.removeInMemory();
         assert gameFromRemoteRepository == mGame;
     }

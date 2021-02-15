@@ -1,5 +1,7 @@
 package ro.tav.pavgame.data.localDB;
 
+import android.content.Context;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -9,19 +11,38 @@ import androidx.room.Query;
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.domain.GameLocalRepository;
+import timber.log.Timber;
 
-public abstract class LocalGameDataSource {
-    protected final GameDao mGameDao;
 
-    protected LocalGameDataSource( AppDatabase appDatabase ) {
-        mGameDao = appDatabase.gameDao();
+public class LocalGameDataSource extends GameLocalRepository {
+    protected final LocalGameDataSource.GameDao mGameDao;
+
+    public LocalGameDataSource( Context context ) {
+        super();
+        mGameDao = AppDatabase.getAppDatabase( context ).gameDao();
     }
 
-    protected abstract LiveData < List < GameEntity > > getAllGames();
+    @Override
+    protected LiveData < List < GameEntity > > getAllGames() {
+        return mGameDao.getAllGames();
+    }
 
-    protected abstract LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user );
+    @Override
+    protected LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
+        return mGameDao.getSpecificGamesbyUserName( user );
+    }
 
-    protected abstract void insertGame( GameEntity game );
+    @Override
+    protected void insertGame( GameEntity game ) {
+        AppDatabase.databaseWriteExecutor.execute( () -> {
+            try {
+                mGameDao.insertGame( game );
+            } catch ( Exception e ) {
+                Timber.e( e );
+            }
+        } );
+    }
 
     @Dao
     protected interface GameDao {

@@ -12,18 +12,18 @@ public class InMemoryDatabase {
         //empty constructor for making it protected
     }
 
-    public void addInMemory( GameEntity gameEntity ) {
+    protected void addInMemory( GameEntity gameEntity ) {
         q.add( gameEntity );
         nrOfElements++;
     }
 
-    public GameEntity removeInMemory() {
+    protected GameEntity removeInMemory() {
         GameEntity gameEntity = q.remove();
         nrOfElements--;          //daca mu s-a aruncat exceptie, inseamna ca putem scadea nr de elemente
         return gameEntity;
     }
 
-    public int getNrOfElements() {
+    protected int getNrOfElements() {
         return nrOfElements;
     }
 }

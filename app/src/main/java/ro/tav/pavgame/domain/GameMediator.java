@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.inMemoryDB.InMemoryDataSource;
+import ro.tav.pavgame.data.localDB.LocalGameDataSource;
 import timber.log.Timber;
 
 public class GameMediator {
@@ -23,7 +25,7 @@ public class GameMediator {
 
     protected GameMediator( Context context ) {
         this.mContext = context;
-        mRepository = new GameLocalRepository( mContext );
+        mRepository = new LocalGameDataSource( mContext );
 
         //Vrem ca primul get sa se faca instant cand se deschide aplicatia
         getFromRemoteRepository();
@@ -69,7 +71,7 @@ public class GameMediator {
 
     protected void insertGame( GameEntity game ) {
         //inseram jocul in coada repo-ului local
-        GameInMemoryRepository gameInMemoryRepository = new GameInMemoryRepository();
+        GameInMemoryRepository gameInMemoryRepository = new InMemoryDataSource();
         gameInMemoryRepository.addInMemory( game );
 
         //dupa ce am inserat acest joc, il vom trimite (pe el si ce mai e in coada) in repo-ul firebase

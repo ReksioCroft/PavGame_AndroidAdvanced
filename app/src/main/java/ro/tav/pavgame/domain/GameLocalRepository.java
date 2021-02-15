@@ -1,39 +1,17 @@
 package ro.tav.pavgame.domain;
 
-import android.content.Context;
-
 import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
-import ro.tav.pavgame.data.localDB.AppDatabase;
-import ro.tav.pavgame.data.localDB.LocalGameDataSource;
-import timber.log.Timber;
 
-public class GameLocalRepository extends LocalGameDataSource {
-    protected GameLocalRepository( Context context ) {
-        super( AppDatabase.getAppDatabase( context ) );
-    }
+public abstract class GameLocalRepository {
+    protected abstract LiveData < List < GameEntity > > getAllGames();
 
-    @Override
-    protected LiveData < List < GameEntity > > getAllGames() {
-        return mGameDao.getAllGames();
-    }
+    protected abstract LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user );
 
-    @Override
-    protected LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
-        return mGameDao.getSpecificGamesbyUserName( user );
-    }
+    protected abstract void insertGame( GameEntity game );
 
-    @Override
-    protected void insertGame( GameEntity game ) {
-        AppDatabase.databaseWriteExecutor.execute( () -> {
-            try {
-                mGameDao.insertGame( game );
-            } catch ( Exception e ) {
-                Timber.e( e );
-            }
-        } );
-    }
+    protected GameLocalRepository(){}
 }
