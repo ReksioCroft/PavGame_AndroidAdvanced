@@ -4,15 +4,10 @@ import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
 
-public abstract class RemoteDataSource {
-    protected static final String TAG = "remote-source";
-    protected final RetrofitApi api;
+public interface RemoteDataSource {
+    RetrofitApi api = RetrofitApi.createApi();
 
-    protected RemoteDataSource( RetrofitApi api ) {
-        this.api = api;
-    }
+    List < GameEntity > getAllGames();
 
-    protected abstract List < GameEntity > getAllGames();
-
-    protected abstract void insertGame( GameEntity gameEntity );
+    void insertGame( GameEntity gameEntity );
 }

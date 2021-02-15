@@ -8,12 +8,14 @@ import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.data.localDB.AppDatabase;
-import ro.tav.pavgame.data.localDB.LocalGameDataSource;
+import ro.tav.pavgame.data.localDB.GameDao;
 import timber.log.Timber;
 
-public class GameLocalRepository extends LocalGameDataSource {
+public class GameLocalRepository implements GameDao {
+    private final GameDao mGameDao;
+
     public GameLocalRepository( Context context ) {
-        super( AppDatabase.getAppDatabase( context ).gameDao() );
+        mGameDao = AppDatabase.getAppDatabase( context ).gameDao();
     }
 
     @Override
@@ -24,6 +26,11 @@ public class GameLocalRepository extends LocalGameDataSource {
     @Override
     public LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
         return mGameDao.getSpecificGamesbyUserName( user );
+    }
+
+    @Override
+    public List < GameEntity > getSpecificGamesbyUserNameStatic( String user ) {
+        return mGameDao.getSpecificGamesbyUserNameStatic( user );
     }
 
     @Override

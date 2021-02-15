@@ -13,14 +13,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.data.remoteDB.RemoteDataSource;
-import ro.tav.pavgame.data.remoteDB.RetrofitApi;
 import timber.log.Timber;
 
-public class GameRemoteRepository extends RemoteDataSource {
-    public GameRemoteRepository() {
-        super( RetrofitApi.createApi() );
-    }
-
+public class GameRemoteRepository implements RemoteDataSource {
     @Override
     public List < GameEntity > getAllGames() {
         List < GameEntity > gameEntities = new ArrayList <>();
@@ -36,7 +31,7 @@ public class GameRemoteRepository extends RemoteDataSource {
                 }
             }
         } catch ( Exception e ) {
-            Timber.tag( TAG ).d( e, "Something happened" );
+            Timber.d( e, "Something happened" );
         }
         return gameEntities;
     }
@@ -47,12 +42,12 @@ public class GameRemoteRepository extends RemoteDataSource {
         call.enqueue( new Callback < GameEntity >() {
             @Override
             public void onResponse( @NotNull Call < GameEntity > call, @NotNull Response < GameEntity > response ) {
-                Timber.tag( TAG ).d( "Success inserting game in firebase db" );
+                Timber.d( "Success inserting game in firebase db" );
             }
 
             @Override
             public void onFailure( @NotNull Call < GameEntity > call, @NotNull Throwable t ) {
-                Timber.tag( TAG ).d( "fail inserting game in firebase db" );
+                Timber.d( "fail inserting game in firebase db" );
                 GameInMemoryRepository gameInMemoryRepository = new GameInMemoryRepository();
                 gameInMemoryRepository.addInMemory( gameEntity );
             }

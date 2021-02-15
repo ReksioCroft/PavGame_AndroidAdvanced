@@ -10,6 +10,8 @@ import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
 
+//LocalDB Data Source
+//Dao = Data Acces Object
 @Dao
 public interface GameDao {
     @Query( "SELECT DISTINCT numeJucator, gameType, result, cast (count(*) as text) as gameId from gameEntity  group by numeJucator, gameType, result order by count(*) desc, numeJucator, gameType desc, result desc" )

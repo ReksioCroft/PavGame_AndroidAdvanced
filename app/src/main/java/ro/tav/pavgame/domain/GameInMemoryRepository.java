@@ -3,12 +3,7 @@ package ro.tav.pavgame.domain;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.data.inMemoryDB.InMemoryDataSource;
 
-public class GameInMemoryRepository extends InMemoryDataSource {
-
-    public GameInMemoryRepository() {
-        super();
-    }
-
+public class GameInMemoryRepository implements InMemoryDataSource {
     @Override
     public void addInMemory( GameEntity gameEntity ) {
         inMemoryDatabase.addInMemery( gameEntity );
