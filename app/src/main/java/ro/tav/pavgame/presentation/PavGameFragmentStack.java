@@ -7,17 +7,17 @@ import java.util.Stack;
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 
 public class PavGameFragmentStack extends Stack < Fragment > {
-    private Boolean containsGame = Boolean.FALSE;
+    private boolean containsGame = false;
     private int co = 0;
 
-    public Boolean isGameInStack() {
+    public boolean isGameInStack() {
         return containsGame;
     }
 
     @Override
     public Fragment push( Fragment item ) {
         if ( item.getClass() == GameFragment.class )
-            containsGame = Boolean.TRUE;
+            containsGame = true;
         co++;
         return super.push( item );
     }
@@ -26,7 +26,7 @@ public class PavGameFragmentStack extends Stack < Fragment > {
     public synchronized Fragment pop() {
         if ( !this.empty() ) {
             if ( this.peek().getClass() == GameFragment.class )
-                containsGame = Boolean.FALSE;
+                containsGame = false;
             co--;
         }
         return super.pop();

@@ -16,15 +16,18 @@ public class GameLocalRepository extends LocalGameDataSource {
         super( AppDatabase.getAppDatabase( context ).gameDao() );
     }
 
-    protected LiveData < List < GameEntity > > getAllGames() {
+    @Override
+    public LiveData < List < GameEntity > > getAllGames() {
         return mGameDao.getAllGames();
     }
 
-    protected LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
+    @Override
+    public LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
         return mGameDao.getSpecificGamesbyUserName( user );
     }
 
-    protected void insertGame( GameEntity game ) {
+    @Override
+    public void insertGame( GameEntity game ) {
         AppDatabase.databaseWriteExecutor.execute( () -> {
             try {
                 mGameDao.insertGame( game );

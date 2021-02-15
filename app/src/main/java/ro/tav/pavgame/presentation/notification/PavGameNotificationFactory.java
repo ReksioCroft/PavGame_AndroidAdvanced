@@ -16,6 +16,7 @@ public class PavGameNotificationFactory {
     private static final int BASE_ID = 1;
     private static final int SERVICE_NOTIFICATION_ID = BASE_ID + 1;
     private static final int HELLO_NOTIFICATION_ID = SERVICE_NOTIFICATION_ID + 1;
+    private static final int NOTIFICATION_LAUNCH_CODE = 485;
 
     public static int getServiceNotificationId() {
         return SERVICE_NOTIFICATION_ID;
@@ -24,12 +25,6 @@ public class PavGameNotificationFactory {
     public static int getHelloNotificationId() {
         return HELLO_NOTIFICATION_ID;
     }
-
-    public static int getNotificationLaunchCode() {
-        return NOTIFICATION_LAUNCH_CODE;
-    }
-
-    private static final int NOTIFICATION_LAUNCH_CODE = 485;
 
     public static Notification createProcessingWorkNotification( Context context ) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder( context, PavGameNotificationChannelFactory.CHANNEL_ID )

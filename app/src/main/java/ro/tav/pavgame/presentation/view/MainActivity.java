@@ -21,11 +21,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.Objects;
-
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.PavGameFragmentStack;
+import ro.tav.pavgame.presentation.PavGameViewModel;
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 import ro.tav.pavgame.presentation.fragments.HomeFragment;
 import ro.tav.pavgame.presentation.fragments.SlideshowFragment;
@@ -74,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener( this );
         View headerView = navigationView.getHeaderView( 0 );
         TextView textView = headerView.findViewById( R.id.nav_header_subtitle );
-        textView.setText( Objects.requireNonNull( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() ).getEmail() );
+        textView.setText( PavGameViewModel.getUserName() );
 
         //deschidem fragmentul acasa
         openFragment( new HomeFragment( R.layout.fragment_home ) );

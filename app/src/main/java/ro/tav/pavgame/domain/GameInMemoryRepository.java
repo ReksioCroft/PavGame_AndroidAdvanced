@@ -10,17 +10,17 @@ public class GameInMemoryRepository extends InMemoryDataSource {
     }
 
     @Override
-    protected void addInMemory( GameEntity gameEntity ) {
+    public void addInMemory( GameEntity gameEntity ) {
         inMemoryDatabase.addInMemery( gameEntity );
     }
 
     @Override
-    protected GameEntity removeInMemory() {
+    public GameEntity removeInMemory() {
         return inMemoryDatabase.removeInMemory();
     }
 
     @Override
-    protected int getNrOfElements() {
+    public int getNrOfElements() {
         return inMemoryDatabase.getNrOfElements();
     }
 }

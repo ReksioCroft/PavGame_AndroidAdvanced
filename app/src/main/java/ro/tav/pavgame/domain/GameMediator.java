@@ -22,7 +22,7 @@ public class GameMediator {
     private final Data dataforBuilder = ( new Data.Builder().putString( "mode", "get" ) ).build();
     private final Data postDataforBuilder = ( new Data.Builder().putString( "mode", "post" ) ).build();
 
-    public GameMediator( Application application ) {
+    protected GameMediator( Application application ) {
         this.mApplication = application;
         mRepository = new GameLocalRepository( application );
 
@@ -30,6 +30,10 @@ public class GameMediator {
         getFromRemoteRepository();
 
         //De asemenea, vrem sa facem get pe parcurs
+        setPeriodicRequests();
+    }
+
+    private void setPeriodicRequests() {
         try {
             PeriodicWorkRequest downloadWorkRequestLoop =
                     new PeriodicWorkRequest.Builder( GameWorker.class,

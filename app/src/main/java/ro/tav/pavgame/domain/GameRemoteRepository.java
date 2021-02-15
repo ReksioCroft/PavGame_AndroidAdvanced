@@ -21,6 +21,7 @@ public class GameRemoteRepository extends RemoteDataSource {
         super( RetrofitApi.createApi() );
     }
 
+    @Override
     public List < GameEntity > getAllGames() {
         List < GameEntity > gameEntities = new ArrayList <>();
         Gson gson = new Gson();
@@ -40,6 +41,7 @@ public class GameRemoteRepository extends RemoteDataSource {
         return gameEntities;
     }
 
+    @Override
     public void insertGame( GameEntity gameEntity ) {
         Call < GameEntity > call = api.insertGame( gameEntity );
         call.enqueue( new Callback < GameEntity >() {

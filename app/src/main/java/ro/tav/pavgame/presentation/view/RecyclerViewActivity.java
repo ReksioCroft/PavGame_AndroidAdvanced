@@ -57,7 +57,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
     }
 
     public void showSpecificUserGames( View view ) {//clickListener pt user din cardView
-        Timber.v( "Specific game activity creating" );
+        Timber.d( "Specific game activity creating" );
         Intent intent = new Intent( RecyclerViewActivity.this, RecyclerViewActivity.class );
         Bundle b = new Bundle();
         TextView textView = ( TextView ) view;  //suntem siguri ca primim textView
