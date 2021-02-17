@@ -33,6 +33,22 @@ public class GameMediator {
         setPeriodicRequests();
     }
 
+    protected LiveData < List < GameEntity > > getAllGames() {
+        return localRepository.getAllGames();
+    }
+
+    protected LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
+        return localRepository.getSpecificGamesbyUserName( user );
+    }
+
+    protected void insertGame( GameEntity game ) {
+        //adaugam jocul in firebase db
+        postToRemoteRepository( game );
+
+        //Inseram jocul in roomDatabase
+        localRepository.insertGame( game );
+    }
+
     private void setPeriodicRequests() {
         //In caz ca vreun joc nu ajunge in Firebase, vrem sa il sincronizam
         //fara a fi necesar sa se deschida RecucleViewActivity sau sa se castige alt joc
@@ -49,22 +65,6 @@ public class GameMediator {
         } catch ( Exception e ) {
             Timber.d( e );
         }
-    }
-
-    public LiveData < List < GameEntity > > getAllGames() {
-        return localRepository.getAllGames();
-    }
-
-    public LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
-        return localRepository.getSpecificGamesbyUserName( user );
-    }
-
-    public void insertGame( GameEntity game ) {
-        //adaugam jocul in firebase db
-        postToRemoteRepository( game );
-
-        //Inseram jocul in roomDatabase
-        localRepository.insertGame( game );
     }
 
     private void getFromRemoteRepository() {
