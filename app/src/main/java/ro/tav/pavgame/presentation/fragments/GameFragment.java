@@ -300,7 +300,7 @@ public class GameFragment extends Fragment {
                 //adaugam jocul in baza de date folosindu-ne de viewModel
                 PavGameViewModel pavGameViewModel = new ViewModelProvider( getActivity(), new PavGameViewModelFactory( PavGameApplication.getApplication() ) ).get( PavGameViewModel.class );
                 pavGameViewModel.addResult( PavGameViewModel.getUserName(), result, lat );
-                PavGameApplication.getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
+                PavGameApplication.getApplication().getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
                         PavGameNotificationFactory.createCustomHelloNotification( getContext(),
                                 s1, s2 ) );
                 Toast.makeText( getContext(), messege, Toast.LENGTH_LONG ).show();

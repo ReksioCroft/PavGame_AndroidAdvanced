@@ -55,4 +55,6 @@
     <string name="broadcast_s1">Replace Successful</string>
     <string name="broadcast_s2">Broadcast received my_package_replace intent</string>
     <string name="invalidInput">Invalid Input</string>
+    <string name="loggedIn">You are logged in</string>
+    <string name="loginRequired">Please Login</string>
 </resources>

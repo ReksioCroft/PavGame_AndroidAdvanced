@@ -23,7 +23,7 @@ import timber.log.Timber;
 public class PavGameApplication extends Application {
     private static PavGameApplication pavGameApplication;
     private final List < Activity > activities;
-    private static NotificationManager notificationManager = null;
+    private NotificationManager notificationManager = null;
 
     public PavGameApplication() {
         super();
@@ -76,11 +76,11 @@ public class PavGameApplication extends Application {
             Timber.d( "Aplicatia -> onTerminate() nu mai are activitati" );
     }
 
-    public static void addActivity( Activity a ) {
+    public void addActivity( Activity a ) {
         pavGameApplication.activities.add( a );
     }
 
-    public static void removeActivity( Activity a ) {
+    public void removeActivity( Activity a ) {
         pavGameApplication.activities.remove( a );
     }
 
@@ -88,7 +88,7 @@ public class PavGameApplication extends Application {
         return pavGameApplication;
     }
 
-    public static NotificationManager getNotificationManager() {
+    public NotificationManager getNotificationManager() {
         return notificationManager;
     }
 }

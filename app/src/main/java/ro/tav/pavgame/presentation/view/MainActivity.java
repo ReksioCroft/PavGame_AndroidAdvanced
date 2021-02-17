@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         ///adaugam instanta
-        PavGameApplication.addActivity( this );
+        PavGameApplication.getApplication().addActivity( this );
 
         //ne afisam un mesaj cu timber
         Timber.i( "MainActivity created" );
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //afisam o notificare de bun venit
-        PavGameApplication.getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
+        PavGameApplication.getApplication().getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
                 PavGameNotificationFactory.createHelloNotification( this ) );
 
     }
@@ -107,8 +107,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if ( keyCode == KeyEvent.KEYCODE_BACK ) {
             popFragment();
             if ( fragmentStack.empty() ) {
-                while ( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() != null )
-                    LoginActivity.getFireBaseCurrentInstance().signOut();
+                while ( PavGameViewModel.getFirebaseAuth().getCurrentUser() != null )
+                    PavGameViewModel.getFirebaseAuth().signOut();
                 finish();
             }
         }
@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onDestroy() {
         super.onDestroy();
-        PavGameApplication.removeActivity( this );
+        PavGameApplication.getApplication().removeActivity( this );
     }
 
 
@@ -212,8 +212,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void makeLogout( View view ) {
-        while ( LoginActivity.getFireBaseCurrentInstance().getCurrentUser() != null )
-            LoginActivity.getFireBaseCurrentInstance().signOut();
+        while ( PavGameViewModel.getFirebaseAuth().getCurrentUser() != null )
+            PavGameViewModel.getFirebaseAuth().signOut();
         finish();
     }
 }

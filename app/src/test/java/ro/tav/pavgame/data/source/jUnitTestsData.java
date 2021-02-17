@@ -35,7 +35,7 @@ public class jUnitTestsData {
         LocalGameDataSource.GameDao gameDao = db.gameDao();
         gameDao.insertGame( mGame );
 
-        List < GameEntity > l = gameDao.getSpecificGamesbyUserNameStatic( numeJucator );
+        List < GameEntity > l = gameDao.getSpecificGamesbyUserNameAsList( numeJucator );
 
         db.close();
 

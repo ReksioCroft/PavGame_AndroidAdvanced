@@ -18,22 +18,20 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Objects;
-
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText email, password;
-    static FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_login );
-        PavGameApplication.addActivity( this );
+        PavGameApplication.getApplication().addActivity( this );
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         email = findViewById( R.id.email );
@@ -44,13 +42,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged( @NonNull FirebaseAuth firebaseAuth ) {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
                 if ( mFirebaseUser != null ) {
-                    Toast.makeText( LoginActivity.this, "You are logged in", Toast.LENGTH_SHORT ).show();
-                    PavGameViewModel.setUserName( mFirebaseUser.getEmail() );
+                    Toast.makeText( LoginActivity.this, getString( R.string.loggedIn ), Toast.LENGTH_SHORT ).show();
+                    PavGameViewModel.setFirebaseAuth( mFirebaseAuth );
                     Intent i = new Intent( LoginActivity.this, MainActivity.class );
                     startActivity( i );
                 } else
-                    Toast.makeText( LoginActivity.this, "Please Login", Toast.LENGTH_SHORT ).show();
-
+                    Toast.makeText( LoginActivity.this, getString( R.string.loginRequired ), Toast.LENGTH_SHORT ).show();
             }
         };
 
@@ -91,7 +88,7 @@ public class LoginActivity extends AppCompatActivity {
                         if ( !task.isSuccessful() ) {
                             Toast.makeText( LoginActivity.this, "Login Error. Please try again", Toast.LENGTH_SHORT ).show();
                         } else {
-                            PavGameViewModel.setUserName( Objects.requireNonNull( mFirebaseAuth.getCurrentUser() ).getEmail() );
+                            PavGameViewModel.setFirebaseAuth( mFirebaseAuth );
                             Intent intent = new Intent( LoginActivity.this, MainActivity.class );
                             startActivity( intent );
                         }
@@ -105,6 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         login_notRegistered.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View view ) {
+                PavGameViewModel.setFirebaseAuth( mFirebaseAuth );
                 Intent intent = new Intent( LoginActivity.this, RegisterActivity.class );
                 startActivity( intent );
             }
@@ -131,10 +129,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        PavGameApplication.removeActivity( this );
-    }
-
-    public static FirebaseAuth getFireBaseCurrentInstance() {
-        return mFirebaseAuth;
+        PavGameApplication.getApplication().removeActivity( this );
     }
 }

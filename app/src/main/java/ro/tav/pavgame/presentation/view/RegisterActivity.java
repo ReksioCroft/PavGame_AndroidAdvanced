@@ -28,7 +28,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_register );
-        PavGameApplication.addActivity( this );
+        PavGameApplication.getApplication().addActivity( this );
 
         TextView register_notLogedIn = findViewById( R.id.logInFromRegister );
         register_notLogedIn.setOnClickListener( new View.OnClickListener() {
@@ -102,6 +102,6 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        PavGameApplication.removeActivity( this );
+        PavGameApplication.getApplication().removeActivity( this );
     }
 }

@@ -55,4 +55,6 @@
     <string name="broadcast_s1">Reinstalare cu succes!</string>
     <string name="broadcast_s2">Broadcast Receiverul a fost activat prin intent-ul my_package_replace</string>
     <string name="invalidInput">Input Invalid</string>
+    <string name="loggedIn">Autentificat</string>
+    <string name="loginRequired">Autentificati-va&#8230;</string>
 </resources>
