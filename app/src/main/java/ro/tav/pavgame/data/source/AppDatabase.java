@@ -1,4 +1,4 @@
-package ro.tav.pavgame.data.localDB;
+package ro.tav.pavgame.data.source;
 
 import android.content.Context;
 
@@ -14,14 +14,16 @@ import ro.tav.pavgame.data.GameEntity;
 @Database( entities = { GameEntity.class }, version = 1 )
 public abstract class AppDatabase extends RoomDatabase {
     private static volatile AppDatabase INSTANCE;
+    private static final int NUMBER_OF_THREADS = 4;
+    protected static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool( NUMBER_OF_THREADS );
+
+    protected AppDatabase() {
+        //empty constructor for making class protected
+    }
 
     protected abstract LocalGameDataSource.GameDao gameDao();
 
-    private static final int NUMBER_OF_THREADS = 4;
-
-    public static final ExecutorService databaseWriteExecutor = Executors.newFixedThreadPool( NUMBER_OF_THREADS );
-
-    public static AppDatabase getAppDatabase( final Context context ) {
+    protected static AppDatabase getAppDatabase( final Context context ) {
         if ( INSTANCE == null ) {
             synchronized ( AppDatabase.class ) {
                 INSTANCE = Room.databaseBuilder( context.getApplicationContext(),
@@ -31,9 +33,5 @@ public abstract class AppDatabase extends RoomDatabase {
             }
         }
         return INSTANCE;
-    }
-
-    protected AppDatabase() {
-        //empty constructor for making class protected
     }
 }

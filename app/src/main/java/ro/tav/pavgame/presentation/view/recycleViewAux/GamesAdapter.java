@@ -22,10 +22,12 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
     private final LayoutInflater mInflater;
     private View itemView;
     private final Context context;
+    private final boolean setOnClickListenerOnViewCards;
 
-    public GamesAdapter( Context context ) {
+    public GamesAdapter( Context context, boolean setOnClickListenerOnViewCards ) {
         mInflater = LayoutInflater.from( context );
         this.context = context;
+        this.setOnClickListenerOnViewCards = setOnClickListenerOnViewCards;
     }
 
     @NonNull
@@ -62,16 +64,18 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
                 gamesViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
             }
 
-            gamesViewHolder.mCard.setOnClickListener( new View.OnClickListener() {
-                @Override
-                public void onClick( View view ) {
-                    Intent intent = new Intent( context, RecyclerViewActivity.class );
-                    Bundle b = new Bundle();
-                    b.putString( "user", currentGame.getNumeJucator() ); //user_email
-                    intent.putExtras( b ); //Put your id to your next Intent
-                    context.startActivity( intent );//cream o noua activitate pt utilizatorul specific
-                }
-            } );
+            if ( setOnClickListenerOnViewCards ) {
+                gamesViewHolder.mCard.setOnClickListener( new View.OnClickListener() {
+                    @Override
+                    public void onClick( View view ) {
+                        Intent intent = new Intent( context, RecyclerViewActivity.class );
+                        Bundle bundle = new Bundle();
+                        bundle.putString( "specificUser", currentGame.getNumeJucator() ); //user_email
+                        intent.putExtras( bundle ); //Put your id to your next Intent
+                        context.startActivity( intent );//cream o noua activitate pt utilizatorul specific
+                    }
+                } );
+            }
         } else {
             gamesViewHolder.mTextViewName.setText( R.string.noText );
             gamesViewHolder.mTextViewResult.setText( R.string.noText );

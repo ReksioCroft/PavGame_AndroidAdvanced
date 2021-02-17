@@ -8,13 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 
+
 public class PavGameBindingAdapter {
-    @BindingAdapter( { "game_adapter", "user" } )
-    public static void recycleViewGamesBinding( RecyclerView mRecyclerViewGames, GamesAdapter gamesAdapter, String user ) {
+    @BindingAdapter( "gamesAdapter" )
+    public static void recycleViewSetAdapter( RecyclerView mRecyclerViewGames, GamesAdapter gamesAdapter ) {
         if ( mRecyclerViewGames.getAdapter() == null ) {
             // set the adapter to the recycler view
             mRecyclerViewGames.setAdapter( gamesAdapter );
@@ -22,19 +22,26 @@ public class PavGameBindingAdapter {
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( mRecyclerViewGames.getContext() );
             mRecyclerViewGames.setLayoutManager( layoutManager );
         }
-        //pornim binduirea permanenta intre recyleview si baza de date
-        PavGameViewModel pavGameViewModel = new PavGameViewModel( PavGameApplication.getApplication() );
+    }
+
+    @BindingAdapter( { "pavGameViewModel", "user" } )
+    public static void RecycleViewGamesBindingGames( RecyclerView mRecyclerViewGames, PavGameViewModel pavGameViewModel, @Nullable String user ) {
+        //daca am primit un string null, facem bind cu toate jocurile din repo
         if ( user == null ) {
             pavGameViewModel.getAllGames().observeForever( new Observer < List < GameEntity > >() {
                 @Override
                 public void onChanged( @Nullable final List < GameEntity > games ) {
+                    //suntem siguri ca adaptorul nostru este de tipul GameAdapter
+                    GamesAdapter gamesAdapter = ( GamesAdapter ) mRecyclerViewGames.getAdapter();
                     gamesAdapter.setGames( games );
                 }
             } );
-        } else {
+        }  //altfel, afisam jocurile unui anumite utilizator
+        else {
             pavGameViewModel.getSpecificGamesbyUserName( user ).observeForever( new Observer < List < GameEntity > >() {
                 @Override
                 public void onChanged( @Nullable final List < GameEntity > games ) {
+                    GamesAdapter gamesAdapter = ( GamesAdapter ) mRecyclerViewGames.getAdapter();
                     gamesAdapter.setGames( games );
                 }
             } );

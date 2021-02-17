@@ -11,24 +11,23 @@ import java.sql.Timestamp;
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
-import ro.tav.pavgame.data.inMemoryDB.InMemoryDataSource;
-import ro.tav.pavgame.data.remoteDB.RemoteDataSource;
 import timber.log.Timber;
 
 @RunWith( RobolectricTestRunner.class )
 public class jUnitTestsDomain {
     private GameEntity mGame;
+    private final PavGameDependencyProvider pavGameDependencyProvider = new PavGameDependencyProvider( ApplicationProvider.getApplicationContext() );
+
 
     @Before
     public void createGameEntity() {
         String timeStamp = new Timestamp( System.currentTimeMillis() ).toString();
-        String numeJucator = "myJUnitTest";
-        mGame = new GameEntity( numeJucator, 4096, true, timeStamp );
+        mGame = new GameEntity( "myJUnitTest", 4096, true, timeStamp );
     }
 
     @Test
     public void test1() {
-        GameRemoteRepository gameRemoteRepository = new RemoteDataSource();
+        GameRemoteRepository gameRemoteRepository = pavGameDependencyProvider.provideRemoteRepository();
         gameRemoteRepository.insertGame( mGame );
         try {
             Thread.sleep( 2000 );
@@ -48,9 +47,9 @@ public class jUnitTestsDomain {
 
     @Test
     public void test2() {
-        GameUseCase gameUseCase = new GameUseCase( ApplicationProvider.getApplicationContext() );
+        GameUseCase gameUseCase = pavGameDependencyProvider.provideUseCase();
         gameUseCase.insertGame( mGame );
-        GameInMemoryRepository gameInMemoryRepository = new InMemoryDataSource();
+        GameInMemoryRepository gameInMemoryRepository = pavGameDependencyProvider.provideInMemoryRepository();
         GameEntity gameFromRemoteRepository = gameInMemoryRepository.removeInMemory();
         assert gameFromRemoteRepository == mGame;
     }

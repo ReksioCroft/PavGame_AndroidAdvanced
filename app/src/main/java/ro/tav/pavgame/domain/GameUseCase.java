@@ -1,20 +1,16 @@
 package ro.tav.pavgame.domain;
 
-import android.app.Application;
-
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
 import java.util.List;
 
 import ro.tav.pavgame.data.GameEntity;
 
-public class GameUseCase extends ViewModel {
+public class GameUseCase {
     private final GameMediator mGameMediator;
 
-    protected GameUseCase( Application application ) {
-        super();
-        mGameMediator = new GameMediator( application );
+    protected GameUseCase( GameMediator mediator ) {
+        this.mGameMediator = mediator;
     }
 
     public LiveData < List < GameEntity > > getAllGames() {

@@ -19,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 
@@ -26,6 +27,7 @@ import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.PavGameService;
 import ro.tav.pavgame.presentation.PavGameViewModel;
+import ro.tav.pavgame.presentation.PavGameViewModelFactory;
 import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;
 import timber.log.Timber;
 
@@ -295,8 +297,8 @@ public class GameFragment extends Fragment {
                     s2 = getString( R.string.esec ) + ", " + PavGameViewModel.getUserName() + "!";
                 }
 
-                //adaugam jocul folosindu-ne de viewModel
-                PavGameViewModel pavGameViewModel = new PavGameViewModel( PavGameApplication.getApplication() );
+                //adaugam jocul in baza de date folosindu-ne de viewModel
+                PavGameViewModel pavGameViewModel = new ViewModelProvider( getActivity(), new PavGameViewModelFactory( PavGameApplication.getApplication() ) ).get( PavGameViewModel.class );
                 pavGameViewModel.addResult( PavGameViewModel.getUserName(), result, lat );
                 PavGameApplication.getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
                         PavGameNotificationFactory.createCustomHelloNotification( getContext(),

@@ -1,4 +1,4 @@
-package ro.tav.pavgame.data.localDB;
+package ro.tav.pavgame.data.source;
 
 import android.content.Context;
 
@@ -30,7 +30,7 @@ public class jUnitTestsData {
     }
 
     @Test
-    public void test() {
+    public void test1() {
         AppDatabase db = Room.inMemoryDatabaseBuilder( context, AppDatabase.class ).allowMainThreadQueries().build();
         LocalGameDataSource.GameDao gameDao = db.gameDao();
         gameDao.insertGame( mGame );

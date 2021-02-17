@@ -1,14 +1,14 @@
-package ro.tav.pavgame.data.inMemoryDB;
+package ro.tav.pavgame.data.source;
 
 import java.util.LinkedList;
 
 import ro.tav.pavgame.data.GameEntity;
 
-public class InMemoryDatabase {
+public class InMemoryTemporaryStorage {
     private static final LinkedList < GameEntity > q = new LinkedList <>();
     private static int nrOfElements = 0;
 
-    protected InMemoryDatabase() {
+    protected InMemoryTemporaryStorage() {
         //empty constructor for making it protected
     }
 

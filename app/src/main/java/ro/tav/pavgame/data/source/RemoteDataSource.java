@@ -1,4 +1,4 @@
-package ro.tav.pavgame.data.remoteDB;
+package ro.tav.pavgame.data.source;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.Gson;
@@ -62,12 +62,13 @@ public class RemoteDataSource extends GameRemoteRepository {
             @Override
             public void onFailure( @NotNull Call < GameEntity > call, @NotNull Throwable t ) {
                 Timber.d( "fail inserting game in firebase db" );
-                addInMemoryRepository( gameEntity );
+                InMemoryDataSource inMemoryDataSource = new InMemoryDataSource();
+                inMemoryDataSource.addInMemory( gameEntity );
             }
         } );
     }
 
-    protected interface RetrofitApi {
+    private interface RetrofitApi {
         String BASE_URL = "https://pav-game-tav.firebaseio.com/";
 
         @GET( "games.json" )

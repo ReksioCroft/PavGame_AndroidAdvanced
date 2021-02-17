@@ -1,4 +1,4 @@
-package ro.tav.pavgame.data.localDB;
+package ro.tav.pavgame.data.source;
 
 import android.content.Context;
 
@@ -16,7 +16,7 @@ import timber.log.Timber;
 
 
 public class LocalGameDataSource extends GameLocalRepository {
-    protected final LocalGameDataSource.GameDao mGameDao;
+    protected final GameDao mGameDao;
 
     public LocalGameDataSource( Context context ) {
         super();
