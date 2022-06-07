@@ -2,6 +2,8 @@ package ro.tav.pavgame.presentation.view;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -35,6 +37,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         // get recycler view from xml layout
         RecyclerView mRecyclerViewGames = findViewById( R.id.recycler_view_contacts_1 );
 
+        SearchView searchView = findViewById( R.id.search_bar );
+
         //daca suntem pe jocurile unui singur utilizator, va fi setat fals la verificare
         //pentru a nu permite sa se creeze activitati la infinit pt a afisa jocurile unui utilizator
         boolean setOnClickListenerOnViewCards = true;
@@ -45,6 +49,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         if ( b != null ) {
             specificUser = b.getString( "specificUser" );
             setOnClickListenerOnViewCards = false;
+            searchView.setVisibility( View.GONE );
+            searchView = null;
         }
 
         // get the adapter instance
@@ -57,7 +63,10 @@ public class RecyclerViewActivity extends AppCompatActivity {
         PavGameViewModel pavGameViewModel = new ViewModelProvider( this, new PavGameViewModelFactory( PavGameApplication.getApplication() ) ).get( PavGameViewModel.class );
 
         //binding pentru a prelua datele din repository
-        PavGameBindingAdapter.RecycleViewGamesBindingGames( mRecyclerViewGames, pavGameViewModel, specificUser );
+        PavGameBindingAdapter.recycleViewGamesBindingGames( mRecyclerViewGames, pavGameViewModel, specificUser );
+
+        //activare search
+        PavGameBindingAdapter.setSearchViewFilter( mRecyclerViewGames, searchView );
     }
 
     @Override

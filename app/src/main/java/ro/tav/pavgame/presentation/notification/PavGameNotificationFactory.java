@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import androidx.core.app.NotificationCompat;
+import androidx.navigation.NavDeepLinkBuilder;
 
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.PavGameService;
@@ -16,7 +17,6 @@ public class PavGameNotificationFactory {
     private static final int BASE_ID = 1;
     private static final int SERVICE_NOTIFICATION_ID = BASE_ID + 1;
     private static final int HELLO_NOTIFICATION_ID = SERVICE_NOTIFICATION_ID + 1;
-    private static final int NOTIFICATION_LAUNCH_CODE = 485;
 
     public static int getServiceNotificationId() {
         return SERVICE_NOTIFICATION_ID;
@@ -67,13 +67,11 @@ public class PavGameNotificationFactory {
     }
 
     private static PendingIntent createContentIntent( Context context ) {
-        Intent intent = new Intent( context, MainActivity.class );
-
-        return PendingIntent.getActivity( context,
-                NOTIFICATION_LAUNCH_CODE,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
+        NavDeepLinkBuilder navDeepLinkBuilder = new NavDeepLinkBuilder(context)
+                .setGraph(R.navigation.nav_graph)
+                .setDestination(R.id.homeFragment)
+                .setComponentName(MainActivity.class);
+        return navDeepLinkBuilder.createPendingIntent();
     }
 
     private static NotificationCompat.Action createStopAction( Context context ) {
@@ -90,7 +88,7 @@ public class PavGameNotificationFactory {
         return PendingIntent.getService( context,
                 PavGameService.TYPE_FINISH,
                 intent,
-                PendingIntent.FLAG_UPDATE_CURRENT
+                PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
     }
 }

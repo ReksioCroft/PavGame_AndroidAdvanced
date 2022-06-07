@@ -4,25 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ro.tav.pavgame.presentation.view.RecyclerViewActivity">
+    android:padding="@dimen/space_8"
+    tools:context=".presentation.fragments.CameraFragment">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_bar"
+    <ImageView
+        android:id="@+id/photo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
-        app:layout_constraintBottom_toTopOf="@id/recycler_view_contacts_1"
+        android:layout_height="0dp"
+        android:contentDescription="@string/openCamera"
+        app:layout_constraintBottom_toTopOf="@id/open_camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_contacts_1"
+    <Button
+        android:id="@+id/open_camera"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/openCamera"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/search_bar" />
+        app:layout_constraintTop_toBottomOf="@id/photo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

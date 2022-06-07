@@ -55,9 +55,13 @@ public class GameFragment extends Fragment {
         super( contentLayoutId );
     }
 
+    public GameFragment() {
+        super();
+    }
+
     @Override
-    public void onActivityCreated( @Nullable Bundle savedInstanceState ) {
-        super.onActivityCreated( savedInstanceState );
+    public void onViewCreated( @NonNull View view, @Nullable Bundle savedInstanceState ) {
+        super.onViewCreated( view, savedInstanceState );
 
         //obtin din sharedPreferances cat timp am avut in app pana acum, pt a seta cronometrul
         long timeSpent;   //timpul petrecut(cu precizie de minute) in joc

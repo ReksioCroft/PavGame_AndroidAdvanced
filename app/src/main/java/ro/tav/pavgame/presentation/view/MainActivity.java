@@ -25,6 +25,7 @@ import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.PavGameFragmentStack;
 import ro.tav.pavgame.presentation.PavGameViewModel;
+import ro.tav.pavgame.presentation.fragments.CameraFragment;
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 import ro.tav.pavgame.presentation.fragments.HomeFragment;
 import ro.tav.pavgame.presentation.fragments.WebViewFragment;
@@ -73,7 +74,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener( this );
         View headerView = navigationView.getHeaderView( 0 );
         TextView textView = headerView.findViewById( R.id.nav_header_subtitle );
-        textView.setText( PavGameViewModel.getUserName() );
+        String userName = PavGameViewModel.getUserName();
+        if ( userName == null )
+            finish();
+        textView.setText( userName );
 
         //deschidem fragmentul acasa
         openFragment( new HomeFragment( R.layout.fragment_home ) );
@@ -107,9 +111,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if ( keyCode == KeyEvent.KEYCODE_BACK ) {
             popFragment();
             if ( fragmentStack.empty() ) {
-                while ( PavGameViewModel.getFirebaseAuth().getCurrentUser() != null )
-                    PavGameViewModel.getFirebaseAuth().signOut();
-                finish();
+                makeLogout( null );
             }
         }
         return super.onKeyLongPress( keyCode, event );
@@ -144,6 +146,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if ( id == R.id.nav_slideshow ) {
             openFragment( new WebViewFragment( R.layout.fragment_slideshow ) );
             setTitle( getString( R.string.menu_infoarena ).toUpperCase() );
+        } else if ( id == R.id.take_a_photo ) {
+            openFragment( new CameraFragment( R.layout.fragment_camera ) );
+            setTitle( getString( R.string.openCamera ).toUpperCase() );
         }
 
         DrawerLayout drawer = findViewById( R.id.drawer_layout );
@@ -212,8 +217,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void makeLogout( View view ) {
-        while ( PavGameViewModel.getFirebaseAuth().getCurrentUser() != null )
-            PavGameViewModel.getFirebaseAuth().signOut();
+        LoginActivity.setDoLogout( true );
         finish();
     }
 }

@@ -1,5 +1,7 @@
 package ro.tav.pavgame.presentation.view.recycleViewAux;
 
+import androidx.appcompat.widget.SearchView;
+
 import androidx.annotation.Nullable;
 import androidx.databinding.BindingAdapter;
 import androidx.lifecycle.Observer;
@@ -13,6 +15,29 @@ import ro.tav.pavgame.presentation.PavGameViewModel;
 
 
 public class PavGameBindingAdapter {
+
+    @BindingAdapter( "searchView" )
+    public static void setSearchViewFilter( @Nullable RecyclerView mRecyclerViewGames, @Nullable SearchView searchView ) {
+        if ( mRecyclerViewGames != null && searchView != null ) {
+            GamesAdapter gamesAdapter = ( GamesAdapter ) mRecyclerViewGames.getAdapter();
+            if ( gamesAdapter != null ) {
+                searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit( String query ) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange( String newText ) {
+                        gamesAdapter.getFilter().filter( newText );
+                        return false;
+                    }
+                } );
+
+            }
+        }
+    }
+
     @BindingAdapter( "gamesAdapter" )
     public static void recycleViewSetAdapter( RecyclerView mRecyclerViewGames, GamesAdapter gamesAdapter ) {
         if ( mRecyclerViewGames.getAdapter() == null ) {
@@ -25,7 +50,7 @@ public class PavGameBindingAdapter {
     }
 
     @BindingAdapter( { "pavGameViewModel", "user" } )
-    public static void RecycleViewGamesBindingGames( RecyclerView mRecyclerViewGames, PavGameViewModel pavGameViewModel, @Nullable String user ) {
+    public static void recycleViewGamesBindingGames( RecyclerView mRecyclerViewGames, PavGameViewModel pavGameViewModel, @Nullable String user ) {
         //daca am primit un string null, facem bind cu toate jocurile din repo
         if ( user == null ) {
             pavGameViewModel.getAllGames().observeForever( new Observer < List < GameEntity > >() {

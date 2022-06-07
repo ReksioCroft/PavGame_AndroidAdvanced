@@ -6,19 +6,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.presentation.view.RecyclerViewActivity;
 
-public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
+public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > implements Filterable {
 
     private List < GameEntity > mGames;
+    private List < GameEntity > mFilteredGames;
     private final LayoutInflater mInflater;
     private View itemView;
     private final Context context;
@@ -28,6 +33,8 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
         mInflater = LayoutInflater.from( context );
         this.context = context;
         this.setOnClickListenerOnViewCards = setOnClickListenerOnViewCards;
+        this.mGames = new ArrayList <>();
+        this.mFilteredGames = new ArrayList <>();
     }
 
     @NonNull
@@ -39,8 +46,8 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
 
     @Override
     public void onBindViewHolder( @NonNull GamesViewHolder gamesViewHolder, int i ) {
-        if ( mGames != null ) {
-            GameEntity currentGame = mGames.get( i );
+        if ( mFilteredGames != null ) {
+            GameEntity currentGame = mFilteredGames.get( i );
             gamesViewHolder.mTextViewName.setText( currentGame.getNumeJucator() );
             String result = itemView.getResources().getString( currentGame.getResult() ? R.string.Win : R.string.Lose );
             gamesViewHolder.mTextViewResult.setText( result );
@@ -86,14 +93,53 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > {
 
     @Override
     public int getItemCount() {
-        if ( mGames != null )
-            return mGames.size();
+        if ( mFilteredGames != null )
+            return mFilteredGames.size();
         else
             return 0;
     }
 
-    public void setGames( List < GameEntity > games ) {
-        mGames = games;
+    public void setGames( @Nullable List < GameEntity > games ) {
+        mGames = mFilteredGames = games;
         notifyDataSetChanged();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            private List < GameEntity > getFilteredResults( String constraint ) {
+                List < GameEntity > filteredGames = new ArrayList <>();
+                synchronized ( mGames ) {
+                    if ( mGames != null ) {
+                        for ( GameEntity game : mGames ) {
+                            if ( game.getNumeJucator().toLowerCase().contains( constraint ) ) {
+                                filteredGames.add( game );
+                            }
+                        }
+                    }
+                }
+                return filteredGames;
+            }
+
+            @Override
+            protected void publishResults( CharSequence constraint, FilterResults results ) {
+                mFilteredGames = ( List < GameEntity > ) results.values;
+                notifyDataSetChanged();
+            }
+
+            @Override
+            protected FilterResults performFiltering( CharSequence constraint ) {
+                List < GameEntity > filteredGames = new ArrayList <>();
+                if ( constraint.length() == 0 ) {
+                    filteredGames = mGames;
+                } else {
+                    filteredGames = getFilteredResults( constraint.toString().toLowerCase() );
+                }
+
+                FilterResults results = new FilterResults();
+                results.values = filteredGames;
+                return results;
+            }
+        };
     }
 }

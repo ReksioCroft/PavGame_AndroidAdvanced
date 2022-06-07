@@ -12,9 +12,7 @@ import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 
 public class CreditsActivity extends Activity {
-    private final static String github = "https://github.com/ReksioCroft/";
-    private final static String google = "https://events.withgoogle.com/atelierul-digital-pentru-programatori/";
-
+    private final static String github = "https://github.com/ReksioCroft/PavGame_AndroidAdvanced";
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -36,9 +34,11 @@ public class CreditsActivity extends Activity {
         view.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View v ) {
-                Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( google ) );
-                intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-                getApplicationContext().startActivity( intent );
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.putExtra(Intent.EXTRA_TEXT, github);
+                intent.setType("text/x-uri");
+                startActivity(Intent.createChooser(intent,null));
             }
         } );
     }

@@ -3,11 +3,11 @@
     package="ro.tav.pavgame">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name="ro.tav.pavgame.PavGameApplication"
         android:allowBackup="true"
-        android:fullBackupContent="@xml/backup_descriptor"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -35,7 +35,8 @@
             android:name="ro.tav.pavgame.presentation.view.LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|colorMode"
             android:launchMode="singleInstance"
-            android:screenOrientation="sensor">
+            android:screenOrientation="sensor"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,7 +44,8 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".presentation.PavGameReplacedBroadcastReceiver">
+        <receiver android:name=".presentation.PavGameReplacedBroadcastReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>

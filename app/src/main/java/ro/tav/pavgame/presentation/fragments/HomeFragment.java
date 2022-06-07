@@ -28,4 +28,8 @@ public class HomeFragment extends Fragment {
     public HomeFragment( int contentLayoutId ) {
         super( contentLayoutId );
     }
+
+    public HomeFragment() {
+        super();
+    }
 }

@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import com.facebook.stetho.Stetho;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +51,7 @@ public class PavGameApplication extends Application {
         } else {
             Timber.plant( new Timber.Tree() {
                 @Override
-                protected void log( int priority, @Nullable String tag, @NotNull String message, @Nullable Throwable t ) {
+                protected void log( int priority, @Nullable String tag, @NonNull String message, @Nullable Throwable t ) {
                     if ( priority < Log.INFO ) {
                         return;
                     }
