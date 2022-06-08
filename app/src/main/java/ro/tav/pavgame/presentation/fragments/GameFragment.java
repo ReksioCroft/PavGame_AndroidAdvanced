@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,9 +42,12 @@ public class GameFragment extends Fragment {
     private int nrGreseli;
     private final int[][] matrix = new int[ 256 ][ 256 ];
     private EditText input;
-    private boolean started;
-    private boolean finished;
     private Intent gameInProgressServiceIntent;
+    private Pair< Integer, Integer > pozGaura = null;
+
+    private enum GameState {ToStart, Init, InProgress, Finished}
+
+    private GameState gameState = GameState.ToStart;
 
     @Nullable
     @Override
@@ -87,14 +91,57 @@ public class GameFragment extends Fragment {
         button.setOnClickListener( new Button.OnClickListener() {
             @Override
             public void onClick( View v ) {
-                startGame( v );
+                if ( gameState == GameState.ToStart ) {
+                    startGame( v );
+                } else if ( gameState == GameState.Finished && pozGaura != null ) {
+                    nrDala = 0;
+                    solve( 0, 0, lat, pozGaura.first, pozGaura.second );
+                    pozGaura = null;
+                    gameState = GameState.ToStart;
+                    ( ( Button ) v ).setText( getString( R.string.start_game ) );
+                } else {
+                    Timber.e( "invalid game state" );
+                }
             }
         } );
     }
 
+
+    private void solve( int lstart, int cstart, int latura, int lgaura, int cgaura ) {
+        int[] dlin = { 0, 0, 1, 1 };
+        int[] dcol = { 0, 1, 0, 1 };
+        int i0 = 0;
+
+        if ( latura > 1 ) {                          ///daca matricea se mai poate impartii in submatrici
+            latura >>= 1;                              ///injumatatim latura
+            for ( int i = 0; i < 4; i++ ) {
+                if ( lgaura >= lstart + latura * dlin[ i ] &&
+                        lgaura < lstart + latura * ( dlin[ i ] + 1 ) &&
+                        cgaura >= cstart + latura * dcol[ i ] &&
+                        cgaura < cstart + latura * ( dcol[ i ] + 1 ) )
+                    i0 = i;                             ///luam fiecare din cele 4 submatrici, si retinem in care se afla gaura
+            }
+            nrDala++;                                 ///incrementam nr dalei cu care pavam
+            for ( int i = 0; i < 4; i++ )
+                if ( i != i0 ) {                        ///daca nu suntem in submatricea cu gaura
+                    int lin = lstart + latura + dlin[ i ] - 1;
+                    int col = cstart + latura + dcol[ i ] - 1;
+                    matrix[ lin ][ col ] = nrDala;       ///pavam colturile din jurul dalei
+                    setButon( lin * lat + col );
+                }
+            for ( int i = 0; i < 4; i++ ) {                                      ///impartim matricea in cele 4 submatrici
+                if ( i != i0 )                                                 ///daca suntem in submatricea fara gaura, setam gaura artificiala creata de noi
+                    solve( lstart + latura * dlin[ i ], cstart + latura * dcol[ i ], latura, lstart + latura + dlin[ i ] - 1, cstart + latura + dcol[ i ] - 1 );
+                else                                                          ///daca suntem in submatricea ce are deja gaura, o transmitem mai departe
+                    solve( lstart + latura * dlin[ i ], cstart + latura * dcol[ i ], latura, lgaura, cgaura );
+            }
+        }
+    }
+
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStop() {
+        super.onStop();
+
         //luam noul timpul total petrecut in aplicatie (cat era initial + cat s-a jucat utilizatorul acum)
         long newTime = SystemClock.elapsedRealtime() - chronometer.getBase();//milisecunde petrecut in total, dupa acest joc
         newTime /= 1000; //secunde
@@ -106,124 +153,126 @@ public class GameFragment extends Fragment {
         String json = gson.toJson( newTime );       ///convertim acest timp la un json string
         sharedPreferences.edit().putString( PavGameViewModel.getUserName() + "", json ).apply(); ///updatam valoarea in shared preferances
 
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
         stopGameService();
     }
 
     public void startGame( View view ) {    //crearea si initializarea butoanelor jocului
-        String s = "", messege;
-        int nrInt = 0;
-        started = finished = false;
-        input = requireView().findViewById( R.id.pavGameInputText );
+        if ( gameState == GameState.ToStart ) {
+            String s = "", message;
+            int nrInt = 0;
+            input = requireView().findViewById( R.id.pavGameInputText );
+            try {
+                //obtinem nr introdus si calculam latura
+                s = input.getText().toString();
+                nrInt = Integer.parseInt( s );
+                if ( nrInt < 0 || nrInt > 4 )
+                    throw new Exception( getString( R.string.invalidInput ) );
+                lat = 1 << nrInt;
+                input.setHint( R.string.pozDala );
+                nrDala = nrGreseli = 0;
+                ConstraintLayout pavGameBoard = requireView().findViewById( R.id.pavGameBoard );
+                pavGameBoard.removeAllViews();
 
-        try {
-            //obtinem nr introdus si calculam latura
-            s = input.getText().toString();
-            nrInt = Integer.parseInt( s );
-            if ( nrInt < 0 || nrInt > 4 )
-                throw new Exception( getString( R.string.invalidInput ) );
-            lat = 1 << nrInt;
-            input.setHint( R.string.pozDala );
-            nrDala = nrGreseli = 0;
-            ConstraintLayout pavGameBoard = requireView().findViewById( R.id.pavGameBoard );
-            pavGameBoard.removeAllViews();
-
-            for ( int i = 0; i < lat; i++ ) {
-                for ( int j = 0; j < lat; j++ ) {
-                    //adaugam cate un buton pt fiecare casuta
-                    matrix[ i ][ j ] = 0;
-                    Button button = new Button( getContext() );
-                    button.setLayoutParams( new ConstraintLayout.LayoutParams( ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD, ConstraintLayout.LayoutParams.WRAP_CONTENT ) );
-                    button.setId( lat * i + j );
-                    button.setOnClickListener( new handleClick() );//listener pt a putea selecta optiunea
-                    pavGameBoard.addView( button );
+                for ( int i = 0; i < lat; i++ ) {
+                    for ( int j = 0; j < lat; j++ ) {
+                        //adaugam cate un buton pt fiecare casuta
+                        matrix[ i ][ j ] = 0;
+                        Button button = new Button( getContext() );
+                        button.setLayoutParams( new ConstraintLayout.LayoutParams( ConstraintLayout.LayoutParams.MATCH_CONSTRAINT_SPREAD, ConstraintLayout.LayoutParams.WRAP_CONTENT ) );
+                        button.setId( lat * i + j );
+                        button.setOnClickListener( new handleClick() );//listener pt a putea selecta optiunea
+                        pavGameBoard.addView( button );
 
 
-                    //setam constraint-urile
-                    ConstraintSet constraintSet = new ConstraintSet();
-                    constraintSet.clone( pavGameBoard );
+                        //setam constraint-urile
+                        ConstraintSet constraintSet = new ConstraintSet();
+                        constraintSet.clone( pavGameBoard );
 
-                    //legatura in sus
-                    if ( i == 0 ) { //top->topOfParrent
-                        constraintSet.connect( button.getId(), ConstraintSet.TOP, R.id.pavGameBoard, ConstraintSet.TOP );
-                    } else {//top->bottomOfButton
-                        constraintSet.connect( button.getId(), ConstraintSet.TOP, button.getId() - lat, ConstraintSet.BOTTOM );
-                        //bottomOfButton->top
-                        constraintSet.connect( button.getId() - lat, ConstraintSet.BOTTOM, button.getId(), ConstraintSet.TOP );
+                        //legatura in sus
+                        if ( i == 0 ) { //top->topOfParrent
+                            constraintSet.connect( button.getId(), ConstraintSet.TOP, R.id.pavGameBoard, ConstraintSet.TOP );
+                        } else {//top->bottomOfButton
+                            constraintSet.connect( button.getId(), ConstraintSet.TOP, button.getId() - lat, ConstraintSet.BOTTOM );
+                            //bottomOfButton->top
+                            constraintSet.connect( button.getId() - lat, ConstraintSet.BOTTOM, button.getId(), ConstraintSet.TOP );
+                        }
+
+                        //legatura la stanga
+                        if ( j == 0 ) {//left->leftOfParrent
+                            constraintSet.connect( button.getId(), ConstraintSet.START, R.id.pavGameBoard, ConstraintSet.START );
+                        } else {//left->rightOfButton
+                            constraintSet.connect( button.getId(), ConstraintSet.START, -1 + button.getId(), ConstraintSet.END );
+                            //rightOfButton->left
+                            constraintSet.connect( -1 + button.getId(), ConstraintSet.END, button.getId(), ConstraintSet.START );
+                        }
+                        //legatura la dreapta
+                        //right->endOfParrent
+                        constraintSet.connect( button.getId(), ConstraintSet.END, R.id.pavGameBoard, ConstraintSet.END );
+
+                        //legatura in jos
+                        //bottom->bottomOfParrent
+                        constraintSet.connect( button.getId(), ConstraintSet.BOTTOM, R.id.pavGameBoard, ConstraintSet.BOTTOM );
+
+                        //aplicam modificarile
+                        constraintSet.applyTo( pavGameBoard );
                     }
-
-                    //legatura la stanga
-                    if ( j == 0 ) {//left->leftOfParrent
-                        constraintSet.connect( button.getId(), ConstraintSet.START, R.id.pavGameBoard, ConstraintSet.START );
-                    } else {//left->rightOfButton
-                        constraintSet.connect( button.getId(), ConstraintSet.START, button.getId() - ( 1 ), ConstraintSet.END );
-                        //rightOfButton->left
-                        constraintSet.connect( button.getId() - ( 1 ), ConstraintSet.END, button.getId(), ConstraintSet.START );
-                    }
-                    //legatura la dreapta
-                    //right->endOfParrent
-                    constraintSet.connect( button.getId(), ConstraintSet.END, R.id.pavGameBoard, ConstraintSet.END );
-
-                    //legatura in jos
-                    //bottom->bottomOfParrent
-                    constraintSet.connect( button.getId(), ConstraintSet.BOTTOM, R.id.pavGameBoard, ConstraintSet.BOTTOM );
-
-                    //aplicam modificarile
-                    constraintSet.applyTo( pavGameBoard );
                 }
+                //modificam mesajul de pe buton si il dezactivam
+                message = getString( R.string.copac );
+                Button gameButton = ( Button ) view;
+                gameButton.setEnabled( false );
+                gameButton.setText( getString( R.string.start_game ) );
+                requireActivity().startService( gameInProgressServiceIntent );
+                gameState = GameState.Init;
+            } catch ( Exception e ) {
+                if ( s.length() == 0 )  //daca s-a introdus stringul vid
+                    message = getString( R.string.errLipsaDimLatura );
+                else if ( nrInt < 0 || nrInt > 4 )
+                    message = getString( R.string.invalidInput );
+                else
+                    message = getString( R.string.unknownError );
             }
-            //modificam mesajul de pe buton si il dezactivam
-            messege = getString( R.string.copac );
-            Button gameButton = ( Button ) view;
-            gameButton.setEnabled( false );
-            gameButton.setText( getString( R.string.start_game ) );
-            requireActivity().startService( gameInProgressServiceIntent );
-
-        } catch ( Exception e ) {
-            if ( s.length() == 0 )  //daca s-a introdus stringul vid
-                messege = getString( R.string.errLipsaDimLatura );
-            else if ( nrInt < 0 || nrInt > 4 )
-                messege = getString( R.string.invalidInput );
-            else
-                messege = getString( R.string.unknownError );
+            Toast.makeText( getContext(), message, Toast.LENGTH_LONG ).show();
+        } else {
+            Timber.e( "Invalid game state" );
         }
-        Toast.makeText( getContext(), messege, Toast.LENGTH_LONG ).show();
+    }
+
+    //colorare buton
+    private void setButon( int nr ) {
+        Button button = requireView().findViewById( nr );
+        button.setText( String.valueOf( nrDala ) );
+        button.setBackgroundColor( getResources().getColor( R.color.colorPrimary, requireContext().getTheme() ) );
+        button.setTextColor( getResources().getColor( R.color.colorAccent, requireContext().getTheme() ) );
     }
 
     private class handleClick implements View.OnClickListener { //controller-ele in joc
-        //un butonel din tabla mare
-        private Button button;
 
-        //colorare buton
-        private void setButon( int nr ) {
-            button = requireView().findViewById( nr );
-            button.setText( String.valueOf( nrDala ) );
-            button.setBackgroundColor( getResources().getColor( R.color.colorPrimary, requireContext().getTheme() ) );
-            button.setTextColor( getResources().getColor( R.color.colorAccent, requireContext().getTheme() ) );
-        }
-
+        @Override
         public void onClick( View view ) {
             String messege, s1 = "", s2;
             boolean result;
-            button = ( Button ) view;
+            Button button = ( Button ) view;
             //luam pozitia dalei de inserare
             input = requireView().findViewById( R.id.pavGameInputText );
             int l = button.getId() / lat;
             int c = button.getId() % lat;
-            if ( !started ) {//initializarea primul buton pt gaura
-                started = true;
+            if ( gameState == GameState.Init ) {//initializarea primul buton pt gaura
                 button.setBackgroundColor( getResources().getColor( R.color.colorAccent, requireContext().getTheme() ) );
                 button.setText( "0" );
                 button.setTextColor( getResources().getColor( R.color.colorPrimary, requireContext().getTheme() ) );
                 matrix[ l ][ c ] = -1;
+                pozGaura = new Pair<>( l, c );
                 button = requireView().findViewById( R.id.startGameButton );
                 button.setText( R.string.alegeDala );
-            } else if ( nrGreseli > nrGreseliMax ) {  //pierdere
-                messege = getString( R.string.esec ) + " :(";
-                Toast.makeText( getContext(), messege, Toast.LENGTH_LONG ).show();
-            } else if ( nrDala * 3 + 1 == lat * lat ) { //castig
-                messege = getString( R.string.victorie ) + " :)";
-                Toast.makeText( getContext(), messege, Toast.LENGTH_LONG ).show();
-            } else {//jocul continua
+                gameState = GameState.InProgress;
+            } else if ( gameState == GameState.InProgress ) {//jocul continua
                 try {
                     s1 = input.getText().toString();
                     int tipDala = Integer.parseInt( s1 );   //obtinem val de int din input
@@ -282,19 +331,31 @@ public class GameFragment extends Fragment {
                         messege = getString( R.string.dalaIncorecta );
                     Toast.makeText( getContext(), messege, Toast.LENGTH_SHORT ).show();
                 }
+            } else if ( gameState == GameState.Finished ) {
+                if ( nrGreseli > nrGreseliMax ) {  //pierdere
+                    messege = getString( R.string.esec ) + " :(";
+                    Toast.makeText( getContext(), messege, Toast.LENGTH_LONG ).show();
+                } else if ( nrDala * 3 + 1 == lat * lat ) { //castig
+                    messege = getString( R.string.victorie ) + " :)";
+                    Toast.makeText( getContext(), messege, Toast.LENGTH_LONG ).show();
+                }
+            } else {
+                Timber.e( "Invalid game state" );
             }
-            if ( !finished && ( nrDala * 3 + 1 == lat * lat || nrGreseli > nrGreseliMax ) ) {
-                finished = true;//daca se ajunge la finish
+
+            // finish the game
+            if ( gameState == GameState.InProgress && ( nrDala * 3 + 1 == lat * lat || nrGreseli > nrGreseliMax ) ) {
+                gameState = GameState.Finished;
                 requireView().findViewById( R.id.startGameButton ).setEnabled( true );
                 button = requireView().findViewById( R.id.startGameButton );
                 if ( nrDala * 3 + 1 == lat * lat ) {
-                    messege = getString( R.string.victorie ) + " :)";
+                    messege = getString( R.string.victorie ) + "! " + getString( R.string.solution );
                     button.setText( messege );
                     result = true;
                     s1 = getString( R.string.Win );
                     s2 = getString( R.string.victorie ) + ", " + PavGameViewModel.getUserName() + "!";
                 } else {
-                    messege = getString( R.string.esec ) + " :(";
+                    messege = getString( R.string.esec ) + "! " + getString( R.string.solution );
                     button.setText( messege );
                     result = false;
                     s1 = getString( R.string.Lose );
@@ -302,16 +363,15 @@ public class GameFragment extends Fragment {
                 }
 
                 //adaugam jocul in baza de date folosindu-ne de viewModel
-                PavGameViewModel pavGameViewModel = new ViewModelProvider( getActivity(), new PavGameViewModelFactory( PavGameApplication.getApplication() ) ).get( PavGameViewModel.class );
+                PavGameViewModel pavGameViewModel = new ViewModelProvider( requireActivity(), new PavGameViewModelFactory( PavGameApplication.getApplication() ) ).get( PavGameViewModel.class );
                 pavGameViewModel.addResult( PavGameViewModel.getUserName(), result, lat );
                 PavGameApplication.getApplication().getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
                         PavGameNotificationFactory.createCustomHelloNotification( getContext(),
                                 s1, s2 ) );
                 Toast.makeText( getContext(), messege, Toast.LENGTH_LONG ).show();
-                stopGameService(); //optimi si serviciul cand se castiga/pierde jocul
+                stopGameService(); //oprim si serviciul cand se castiga/pierde jocul
             }
         }
-
     }
 
     private void stopGameService() {
