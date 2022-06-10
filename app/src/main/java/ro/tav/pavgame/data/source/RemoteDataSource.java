@@ -31,12 +31,13 @@ public class RemoteDataSource extends GameRemoteRepository {
     }
 
     @Override
-    protected List < GameEntity > getAllGames() {
-        List < GameEntity > gameEntities = new ArrayList <>();
+    protected List< GameEntity > getAllGames() {
+        List< GameEntity > gameEntities = null;
         Gson gson = new Gson();
         try {
             JsonObject response = api.getAllGames().execute().body();
             if ( response != null ) {
+                gameEntities = new ArrayList<>();
                 for ( String jsonObjectKeys : response.keySet() ) {
                     JsonObject jsonObject = response.getAsJsonObject( jsonObjectKeys );
                     GameEntity gameEntity = gson.fromJson( jsonObject, GameEntity.class );
@@ -52,15 +53,15 @@ public class RemoteDataSource extends GameRemoteRepository {
 
     @Override
     protected void insertGame( GameEntity gameEntity ) {
-        Call < GameEntity > call = api.insertGame( gameEntity );
-        call.enqueue( new Callback < GameEntity >() {
+        Call< GameEntity > call = api.insertGame( gameEntity );
+        call.enqueue( new Callback< GameEntity >() {
             @Override
-            public void onResponse( @NotNull Call < GameEntity > call, @NotNull Response < GameEntity > response ) {
+            public void onResponse( @NotNull Call< GameEntity > call, @NotNull Response< GameEntity > response ) {
                 Timber.d( "Success inserting game in firebase db" );
             }
 
             @Override
-            public void onFailure( @NotNull Call < GameEntity > call, @NotNull Throwable t ) {
+            public void onFailure( @NotNull Call< GameEntity > call, @NotNull Throwable t ) {
                 Timber.d( "fail inserting game in firebase db" );
                 InMemoryDataSource inMemoryDataSource = new InMemoryDataSource();
                 inMemoryDataSource.addInMemory( gameEntity );
@@ -72,10 +73,10 @@ public class RemoteDataSource extends GameRemoteRepository {
         String BASE_URL = "https://pav-game-tav.firebaseio.com/";
 
         @GET( "games.json" )
-        Call < JsonObject > getAllGames();
+        Call< JsonObject > getAllGames();
 
         @POST( "games.json" )
-        Call < GameEntity > insertGame( @Body GameEntity gameEntity );
+        Call< GameEntity > insertGame( @Body GameEntity gameEntity );
 
         static RetrofitApi createApi() {
             OkHttpClient okHttpClient = new OkHttpClient.Builder()

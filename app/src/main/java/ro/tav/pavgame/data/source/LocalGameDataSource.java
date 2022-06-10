@@ -24,12 +24,17 @@ public class LocalGameDataSource extends GameLocalRepository {
     }
 
     @Override
-    protected LiveData < List < GameEntity > > getAllGames() {
+    protected LiveData< List< GameEntity > > getAllGames() {
         return mGameDao.getAllGames();
     }
 
     @Override
-    protected LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
+    protected void deleteAllGames() {
+        mGameDao.deleteAllGames();
+    }
+
+    @Override
+    protected LiveData< List< GameEntity > > getSpecificGamesbyUserName( String user ) {
         return mGameDao.getSpecificGamesbyUserName( user );
     }
 
@@ -47,15 +52,18 @@ public class LocalGameDataSource extends GameLocalRepository {
     @Dao
     protected interface GameDao {
         @Query( "SELECT DISTINCT numeJucator, gameType, result, cast (count(*) as text) as gameId from gameEntity  group by numeJucator, gameType, result order by count(*) desc, gameType desc, result desc, numeJucator" )
-        LiveData < List < GameEntity > > getAllGames();
+        LiveData< List< GameEntity > > getAllGames();
 
         @Query( "SELECT DISTINCT numeJucator, gameType, result, cast ( count(*) as text) as gameId from gameEntity  group by numeJucator, gameType, result having numeJucator=:user order by gameType desc, result desc" )
-        LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user );
+        LiveData< List< GameEntity > > getSpecificGamesbyUserName( String user );
 
         @Query( "SELECT DISTINCT numeJucator, gameType, result, cast ( count(*) as text) as gameId from gameEntity  group by numeJucator, gameType, result having numeJucator=:user order by gameType desc, result desc" )
-        List < GameEntity > getSpecificGamesbyUserNameAsList( String user );
+        List< GameEntity > getSpecificGamesbyUserNameAsList( String user );
 
         @Insert( onConflict = OnConflictStrategy.IGNORE )
         void insertGame( GameEntity game );
+
+        @Query( "DELETE FROM gameEntity" )
+        void deleteAllGames();
     }
 }

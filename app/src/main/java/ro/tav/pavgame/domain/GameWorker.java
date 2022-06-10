@@ -19,7 +19,7 @@ import timber.log.Timber;
 public class GameWorker extends Worker {
     private final Context context;
 
-    protected GameWorker( @NonNull Context context, @NonNull WorkerParameters workerParams ) {
+    public GameWorker( @NonNull Context context, @NonNull WorkerParameters workerParams ) {
         super( context, workerParams );
         this.context = context;
     }
@@ -33,13 +33,18 @@ public class GameWorker extends Worker {
         if ( "get".equals( value ) ) {
             Timber.d( "GET Operation" );
             GameRemoteRepository gameRemoteRepository = new RemoteDataSource();
-            List < GameEntity > games = gameRemoteRepository.getAllGames();
+            List< GameEntity > games = gameRemoteRepository.getAllGames();
 
-            GameLocalRepository gameLocalRepository = new LocalGameDataSource( context );
-            for ( GameEntity game : games ) {
-                gameLocalRepository.insertGame( game );
+            if ( games != null ) {
+                GameLocalRepository gameLocalRepository = new LocalGameDataSource( context );
+                gameLocalRepository.deleteAllGames();
+                for ( GameEntity game : games ) {
+                    gameLocalRepository.insertGame( game );
+                }
+                Timber.d( "worker finished downloading games" );
+            } else {
+                Timber.d( "null response received from remote datasource" );
             }
-            Timber.d( "worker finished downloading games" );
         } else if ( "post".equals( value ) ) {
             Timber.d( "SYNC Operation" );
             GameInMemoryRepository gameInMemoryRepository = new InMemoryDataSource();

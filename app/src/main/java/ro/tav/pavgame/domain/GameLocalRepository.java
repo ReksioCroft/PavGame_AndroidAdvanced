@@ -11,9 +11,11 @@ public abstract class GameLocalRepository {
         //empty constructor for modifying access
     }
 
-    protected abstract LiveData < List < GameEntity > > getAllGames();
+    protected abstract LiveData< List< GameEntity > > getAllGames();
 
-    protected abstract LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user );
+    protected abstract LiveData< List< GameEntity > > getSpecificGamesbyUserName( String user );
 
     protected abstract void insertGame( GameEntity game );
+
+    protected abstract void deleteAllGames();
 }
