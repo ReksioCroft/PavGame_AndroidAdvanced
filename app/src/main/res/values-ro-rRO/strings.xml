@@ -57,6 +57,5 @@
     <string name="invalidInput">Input Invalid</string>
     <string name="loggedIn">Autentificat</string>
     <string name="loginRequired">Autentificati-va&#8230;</string>
-    <string name="openCamera">Deschide camera</string>
     <string name="solution">Vezi solutia oficiala</string>
 </resources>

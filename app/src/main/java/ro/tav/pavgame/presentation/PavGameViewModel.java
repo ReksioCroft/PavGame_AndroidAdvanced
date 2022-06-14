@@ -62,11 +62,11 @@ public class PavGameViewModel extends AndroidViewModel {
     }
 
     //Functii pentru Binding
-    public LiveData < List < GameEntity > > getAllGames() {
+    public LiveData< List< GameEntity > > getAllGames() {
         return gameUseCase.getAllGames();
     }
 
-    public LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
+    public LiveData< List< GameEntity > > getSpecificGamesbyUserName( String user ) {
         return gameUseCase.getSpecificGamesbyUserName( user );
     }
 }

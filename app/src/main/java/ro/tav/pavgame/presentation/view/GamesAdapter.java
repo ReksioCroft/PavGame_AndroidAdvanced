@@ -129,7 +129,7 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > imple
 
             @Override
             protected FilterResults performFiltering( CharSequence constraint ) {
-                List < GameEntity > filteredGames = new ArrayList <>();
+                List < GameEntity > filteredGames;
                 if ( constraint.length() == 0 ) {
                     filteredGames = mGames;
                 } else {

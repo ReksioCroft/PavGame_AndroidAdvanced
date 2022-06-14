@@ -112,28 +112,36 @@ public class GameFragment extends Fragment {
         int[] dcol = { 0, 1, 0, 1 };
         int i0 = 0;
 
-        if ( latura > 1 ) {                          ///daca matricea se mai poate impartii in submatrici
+        if ( latura > 1 ) {                            ///daca matricea se mai poate impartii in submatrici
             latura >>= 1;                              ///injumatatim latura
             for ( int i = 0; i < 4; i++ ) {
                 if ( lgaura >= lstart + latura * dlin[ i ] &&
                         lgaura < lstart + latura * ( dlin[ i ] + 1 ) &&
                         cgaura >= cstart + latura * dcol[ i ] &&
                         cgaura < cstart + latura * ( dcol[ i ] + 1 ) )
-                    i0 = i;                             ///luam fiecare din cele 4 submatrici, si retinem in care se afla gaura
+                    i0 = i;                              ///luam fiecare din cele 4 submatrici, si retinem in care se afla gaura
             }
-            nrDala++;                                 ///incrementam nr dalei cu care pavam
+            nrDala++;                                    ///incrementam nr dalei cu care pavam
             for ( int i = 0; i < 4; i++ )
-                if ( i != i0 ) {                        ///daca nu suntem in submatricea cu gaura
+                if ( i != i0 ) {                         ///daca nu suntem in submatricea cu gaura
                     int lin = lstart + latura + dlin[ i ] - 1;
                     int col = cstart + latura + dcol[ i ] - 1;
-                    matrix[ lin ][ col ] = nrDala;       ///pavam colturile din jurul dalei
-                    setButon( lin * lat + col );
+                    matrix[ lin ][ col ] = nrDala;       ///pavam cele 3 colturi din jurul submatricii cu gaura cu o dala
+                    setButon( lin * lat + col );         ///afisam in ui noua dala
                 }
-            for ( int i = 0; i < 4; i++ ) {                                      ///impartim matricea in cele 4 submatrici
-                if ( i != i0 )                                                 ///daca suntem in submatricea fara gaura, setam gaura artificiala creata de noi
-                    solve( lstart + latura * dlin[ i ], cstart + latura * dcol[ i ], latura, lstart + latura + dlin[ i ] - 1, cstart + latura + dcol[ i ] - 1 );
-                else                                                          ///daca suntem in submatricea ce are deja gaura, o transmitem mai departe
-                    solve( lstart + latura * dlin[ i ], cstart + latura * dcol[ i ], latura, lgaura, cgaura );
+            for ( int i = 0; i < 4; i++ ) {                                ///impartim matricea in cele 4 submatrici
+                if ( i != i0 )                                             ///daca suntem in submatricea fara gaura, setam gaura artificiala creata de noi
+                    solve( lstart + latura * dlin[ i ],
+                            cstart + latura * dcol[ i ],
+                            latura,
+                            lstart + latura + dlin[ i ] - 1,
+                            cstart + latura + dcol[ i ] - 1 );
+                else                                                       ///daca suntem in submatricea ce are deja gaura, o transmitem mai departe
+                    solve( lstart + latura * dlin[ i ],
+                            cstart + latura * dcol[ i ],
+                            latura,
+                            lgaura,
+                            cgaura );
             }
         }
     }

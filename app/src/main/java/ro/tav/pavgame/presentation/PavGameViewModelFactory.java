@@ -18,7 +18,7 @@ public class PavGameViewModelFactory implements ViewModelProvider.Factory {
 
     @NonNull
     @Override
-    public < T extends ViewModel > T create( @NonNull Class < T > modelClass ) {
+    public < T extends ViewModel > T create( @NonNull Class< T > modelClass ) {
         return Objects.requireNonNull( modelClass.cast( new PavGameViewModel( application ) ) );
     }
 }

@@ -16,9 +16,5 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/creditInfoarena" />
-        <item
-            android:id="@+id/take_a_photo"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/openCamera" />
     </group>
 </menu>

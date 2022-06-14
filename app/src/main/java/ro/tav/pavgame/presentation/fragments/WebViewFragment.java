@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import ro.tav.pavgame.R;
 
 public class WebViewFragment extends Fragment {
-    private static final String PAV_GAME_INSPIRATION = "https://www.youtube.com/embed/IN05XJe7QeY";
+    private static final String PAV_GAME_INSPIRATION = "https://www.infoarena.ro/problema/pav";
 
     @Nullable
     @Override
@@ -24,16 +24,16 @@ public class WebViewFragment extends Fragment {
         View root = super.onCreateView( inflater, container, savedInstanceState );
         if ( root != null ) {
             WebView mWebViewExample = root.findViewById( R.id.webview_example );
-            mWebViewExample.setWebViewClient( new WebViewClient() {
-                @Override
-                public boolean shouldOverrideUrlLoading( WebView view, String url ) {
-                    return false;
-                }
-            } );
-            WebSettings webSettings = mWebViewExample.getSettings();
-            webSettings.setJavaScriptEnabled( true );
-            webSettings.setLoadWithOverviewMode( true );
-            webSettings.setUseWideViewPort( true );
+//            mWebViewExample.setWebViewClient( new WebViewClient() {
+//                @Override
+//                public boolean shouldOverrideUrlLoading( WebView view, WebResourceRequest request ) {
+//                    return false;
+//                }
+//            } );
+//            WebSettings webSettings = mWebViewExample.getSettings();
+//            webSettings.setJavaScriptEnabled( true );
+//            webSettings.setLoadWithOverviewMode( true );
+//            webSettings.setUseWideViewPort( true );
             mWebViewExample.loadUrl( PAV_GAME_INSPIRATION );
         }
         return root;

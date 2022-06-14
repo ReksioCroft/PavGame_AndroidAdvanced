@@ -7,15 +7,13 @@
 1. Navigation Drawer
 2. Android ShareSheet
 3. Firebase + google social login
-4. Camera use
-5. Video Playback
-6. ViewModel + WorkManager + ConstraintLayout + Logging
-7. Notification with deep links
-8. ViewModel -> DataSource, RecyclerView with search view, UnitTests
-9. Firebase + APIs
-10. LeakCanary + Timber + Crashlytics
-11. Localization
-12. Foreground Service
-13. Custom View (Canvas, Paint) + Day/Night mode
-14. Room integration, Shared Preferences
-15. BroadcastReceveiver
+4. ViewModel + WorkManager + ConstraintLayout + Logging
+5. Notification with deep links
+6. ViewModel -> DataSource, RecyclerView with search view, UnitTests
+7. Firebase + APIs
+8. LeakCanary + Timber + Crashlytics
+9. Localization
+10. Foreground Service
+11. Custom View (Canvas, Paint) + Day/Night mode
+12. Room integration, Shared Preferences
+13. BroadcastReceveiver
