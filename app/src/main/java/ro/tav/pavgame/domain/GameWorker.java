@@ -44,17 +44,23 @@ public class GameWorker extends Worker {
                 Timber.d( "worker finished downloading games" );
             } else {
                 Timber.d( "null response received from remote datasource" );
+                return Result.retry();
             }
         } else if ( "post".equals( value ) ) {
-            Timber.d( "SYNC Operation" );
+            Timber.d( "POST Operation" );
             GameInMemoryRepository gameInMemoryRepository = new InMemoryDataSource();
             GameRemoteRepository gameRemoteRepository = new RemoteDataSource();
 
             final int nrOfSyncs = gameInMemoryRepository.getNrOfElements();
-            for ( int i = 0; i < nrOfSyncs; i++ ) {         ///pt a nu face ciclu infinit; ex:nu merge netul=> worst case n insert failed
+            for ( int i = 0; i < nrOfSyncs; i++ ) {         ///pt a nu face ciclu infinit; ex:nu merge netul=> worst case n inserts failed
                 gameRemoteRepository.insertGame( gameInMemoryRepository.removeInMemory() );
             }
-            Timber.d( "worker finished posting games" );
+            if ( gameInMemoryRepository.getNrOfElements() == nrOfSyncs ) {
+                Timber.d( "worker failed posting games" );
+                return Result.retry();
+            } else {
+                Timber.d( "worker finished posting games" );
+            }
         }
 
         return Result.success();

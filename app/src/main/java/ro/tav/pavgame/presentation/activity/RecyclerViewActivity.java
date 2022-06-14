@@ -1,4 +1,4 @@
-package ro.tav.pavgame.presentation.view;
+package ro.tav.pavgame.presentation.activity;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,8 +15,8 @@ import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 import ro.tav.pavgame.presentation.PavGameViewModelFactory;
-import ro.tav.pavgame.presentation.view.recycleViewAux.GamesAdapter;
-import ro.tav.pavgame.presentation.view.recycleViewAux.PavGameBindingAdapter;
+import ro.tav.pavgame.presentation.view.GamesAdapter;
+import ro.tav.pavgame.presentation.view.PavGameBindingAdapter;
 
 
 public class RecyclerViewActivity extends AppCompatActivity {

@@ -1,4 +1,4 @@
-package ro.tav.pavgame.presentation;
+package ro.tav.pavgame.presentation.view;
 
 import androidx.fragment.app.Fragment;
 

@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import java.util.Objects;
+
 //Because our ViewModel has a parameter in the constructor, we have to use this class with ViewModelProvider
 public class PavGameViewModelFactory implements ViewModelProvider.Factory {
     private final Application application;
@@ -17,6 +19,6 @@ public class PavGameViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public < T extends ViewModel > T create( @NonNull Class < T > modelClass ) {
-        return modelClass.cast( new PavGameViewModel( application ) );
+        return Objects.requireNonNull( modelClass.cast( new PavGameViewModel( application ) ) );
     }
 }

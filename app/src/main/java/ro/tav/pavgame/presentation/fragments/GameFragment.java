@@ -26,7 +26,7 @@ import com.google.gson.Gson;
 
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.presentation.PavGameService;
+import ro.tav.pavgame.presentation.notification.PavGameService;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 import ro.tav.pavgame.presentation.PavGameViewModelFactory;
 import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;

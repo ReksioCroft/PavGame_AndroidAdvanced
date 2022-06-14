@@ -9,7 +9,7 @@ import ro.tav.pavgame.data.source.LocalGameDataSource;
 import ro.tav.pavgame.data.source.RemoteDataSource;
 
 //se afla in .domain, deci ne poate da obiecte din tipul acelor clase
-public class PavGameDependencyProvider {
+public final class PavGameDependencyProvider {
     private final GameInMemoryRepository inMemoryRepository;
     private final GameRemoteRepository remoteRepository;
     private final GameUseCase useCase;
@@ -31,11 +31,11 @@ public class PavGameDependencyProvider {
         useCase = new GameUseCase( mediator );
     }
 
-    public GameInMemoryRepository provideInMemoryRepository() {
+    GameInMemoryRepository provideInMemoryRepository() {
         return inMemoryRepository;
     }
 
-    public GameRemoteRepository provideRemoteRepository() {
+    GameRemoteRepository provideRemoteRepository() {
         return remoteRepository;
     }
 

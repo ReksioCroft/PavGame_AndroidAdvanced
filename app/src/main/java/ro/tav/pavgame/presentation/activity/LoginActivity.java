@@ -1,4 +1,4 @@
-package ro.tav.pavgame.presentation.view;
+package ro.tav.pavgame.presentation.activity;
 
 import android.app.Activity;
 import android.content.Intent;

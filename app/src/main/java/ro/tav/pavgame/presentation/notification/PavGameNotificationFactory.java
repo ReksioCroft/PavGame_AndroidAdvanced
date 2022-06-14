@@ -9,8 +9,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.navigation.NavDeepLinkBuilder;
 
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.presentation.PavGameService;
-import ro.tav.pavgame.presentation.view.MainActivity;
+import ro.tav.pavgame.presentation.activity.MainActivity;
 
 
 public class PavGameNotificationFactory {

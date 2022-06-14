@@ -1,4 +1,4 @@
-package ro.tav.pavgame.presentation.view.recycleViewAux;
+package ro.tav.pavgame.presentation.view;
 
 import android.view.View;
 import android.widget.TextView;

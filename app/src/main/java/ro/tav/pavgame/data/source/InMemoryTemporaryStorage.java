@@ -1,11 +1,11 @@
 package ro.tav.pavgame.data.source;
 
-import java.util.LinkedList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import ro.tav.pavgame.data.GameEntity;
 
 public class InMemoryTemporaryStorage {
-    private static final LinkedList < GameEntity > q = new LinkedList <>();
+    private static final ConcurrentLinkedQueue< GameEntity > q = new ConcurrentLinkedQueue<>();
     private static int nrOfElements = 0;
 
     protected InMemoryTemporaryStorage() {

@@ -1,4 +1,4 @@
-package ro.tav.pavgame.presentation;
+package ro.tav.pavgame.presentation.notification;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 
 import java.util.concurrent.TimeUnit;
 
-import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;
 import timber.log.Timber;
 
 public class PavGameService extends Service {

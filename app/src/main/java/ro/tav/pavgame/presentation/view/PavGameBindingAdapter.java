@@ -1,4 +1,4 @@
-package ro.tav.pavgame.presentation.view.recycleViewAux;
+package ro.tav.pavgame.presentation.view;
 
 import androidx.appcompat.widget.SearchView;
 
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Objects;
 
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.presentation.PavGameViewModel;
@@ -58,7 +59,7 @@ public class PavGameBindingAdapter {
                 public void onChanged( @Nullable final List < GameEntity > games ) {
                     //suntem siguri ca adaptorul nostru este de tipul GameAdapter
                     GamesAdapter gamesAdapter = ( GamesAdapter ) mRecyclerViewGames.getAdapter();
-                    gamesAdapter.setGames( games );
+                    Objects.requireNonNull( gamesAdapter ).setGames( games );
                 }
             } );
         }  //altfel, afisam jocurile unui anumite utilizator
@@ -67,7 +68,7 @@ public class PavGameBindingAdapter {
                 @Override
                 public void onChanged( @Nullable final List < GameEntity > games ) {
                     GamesAdapter gamesAdapter = ( GamesAdapter ) mRecyclerViewGames.getAdapter();
-                    gamesAdapter.setGames( games );
+                    Objects.requireNonNull( gamesAdapter ).setGames( games );
                 }
             } );
         }

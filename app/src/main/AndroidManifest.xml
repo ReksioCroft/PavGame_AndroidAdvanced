@@ -14,25 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="ro.tav.pavgame.presentation.view.RecyclerViewActivity"
+            android:name="ro.tav.pavgame.presentation.activity.RecyclerViewActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|colorMode" />
         <activity
-            android:name="ro.tav.pavgame.presentation.view.CreditsActivity"
+            android:name="ro.tav.pavgame.presentation.activity.CreditsActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|colorMode"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.NoBackground" />
         <activity
-            android:name="ro.tav.pavgame.presentation.view.MainActivity"
+            android:name="ro.tav.pavgame.presentation.activity.MainActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|colorMode"
             android:label="@string/title_activity_main"
             android:launchMode="singleInstance"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="ro.tav.pavgame.presentation.view.RegisterActivity"
+            android:name="ro.tav.pavgame.presentation.activity.RegisterActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|colorMode"
             android:launchMode="singleInstance" />
         <activity
-            android:name="ro.tav.pavgame.presentation.view.LoginActivity"
+            android:name="ro.tav.pavgame.presentation.activity.LoginActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|colorMode"
             android:launchMode="singleInstance"
             android:screenOrientation="sensor"
@@ -44,12 +44,12 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".presentation.PavGameReplacedBroadcastReceiver"
+        <receiver android:name=".presentation.notification.PavGameReplacedBroadcastReceiver"
             android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
             </intent-filter>
         </receiver>
-        <service android:name="ro.tav.pavgame.presentation.PavGameService" />
+        <service android:name="ro.tav.pavgame.presentation.notification.PavGameService" />
     </application>
 </manifest>

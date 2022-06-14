@@ -1,4 +1,4 @@
-package ro.tav.pavgame.presentation.view;
+package ro.tav.pavgame.presentation.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +23,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.presentation.PavGameFragmentStack;
+import ro.tav.pavgame.presentation.view.PavGameFragmentStack;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 import ro.tav.pavgame.presentation.fragments.CameraFragment;
 import ro.tav.pavgame.presentation.fragments.GameFragment;

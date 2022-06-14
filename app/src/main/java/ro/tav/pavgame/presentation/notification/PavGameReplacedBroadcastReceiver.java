@@ -1,4 +1,4 @@
-package ro.tav.pavgame.presentation;
+package ro.tav.pavgame.presentation.notification;
 
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;
 import timber.log.Timber;
 
 public class PavGameReplacedBroadcastReceiver extends BroadcastReceiver {

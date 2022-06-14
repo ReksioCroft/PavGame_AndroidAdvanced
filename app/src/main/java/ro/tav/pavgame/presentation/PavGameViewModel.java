@@ -18,7 +18,7 @@ import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.domain.GameUseCase;
 import ro.tav.pavgame.domain.PavGameDependencyProvider;
-import ro.tav.pavgame.presentation.view.LoginActivity;
+import ro.tav.pavgame.presentation.activity.LoginActivity;
 
 public class PavGameViewModel extends AndroidViewModel {
     private static FirebaseUser firebaseUser = null;

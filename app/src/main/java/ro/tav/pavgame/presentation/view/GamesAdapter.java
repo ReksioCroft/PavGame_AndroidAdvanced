@@ -1,4 +1,4 @@
-package ro.tav.pavgame.presentation.view.recycleViewAux;
+package ro.tav.pavgame.presentation.view;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +18,7 @@ import java.util.List;
 
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.data.GameEntity;
-import ro.tav.pavgame.presentation.view.RecyclerViewActivity;
+import ro.tav.pavgame.presentation.activity.RecyclerViewActivity;
 
 public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > implements Filterable {
 
