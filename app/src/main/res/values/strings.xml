@@ -25,12 +25,12 @@
     <string name="credits">
         Programmer: Octavian-Florin Staicu\n
         Email: octavian.staicu@s.unibuc.ro\n
-        Github: https://github.com/ReksioCroft\n
+        Github: https://github.com/ReksioCroft
     </string>
     <string name="credits2">
-        Special Thanks to Google Hub for Programmers \n
-        Project released in  "Android Advanced" course\n
-        All rights reserved
+        Computer Science BSc Degree Project\n
+        Faculty of Mathematics and Computer Science\n
+        University of Bucharest
     </string>
     <string name="confirmRegistration">Confirm registration</string>
     <string name="loginFromRegister">Already registered? Log in</string>

@@ -12,7 +12,8 @@ import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 
 public class CreditsActivity extends Activity {
-    private final static String github = "https://github.com/ReksioCroft/PavGame_AndroidAdvanced";
+    private final static String github = "https://github.com/ReksioCroft";
+    private final static String[] emails = { "octavian.staicu@s.unibuc.ro", "octavian-florin.staicu@my.fmi.unibuc.ro" };
 
     @Override
     protected void onCreate( Bundle savedInstanceState ) {
@@ -24,9 +25,13 @@ public class CreditsActivity extends Activity {
         view.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View v ) {
-                Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( github ) );
-                intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
-                getApplicationContext().startActivity( intent );
+                Intent intent = new Intent();
+                intent.setAction( Intent.ACTION_SEND );
+                intent.putExtra( Intent.EXTRA_EMAIL, emails );
+                intent.putExtra( Intent.EXTRA_SUBJECT, "[PAV] feedback" );
+                intent.putExtra( Intent.EXTRA_TEXT, emails[ 0 ] );
+                intent.setType( "text/*" );
+                startActivity( Intent.createChooser( intent, null ) );
             }
         } );
 
@@ -34,11 +39,9 @@ public class CreditsActivity extends Activity {
         view.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick( View v ) {
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_SEND);
-                intent.putExtra(Intent.EXTRA_TEXT, github);
-                intent.setType("text/x-uri");
-                startActivity(Intent.createChooser(intent,null));
+                Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( github ) );
+                intent.addFlags( Intent.FLAG_ACTIVITY_NEW_TASK );
+                getApplicationContext().startActivity( intent );
             }
         } );
     }

@@ -25,12 +25,12 @@
     <string name="credits">
         Programator: Octavian-Florin Staicu\n
         Email: octavian.staicu@s.unibuc.ro\n
-        Github: https://github.com/ReksioCroft\n
+        Github: https://github.com/ReksioCroft
     </string>
     <string name="credits2">
-        Multumiri Speciale Atelierului Google Pentru Programatori\n
-        Proiect realizat in cadrul cursului "Android Advanced"\n
-        All rights reserved
+        Proiect de Licență în Informatică\n
+        Facultatea de Matematică și Informatică\n
+        Universitatea din București
     </string>
     <string name="confirmRegistration">Confirmati inregistrarea</string>
     <string name="loginFromRegister">Aveti deja cont? Log in</string>
