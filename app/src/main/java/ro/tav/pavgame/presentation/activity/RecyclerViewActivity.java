@@ -32,7 +32,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled( true );
 
         //adaugam activitatea in lista
-        PavGameApplication.getApplication().addActivity( this );
+//        PavGameApplication.getApplication().addActivity( this );
 
         // get recycler view from xml layout
         RecyclerView mRecyclerViewGames = findViewById( R.id.recycler_view_contacts_1 );
@@ -72,7 +72,7 @@ public class RecyclerViewActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        PavGameApplication.getApplication().removeActivity( this );
+//        PavGameApplication.getApplication().removeActivity( this );
     }
 
 

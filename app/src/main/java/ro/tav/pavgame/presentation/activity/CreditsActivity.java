@@ -19,7 +19,7 @@ public class CreditsActivity extends Activity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_credits );
-        PavGameApplication.getApplication().addActivity( this );
+//        PavGameApplication.getApplication().addActivity( this );
 
         CardView view = findViewById( R.id.cardViewProgrammer );
         view.setOnClickListener( new View.OnClickListener() {
@@ -49,6 +49,6 @@ public class CreditsActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        PavGameApplication.getApplication().removeActivity( this );
+//        PavGameApplication.getApplication().removeActivity( this );
     }
 }

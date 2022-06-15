@@ -20,10 +20,10 @@ import ro.tav.pavgame.R;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.presentation.activity.RecyclerViewActivity;
 
-public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > implements Filterable {
+public class GamesAdapter extends RecyclerView.Adapter< GamesViewHolder > implements Filterable {
 
-    private List < GameEntity > mGames;
-    private List < GameEntity > mFilteredGames;
+    private final List< GameEntity > mGames;
+    private final List< GameEntity > mFilteredGames;
     private final LayoutInflater mInflater;
     private View itemView;
     private final Context context;
@@ -33,8 +33,8 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > imple
         mInflater = LayoutInflater.from( context );
         this.context = context;
         this.setOnClickListenerOnViewCards = setOnClickListenerOnViewCards;
-        this.mGames = new ArrayList <>();
-        this.mFilteredGames = new ArrayList <>();
+        this.mGames = new ArrayList<>();
+        this.mFilteredGames = new ArrayList<>();
     }
 
     @NonNull
@@ -99,22 +99,29 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > imple
             return 0;
     }
 
-    public void setGames( @Nullable List < GameEntity > games ) {
-        mGames = mFilteredGames = games;
+    public void setGames( @Nullable List< GameEntity > games ) {
+        synchronized ( mGames ) {
+            mGames.clear();
+            if ( games != null ) {
+                mGames.addAll( games );
+            }
+            synchronized ( mFilteredGames ) {
+                mFilteredGames.clear();
+                mFilteredGames.addAll( mGames );
+            }
+        }
         notifyDataSetChanged();
     }
 
     @Override
     public Filter getFilter() {
         return new Filter() {
-            private List < GameEntity > getFilteredResults( String constraint ) {
-                List < GameEntity > filteredGames = new ArrayList <>();
+            private List< GameEntity > getFilteredResults( String constraint ) {
+                List< GameEntity > filteredGames = new ArrayList<>();
                 synchronized ( mGames ) {
-                    if ( mGames != null ) {
-                        for ( GameEntity game : mGames ) {
-                            if ( game.getNumeJucator().toLowerCase().contains( constraint ) ) {
-                                filteredGames.add( game );
-                            }
+                    for ( GameEntity game : mGames ) {
+                        if ( game.getNumeJucator().toLowerCase().contains( constraint ) ) {
+                            filteredGames.add( game );
                         }
                     }
                 }
@@ -123,22 +130,20 @@ public class GamesAdapter extends RecyclerView.Adapter < GamesViewHolder > imple
 
             @Override
             protected void publishResults( CharSequence constraint, FilterResults results ) {
-                mFilteredGames = ( List < GameEntity > ) results.values;
                 notifyDataSetChanged();
             }
 
             @Override
             protected FilterResults performFiltering( CharSequence constraint ) {
-                List < GameEntity > filteredGames;
-                if ( constraint.length() == 0 ) {
-                    filteredGames = mGames;
-                } else {
-                    filteredGames = getFilteredResults( constraint.toString().toLowerCase() );
+                List< GameEntity > filteredGames = ( constraint.length() == 0 ) ?
+                        mGames : getFilteredResults( constraint.toString().toLowerCase() );
+
+                synchronized ( mFilteredGames ) {
+                    mFilteredGames.clear();
+                    mFilteredGames.addAll( filteredGames );
                 }
 
-                FilterResults results = new FilterResults();
-                results.values = filteredGames;
-                return results;
+                return new FilterResults();
             }
         };
     }

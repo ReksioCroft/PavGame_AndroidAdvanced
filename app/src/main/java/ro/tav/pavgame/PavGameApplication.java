@@ -22,13 +22,13 @@ import timber.log.Timber;
 
 public class PavGameApplication extends Application {
     private static PavGameApplication pavGameApplication;
-    private final List < Activity > activities;
+    //private final List < Activity > activities;
     private NotificationManager notificationManager = null;
 
     public PavGameApplication() {
         super();
         pavGameApplication = this;
-        activities = new ArrayList <>();
+//        activities = new ArrayList <>();
     }
 
     @Override
@@ -37,10 +37,10 @@ public class PavGameApplication extends Application {
 
         setupLibs();
 
-        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
-            notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
-            notificationManager.createNotificationChannel( PavGameNotificationChannelFactory.createProcessingWorkNotificationChannel() );
-        }
+//        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
+        notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
+        notificationManager.createNotificationChannel( PavGameNotificationChannelFactory.createProcessingWorkNotificationChannel() );
+//        }
     }
 
     private void setupLibs() {
@@ -67,22 +67,22 @@ public class PavGameApplication extends Application {
         }
     }
 
-    @Override
-    public void onTerminate() {
-        super.onTerminate();
-        if ( !activities.isEmpty() )
-            Timber.wtf( "aplicatia inca are activitati, desi a fost terminata" );
-        else
-            Timber.d( "Aplicatia -> onTerminate() nu mai are activitati" );
-    }
+//    @Override
+//    public void onTerminate() {
+//        super.onTerminate();
+//        if ( !activities.isEmpty() )
+//            Timber.wtf( "aplicatia inca are activitati, desi a fost terminata" );
+//        else
+//            Timber.d( "Aplicatia -> onTerminate() nu mai are activitati" );
+//    }
 
-    public void addActivity( Activity a ) {
-        pavGameApplication.activities.add( a );
-    }
-
-    public void removeActivity( Activity a ) {
-        pavGameApplication.activities.remove( a );
-    }
+//    public void addActivity( Activity a ) {
+//        pavGameApplication.activities.add( a );
+//    }
+//
+//    public void removeActivity( Activity a ) {
+//        pavGameApplication.activities.remove( a );
+//    }
 
     public static PavGameApplication getApplication() {
         return pavGameApplication;

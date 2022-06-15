@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_login );
-        PavGameApplication.getApplication().addActivity( this );
+//        PavGameApplication.getApplication().addActivity( this );
 
         // Firebase auth
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -228,6 +228,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        PavGameApplication.getApplication().removeActivity( this );
+//        PavGameApplication.getApplication().removeActivity( this );
     }
 }

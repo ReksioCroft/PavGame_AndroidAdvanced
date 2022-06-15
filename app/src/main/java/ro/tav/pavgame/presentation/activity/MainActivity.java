@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate( Bundle savedInstanceState ) {
         super.onCreate( savedInstanceState );
         ///adaugam instanta
-        PavGameApplication.getApplication().addActivity( this );
+//        PavGameApplication.getApplication().addActivity( this );
 
         //ne afisam un mesaj cu timber
         Timber.i( "MainActivity created" );
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onDestroy() {
         super.onDestroy();
-        PavGameApplication.getApplication().removeActivity( this );
+//        PavGameApplication.getApplication().removeActivity( this );
     }
 
 
