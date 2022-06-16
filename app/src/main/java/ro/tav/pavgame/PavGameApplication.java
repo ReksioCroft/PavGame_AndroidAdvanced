@@ -44,7 +44,9 @@ public class PavGameApplication extends Application {
     }
 
     private void setupLibs() {
-        Stetho.initializeWithDefaults( this );
+        if ( !isRoboUnitTest() ) {
+            Stetho.initializeWithDefaults( this );
+        }
 
         if ( !BuildConfig.my_flag ) {
             Timber.plant( new Timber.DebugTree() );
@@ -90,5 +92,9 @@ public class PavGameApplication extends Application {
 
     public NotificationManager getNotificationManager() {
         return notificationManager;
+    }
+
+    private static boolean isRoboUnitTest() {
+        return "robolectric".equals( Build.FINGERPRINT );
     }
 }

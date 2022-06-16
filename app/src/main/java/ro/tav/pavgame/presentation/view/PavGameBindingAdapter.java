@@ -1,5 +1,6 @@
 package ro.tav.pavgame.presentation.view;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.Nullable;
@@ -18,8 +19,8 @@ import ro.tav.pavgame.presentation.PavGameViewModel;
 public class PavGameBindingAdapter {
 
     @BindingAdapter( "searchView" )
-    public static void setSearchViewFilter( @Nullable RecyclerView mRecyclerViewGames, @Nullable SearchView searchView ) {
-        if ( mRecyclerViewGames != null && searchView != null ) {
+    public static void setSearchViewFilter( @NonNull RecyclerView mRecyclerViewGames, @Nullable SearchView searchView ) {
+        if ( searchView != null ) {
             GamesAdapter gamesAdapter = ( GamesAdapter ) mRecyclerViewGames.getAdapter();
             if ( gamesAdapter != null ) {
                 searchView.setOnQueryTextListener( new SearchView.OnQueryTextListener() {
@@ -39,24 +40,29 @@ public class PavGameBindingAdapter {
         }
     }
 
-    @BindingAdapter( "gamesAdapter" )
-    public static void recycleViewSetAdapter( RecyclerView mRecyclerViewGames, GamesAdapter gamesAdapter ) {
+    @BindingAdapter( { "gamesAdapter" } )
+    public static void recycleViewInit( @NonNull RecyclerView mRecyclerViewGames, boolean setOnClickListenerOnViewCards ) {
         if ( mRecyclerViewGames.getAdapter() == null ) {
-            // set the adapter to the recycler view
+            // setam adaptorul pentru fiecare joc
+            GamesAdapter gamesAdapter = new GamesAdapter( mRecyclerViewGames.getContext(), setOnClickListenerOnViewCards );
             mRecyclerViewGames.setAdapter( gamesAdapter );
-            // define and set layout manager
+        }
+        if ( mRecyclerViewGames.getLayoutManager() == null ) {
+            // setam layout managerul
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( mRecyclerViewGames.getContext() );
             mRecyclerViewGames.setLayoutManager( layoutManager );
         }
     }
 
     @BindingAdapter( { "pavGameViewModel", "user" } )
-    public static void recycleViewGamesBindingGames( RecyclerView mRecyclerViewGames, PavGameViewModel pavGameViewModel, @Nullable String user ) {
+    public static void recycleViewGamesBind( @NonNull RecyclerView mRecyclerViewGames,
+                                             @NonNull PavGameViewModel pavGameViewModel,
+                                             @Nullable String user ) {
         //daca am primit un string null, facem bind cu toate jocurile din repo
         if ( user == null ) {
-            pavGameViewModel.getAllGames().observeForever( new Observer < List < GameEntity > >() {
+            pavGameViewModel.getAllGames().observeForever( new Observer< List< GameEntity > >() {
                 @Override
-                public void onChanged( @Nullable final List < GameEntity > games ) {
+                public void onChanged( @Nullable final List< GameEntity > games ) {
                     //suntem siguri ca adaptorul nostru este de tipul GameAdapter
                     GamesAdapter gamesAdapter = ( GamesAdapter ) mRecyclerViewGames.getAdapter();
                     Objects.requireNonNull( gamesAdapter ).setGames( games );
@@ -64,9 +70,9 @@ public class PavGameBindingAdapter {
             } );
         }  //altfel, afisam jocurile unui anumite utilizator
         else {
-            pavGameViewModel.getSpecificGamesbyUserName( user ).observeForever( new Observer < List < GameEntity > >() {
+            pavGameViewModel.getSpecificGamesbyUserName( user ).observeForever( new Observer< List< GameEntity > >() {
                 @Override
-                public void onChanged( @Nullable final List < GameEntity > games ) {
+                public void onChanged( @Nullable final List< GameEntity > games ) {
                     GamesAdapter gamesAdapter = ( GamesAdapter ) mRecyclerViewGames.getAdapter();
                     Objects.requireNonNull( gamesAdapter ).setGames( games );
                 }

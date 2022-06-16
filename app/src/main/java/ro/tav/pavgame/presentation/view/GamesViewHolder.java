@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import ro.tav.pavgame.R;
 
 public class GamesViewHolder extends RecyclerView.ViewHolder {
-
     protected final TextView mTextViewName;
     protected final TextView mTextViewResult;
     protected final TextView mTextViewType;

@@ -3,6 +3,7 @@ package ro.tav.pavgame.presentation.activity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+
 import androidx.appcompat.widget.SearchView;
 
 import androidx.annotation.NonNull;
@@ -15,7 +16,6 @@ import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.PavGameViewModel;
 import ro.tav.pavgame.presentation.PavGameViewModelFactory;
-import ro.tav.pavgame.presentation.view.GamesAdapter;
 import ro.tav.pavgame.presentation.view.PavGameBindingAdapter;
 
 
@@ -31,12 +31,8 @@ public class RecyclerViewActivity extends AppCompatActivity {
         if ( actionBar != null )
             actionBar.setDisplayHomeAsUpEnabled( true );
 
-        //adaugam activitatea in lista
-//        PavGameApplication.getApplication().addActivity( this );
-
-        // get recycler view from xml layout
+        // obtinem recycleView-ul si searchView-ul
         RecyclerView mRecyclerViewGames = findViewById( R.id.recycler_view_contacts_1 );
-
         SearchView searchView = findViewById( R.id.search_bar );
 
         //daca suntem pe jocurile unui singur utilizator, va fi setat fals la verificare
@@ -49,23 +45,22 @@ public class RecyclerViewActivity extends AppCompatActivity {
         if ( b != null ) {
             specificUser = b.getString( "specificUser" );
             setOnClickListenerOnViewCards = false;
-            searchView.setVisibility( View.GONE );
-            searchView = null;
+            searchView.setVisibility( View.GONE ); //atunci cand afisam un singur utilizator
+            searchView = null;                     //nu vrem sa afisam searchView-ul
         }
 
-        // get the adapter instance
-        final GamesAdapter gamesAdapter = new GamesAdapter( mRecyclerViewGames.getContext(), setOnClickListenerOnViewCards );
-
-        //binding pentru a seta gameAdaptorul la RecyclerView-ul nostru
-        PavGameBindingAdapter.recycleViewSetAdapter( mRecyclerViewGames, gamesAdapter );
+        //binding pentru a seta gameAdaptorul si layoutManagerul la RecyclerView-ul nostru
+        PavGameBindingAdapter.recycleViewInit( mRecyclerViewGames, setOnClickListenerOnViewCards );
 
         //obtinem ViewModel
-        PavGameViewModel pavGameViewModel = new ViewModelProvider( this, new PavGameViewModelFactory( PavGameApplication.getApplication() ) ).get( PavGameViewModel.class );
+        PavGameViewModel pavGameViewModel =
+                new ViewModelProvider( this, new PavGameViewModelFactory( PavGameApplication.getApplication() ) )
+                        .get( PavGameViewModel.class );
 
         //binding pentru a prelua datele din repository
-        PavGameBindingAdapter.recycleViewGamesBindingGames( mRecyclerViewGames, pavGameViewModel, specificUser );
+        PavGameBindingAdapter.recycleViewGamesBind( mRecyclerViewGames, pavGameViewModel, specificUser );
 
-        //activare search
+        //activare searchView
         PavGameBindingAdapter.setSearchViewFilter( mRecyclerViewGames, searchView );
     }
 
