@@ -1,21 +1,20 @@
 package ro.tav.pavgame;
 
-import android.app.Activity;
 import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.facebook.stetho.Stetho;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
-
-import androidx.annotation.NonNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import ro.tav.pavgame.presentation.notification.PavGameNotificationChannelFactory;
 import timber.log.Timber;
@@ -44,10 +43,19 @@ public class PavGameApplication extends Application {
     }
 
     private void setupLibs() {
-        if ( !isRoboUnitTest() ) {
+
+        //firebase google play security check
+        FirebaseApp.initializeApp(/*context=*/ this );
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory( PlayIntegrityAppCheckProviderFactory.getInstance() );
+        firebaseAppCheck.installAppCheckProviderFactory( SafetyNetAppCheckProviderFactory.getInstance() );
+
+        //stetho for debug from chromieum web browser
+        if ( !isRoboUnitTest() ) { //it does not work with roboelectric test framework
             Stetho.initializeWithDefaults( this );
         }
 
+        //timber debugging
         if ( !BuildConfig.my_flag ) {
             Timber.plant( new Timber.DebugTree() );
         } else {
