@@ -16,7 +16,8 @@ import timber.log.Timber;
 @RunWith( RobolectricTestRunner.class )
 public class jUnitTestsDomain {
     private GameEntity mGame;
-    private final PavGameDependencyProvider pavGameDependencyProvider = new PavGameDependencyProvider( ApplicationProvider.getApplicationContext() );
+    private final PavGameDependencyProvider pavGameDependencyProvider =
+            new PavGameDependencyProvider( ApplicationProvider.getApplicationContext() );
 
 
     @Before

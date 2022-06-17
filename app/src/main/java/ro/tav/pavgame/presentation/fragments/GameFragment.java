@@ -179,7 +179,7 @@ public class GameFragment extends Fragment {
                 //obtinem nr introdus si calculam latura
                 s = input.getText().toString();
                 nrInt = Integer.parseInt( s );
-                if ( nrInt < 0 || nrInt > 4 )
+                if ( nrInt < 0 || nrInt > 3 )
                     throw new Exception( getString( R.string.invalidInput ) );
                 lat = 1 << nrInt;
                 input.setHint( R.string.pozDala );
@@ -241,7 +241,7 @@ public class GameFragment extends Fragment {
             } catch ( Exception e ) {
                 if ( s.length() == 0 )  //daca s-a introdus stringul vid
                     message = getString( R.string.errLipsaDimLatura );
-                else if ( nrInt < 0 || nrInt > 4 )
+                else if ( nrInt < 0 || nrInt > 3 )
                     message = getString( R.string.invalidInput );
                 else
                     message = getString( R.string.unknownError );

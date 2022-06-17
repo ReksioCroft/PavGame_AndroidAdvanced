@@ -8,41 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:225635180692:android:68891901e46a2b1881d481",
-        "android_client_info": {
-          "package_name": "com.example.pavgametav"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "225635180692-coejg0nd34msjpblmf09hqp7p2u0on5s.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCcWykNPuAyLekkVs_HVAv4zvnhkx-QSxc"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "225635180692-coejg0nd34msjpblmf09hqp7p2u0on5s.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:225635180692:android:759481c6fe586c8a81d481",
         "android_client_info": {
           "package_name": "ro.tav.pavgame"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "225635180692-850tfai8ad1vgg9u9qbip9b78gmjt65t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ro.tav.pavgame",
+            "certificate_hash": "5be770c597d0c184f5a19dc9165343ecb444e26e"
+          }
+        },
         {
           "client_id": "225635180692-coejg0nd34msjpblmf09hqp7p2u0on5s.apps.googleusercontent.com",
           "client_type": 3

@@ -51,13 +51,24 @@ public class LocalGameDataSource extends GameLocalRepository {
 
     @Dao
     protected interface GameDao {
-        @Query( "SELECT DISTINCT numeJucator, gameType, result, cast (count(*) as text) as gameId from gameEntity  group by numeJucator, gameType, result order by count(*) desc, gameType desc, result desc, numeJucator" )
+        @Query( "SELECT DISTINCT numeJucator, gameType, result, cast (count(*) as text) as gameId" +
+                " from gameEntity " +
+                " group by numeJucator, gameType, result" +
+                " order by count(*) desc, gameType desc, result desc, numeJucator" )
         LiveData< List< GameEntity > > getAllGames();
 
-        @Query( "SELECT DISTINCT numeJucator, gameType, result, cast ( count(*) as text) as gameId from gameEntity  group by numeJucator, gameType, result having numeJucator=:user order by gameType desc, result desc" )
+        @Query( "SELECT DISTINCT numeJucator, gameType, result, cast ( count(*) as text) as gameId" +
+                " from gameEntity  " +
+                "group by numeJucator, gameType, result " +
+                "having numeJucator=:user " +
+                "order by gameType desc, result desc" )
         LiveData< List< GameEntity > > getSpecificGamesbyUserName( String user );
 
-        @Query( "SELECT DISTINCT numeJucator, gameType, result, cast ( count(*) as text) as gameId from gameEntity  group by numeJucator, gameType, result having numeJucator=:user order by gameType desc, result desc" )
+        @Query( "SELECT DISTINCT numeJucator, gameType, result, cast ( count(*) as text) as gameId " +
+                "from gameEntity " +
+                " group by numeJucator, gameType, result " +
+                "having numeJucator=:user " +
+                "order by gameType desc, result desc" )
         List< GameEntity > getSpecificGamesbyUserNameAsList( String user );
 
         @Insert( onConflict = OnConflictStrategy.IGNORE )

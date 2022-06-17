@@ -36,14 +36,10 @@ public class PavGameApplication extends Application {
 
         setupLibs();
 
-//        if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
-        notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
-        notificationManager.createNotificationChannel( PavGameNotificationChannelFactory.createProcessingWorkNotificationChannel() );
-//        }
+
     }
 
     private void setupLibs() {
-
         //firebase google play security check
         FirebaseApp.initializeApp(/*context=*/ this );
         FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
@@ -65,16 +61,18 @@ public class PavGameApplication extends Application {
                     if ( priority < Log.INFO ) {
                         return;
                     }
-
                     if ( t != null ) {
                         FirebaseCrashlytics.getInstance().recordException( t );
                     }
-
                     String crashlyticsMessage = String.format( "[%s] %s", tag, message );
                     FirebaseCrashlytics.getInstance().log( crashlyticsMessage );
                 }
             } );
         }
+
+        //notifications ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O )
+        notificationManager = ( NotificationManager ) getSystemService( Context.NOTIFICATION_SERVICE );
+        notificationManager.createNotificationChannel( PavGameNotificationChannelFactory.createProcessingWorkNotificationChannel() );
     }
 
 //    @Override
