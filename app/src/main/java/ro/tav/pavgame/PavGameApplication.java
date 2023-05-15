@@ -13,7 +13,6 @@ import com.facebook.stetho.Stetho;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
-import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import ro.tav.pavgame.presentation.notification.PavGameNotificationChannelFactory;
@@ -44,7 +43,6 @@ public class PavGameApplication extends Application {
         FirebaseApp.initializeApp(/*context=*/ this );
         FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
         firebaseAppCheck.installAppCheckProviderFactory( PlayIntegrityAppCheckProviderFactory.getInstance() );
-        firebaseAppCheck.installAppCheckProviderFactory( SafetyNetAppCheckProviderFactory.getInstance() );
 
         //stetho for debug from chromieum web browser
         if ( !isRoboUnitTest() ) { //it does not work with roboelectric test framework
