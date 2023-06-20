@@ -57,5 +57,6 @@
     <string name="invalidInput">Invalid Input</string>
     <string name="loggedIn">You are logged in</string>
     <string name="loginRequired">Please Login</string>
+    <string name="openCamera">Open Camera</string>
     <string name="solution">See official solution</string>
 </resources>

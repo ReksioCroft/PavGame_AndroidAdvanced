@@ -25,6 +25,7 @@ import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 import ro.tav.pavgame.presentation.view.PavGameFragmentStack;
 import ro.tav.pavgame.presentation.PavGameViewModel;
+import ro.tav.pavgame.presentation.fragments.CameraFragment;
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 import ro.tav.pavgame.presentation.fragments.HomeFragment;
 import ro.tav.pavgame.presentation.fragments.WebViewFragment;
@@ -145,6 +146,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if ( id == R.id.nav_slideshow ) {
             openFragment( new WebViewFragment( R.layout.fragment_slideshow ) );
             setTitle( getString( R.string.menu_infoarena ).toUpperCase() );
+        } else if ( id == R.id.take_a_photo ) {
+            openFragment( new CameraFragment( R.layout.fragment_camera ) );
+            setTitle( getString( R.string.openCamera ).toUpperCase() );
         }
 
         DrawerLayout drawer = findViewById( R.id.drawer_layout );
