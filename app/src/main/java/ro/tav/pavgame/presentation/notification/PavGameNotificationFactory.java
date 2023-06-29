@@ -17,6 +17,8 @@ public class PavGameNotificationFactory {
     private static final int SERVICE_NOTIFICATION_ID = BASE_ID + 1;
     private static final int HELLO_NOTIFICATION_ID = SERVICE_NOTIFICATION_ID + 1;
 
+    private static final int FIREBASE_NOTIFICATION_ID = HELLO_NOTIFICATION_ID + 1;
+
     public static int getServiceNotificationId() {
         return SERVICE_NOTIFICATION_ID;
     }
@@ -25,6 +27,9 @@ public class PavGameNotificationFactory {
         return HELLO_NOTIFICATION_ID;
     }
 
+    public static int getFirebaseNotificationId() {
+        return FIREBASE_NOTIFICATION_ID;
+    }
     public static Notification createProcessingWorkNotification( Context context ) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder( context, PavGameNotificationChannelFactory.CHANNEL_ID )
                 .setSmallIcon( android.R.drawable.ic_popup_sync )

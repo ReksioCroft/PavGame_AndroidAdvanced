@@ -49,11 +49,12 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:32.1.1')
     implementation 'com.google.firebase:firebase-analytics:21.3.0'
     implementation 'com.google.firebase:firebase-auth:22.0.0'
+    implementation 'com.google.firebase:firebase-messaging:23.1.2'
     implementation 'com.google.firebase:firebase-crashlytics:18.3.7'
     implementation 'com.google.firebase:firebase-database:20.2.2'
     implementation 'com.google.firebase:firebase-appcheck-playintegrity:17.0.1'
     implementation 'com.google.firebase:firebase-perf:20.3.3'
-    implementation 'com.google.android.gms:play-services-auth:20.5.0'
+    implementation 'com.google.android.gms:play-services-auth:20.6.0'
     implementation 'com.google.android.material:material:1.9.0'
     implementation 'com.google.code.gson:gson:2.10.1'
 
@@ -72,12 +73,12 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'androidx.navigation:navigation-runtime:2.5.3'
     implementation 'androidx.recyclerview:recyclerview:1.3.0'
-    implementation 'androidx.room:room-runtime:2.5.1'
-    implementation 'androidx.room:room-testing:2.5.1'
+    implementation 'androidx.room:room-runtime:2.5.2'
+    implementation 'androidx.room:room-testing:2.5.2'
     implementation "androidx.test:runner:1.5.2"
     implementation "androidx.work:work-runtime:2.8.1"
 
-    annotationProcessor 'androidx.room:room-compiler:2.5.1'
+    annotationProcessor 'androidx.room:room-compiler:2.5.2'
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.11'
 
