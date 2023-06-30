@@ -14,21 +14,27 @@ import java.util.List;
 
 import androidx.annotation.Nullable;
 
+import javax.inject.Inject;
+
 import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.data.GameEntity;
 import ro.tav.pavgame.domain.GameUseCase;
-import ro.tav.pavgame.domain.PavGameDependencyProvider;
+import ro.tav.pavgame.domain.PavGameDependencyProviderModule;
 import ro.tav.pavgame.presentation.activity.LoginActivity;
+import timber.log.Timber;
 
 public class PavGameViewModel extends AndroidViewModel {
     private static FirebaseUser firebaseUser = null;
     private static GoogleSignInAccount googleSignInAccount = null;
-    private final GameUseCase gameUseCase;
+
+    @Inject
+    GameUseCase gameUseCase = null;
+
+    private final Application application;
 
     public PavGameViewModel( Application application ) {//AndroidViewModel extinde ViewModel si ne permite sa avem acest prototip in constructor
         super( application );
-        PavGameDependencyProvider pavGameDependencyProvider = new PavGameDependencyProvider( application );
-        this.gameUseCase = pavGameDependencyProvider.provideUseCase();      //comunicarea cu domain si data
+        this.application=application;
     }
 
     public static void setFirebaseUser( FirebaseUser newFirebaseUser ) {
@@ -58,15 +64,26 @@ public class PavGameViewModel extends AndroidViewModel {
         //construim jocul si apoi il trimitem in bindingAdapter pt a fi adaugat
         String timeStamp = new Timestamp( System.currentTimeMillis() ).toString();  //id-ul va fi timpul la care s-a facut adaugarea
         GameEntity mGame = new GameEntity( userName, gametype, result, timeStamp );
-        gameUseCase.insertGame( mGame );
+        safeGameUseCase().insertGame( mGame );
     }
 
     //Functii pentru Binding
     public LiveData< List< GameEntity > > getAllGames() {
-        return gameUseCase.getAllGames();
+        return safeGameUseCase().getAllGames();
     }
 
     public LiveData< List< GameEntity > > getSpecificGamesbyUserName( String user ) {
-        return gameUseCase.getSpecificGamesbyUserName( user );
+        return safeGameUseCase().getSpecificGamesbyUserName( user );
+    }
+
+    private GameUseCase safeGameUseCase(){
+        if ( gameUseCase == null ) {
+            Timber.e("dagger injection failed, fallback to trivial dependency provider");
+            PavGameDependencyProviderModule pavGameDependencyProviderModule = new PavGameDependencyProviderModule( application );
+            return pavGameDependencyProviderModule.provideUseCase();      //comunicarea cu domain si data
+        }else{
+            Timber.d("dagger injection succeeded");
+            return gameUseCase;
+        }
     }
 }

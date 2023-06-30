@@ -15,6 +15,9 @@ import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import ro.tav.pavgame.domain.DaggerPavGameDependencyProviderComponent;
+import ro.tav.pavgame.domain.PavGameDependencyProviderComponent;
+import ro.tav.pavgame.domain.PavGameDependencyProviderModule;
 import ro.tav.pavgame.presentation.notification.PavGameNotificationChannelFactory;
 import timber.log.Timber;
 
@@ -22,6 +25,7 @@ public class PavGameApplication extends Application {
     private static PavGameApplication pavGameApplication;
     //private final List < Activity > activities;
     private NotificationManager notificationManager = null;
+    private PavGameDependencyProviderComponent pavGameDependencyProviderComponent = null;
 
     public PavGameApplication() {
         super();
@@ -35,7 +39,11 @@ public class PavGameApplication extends Application {
 
         setupLibs();
 
-
+        pavGameDependencyProviderComponent = DaggerPavGameDependencyProviderComponent
+                .builder()
+                .context( this )
+                .pavGameDependencyProviderModule( new PavGameDependencyProviderModule( this ) )
+                .build();
     }
 
     private void setupLibs() {
@@ -96,6 +104,10 @@ public class PavGameApplication extends Application {
 
     public NotificationManager getNotificationManager() {
         return notificationManager;
+    }
+
+    public PavGameDependencyProviderComponent getPavGameDependencyProviderComponent(){
+        return pavGameDependencyProviderComponent;
     }
 
     private static boolean isRoboUnitTest() {

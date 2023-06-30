@@ -16,7 +16,7 @@ import java.util.List;
 import ro.tav.pavgame.data.GameEntity;
 
 @RunWith( RobolectricTestRunner.class )
-public class jUnitTestsData {
+public class JUnitTestsData {
     private Context context;
     private GameEntity mGame;
     private final String numeJucator = "myJUnitTest";
