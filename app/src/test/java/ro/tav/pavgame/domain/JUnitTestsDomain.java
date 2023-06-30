@@ -14,10 +14,10 @@ import ro.tav.pavgame.data.GameEntity;
 import timber.log.Timber;
 
 @RunWith( RobolectricTestRunner.class )
-public class jUnitTestsDomain {
+public class JUnitTestsDomain {
     private GameEntity mGame;
-    private final PavGameDependencyProvider pavGameDependencyProvider =
-            new PavGameDependencyProvider( ApplicationProvider.getApplicationContext() );
+    private final PavGameDependencyProviderModule pavGameDependencyProviderModule =
+            new PavGameDependencyProviderModule( ApplicationProvider.getApplicationContext() );
 
 
     @Before
@@ -28,7 +28,7 @@ public class jUnitTestsDomain {
 
     @Test
     public void test1() {
-        GameRemoteRepository gameRemoteRepository = pavGameDependencyProvider.provideRemoteRepository();
+        GameRemoteRepository gameRemoteRepository = pavGameDependencyProviderModule.provideRemoteRepository();
         gameRemoteRepository.insertGame( mGame );
         try {
             Thread.sleep( 2000 );
@@ -48,9 +48,9 @@ public class jUnitTestsDomain {
 
     @Test
     public void test2() {
-        GameUseCase gameUseCase = pavGameDependencyProvider.provideUseCase();
+        GameUseCase gameUseCase = pavGameDependencyProviderModule.provideUseCase();
         gameUseCase.insertGame( mGame );
-        GameInMemoryRepository gameInMemoryRepository = pavGameDependencyProvider.provideInMemoryRepository();
+        GameInMemoryRepository gameInMemoryRepository = pavGameDependencyProviderModule.provideInMemoryRepository();
         GameEntity gameFromRemoteRepository = gameInMemoryRepository.removeInMemory();
         assert gameFromRemoteRepository == mGame;
     }

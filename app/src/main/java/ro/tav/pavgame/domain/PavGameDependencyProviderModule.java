@@ -4,17 +4,20 @@ import android.content.Context;
 
 import androidx.work.WorkManager;
 
+import dagger.Module;
+import dagger.Provides;
 import ro.tav.pavgame.data.source.InMemoryDataSource;
 import ro.tav.pavgame.data.source.LocalGameDataSource;
 import ro.tav.pavgame.data.source.RemoteDataSource;
 
 //se afla in .domain, deci ne poate da obiecte din tipul acelor clase
-public final class PavGameDependencyProvider {
+@Module
+public final class PavGameDependencyProviderModule {
     private final GameInMemoryRepository inMemoryRepository;
     private final GameRemoteRepository remoteRepository;
     private final GameUseCase useCase;
 
-    public PavGameDependencyProvider( Context context ) {
+    public PavGameDependencyProviderModule( Context context ) {
         GameLocalRepository localRepository = new LocalGameDataSource( context );
         inMemoryRepository = new InMemoryDataSource();
         remoteRepository = new RemoteDataSource();
@@ -31,14 +34,17 @@ public final class PavGameDependencyProvider {
         useCase = new GameUseCase( mediator );
     }
 
+    @Provides
     GameInMemoryRepository provideInMemoryRepository() {
         return inMemoryRepository;
     }
 
+    @Provides
     GameRemoteRepository provideRemoteRepository() {
         return remoteRepository;
     }
 
+    @Provides
     public GameUseCase provideUseCase() {
         return useCase;
     }
