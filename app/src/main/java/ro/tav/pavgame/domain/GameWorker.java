@@ -7,9 +7,11 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.model.GameEntity;
+import ro.tav.pavgame.data.model.PavGamePojo;
 import ro.tav.pavgame.data.source.InMemoryDataSource;
 import ro.tav.pavgame.data.source.LocalGameDataSource;
 import ro.tav.pavgame.data.source.RemoteDataSource;
@@ -29,38 +31,53 @@ public class GameWorker extends Worker {
     public Result doWork() {
         Data data = getInputData();
         String value = data.getString( "mode" );
+        if ( value == null ) return Result.failure();
+
+        GameLocalRepository localRepository = new LocalGameDataSource( context );
+        GameInMemoryRepository inMemoryRepository = new InMemoryDataSource();
+        GameRemoteRepository remoteRepository = new RemoteDataSource( ( LocalGameDataSource ) localRepository, ( InMemoryDataSource ) inMemoryRepository );
 
         if ( "get".equals( value ) ) {
             Timber.d( "GET Operation" );
-            GameRemoteRepository gameRemoteRepository = new RemoteDataSource();
-            List< GameEntity > games = gameRemoteRepository.getAllGames();
 
-            if ( games != null ) {
-                GameLocalRepository gameLocalRepository = new LocalGameDataSource( context );
-                gameLocalRepository.deleteAllGames();
-                for ( GameEntity game : games ) {
-                    gameLocalRepository.insertGame( game );
+            boolean ok = false;
+
+            do {
+                List< PavGamePojo > games = remoteRepository.getObjects( GameEntity.class );
+                if ( games == null )
+                    break;
+                localRepository.deleteAllGames();
+                for ( PavGamePojo game : games ) {
+                    localRepository.insertGame( ( GameEntity ) game );
                 }
-                Timber.d( "worker finished downloading games" );
-            } else {
+                ok = true;
+            } while ( false );
+
+            if ( !ok ) {
                 Timber.d( "null response received from remote datasource" );
                 return Result.retry();
             }
-        } else if ( "post".equals( value ) ) {
+        } else if ( "post".equals( value ) || "put".equals( value ) ) {
             Timber.d( "POST Operation" );
-            GameInMemoryRepository gameInMemoryRepository = new InMemoryDataSource();
-            GameRemoteRepository gameRemoteRepository = new RemoteDataSource();
 
-            final int nrOfSyncs = gameInMemoryRepository.getNrOfElements();
-            for ( int i = 0; i < nrOfSyncs; i++ ) {         ///pt a nu face ciclu infinit; ex:nu merge netul=> worst case n inserts failed
-                gameRemoteRepository.insertGame( gameInMemoryRepository.removeInMemory() );
+            List< Class< ? extends PavGamePojo > > classTypes = new ArrayList<>();
+            classTypes.add( GameEntity.class );
+            for ( Class< ? extends PavGamePojo > classType : classTypes ) {
+                int nrOfElements = inMemoryRepository.getNrOfElements( classType );
+                for ( int i = 0; i < nrOfElements; i++ ) {
+                    PavGamePojo obj = inMemoryRepository.removeInMemory( classType );
+                    if ( obj != null ) {
+                        if ( obj.getGameId().isEmpty() )
+                            remoteRepository.insertPojo( obj );
+                        else
+                            remoteRepository.updatePojo( obj );
+                    } else {
+                        break;
+                    }
+                }
             }
-            if ( gameInMemoryRepository.getNrOfElements() == nrOfSyncs ) {
-                Timber.d( "worker failed posting games" );
+            if ( inMemoryRepository.getNrOfElements( GameEntity.class ) != 0 )
                 return Result.retry();
-            } else {
-                Timber.d( "worker finished posting games" );
-            }
         }
 
         return Result.success();

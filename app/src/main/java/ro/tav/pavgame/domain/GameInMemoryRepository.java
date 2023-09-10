@@ -1,15 +1,15 @@
 package ro.tav.pavgame.domain;
 
-import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.model.PavGamePojo;
 
 public abstract class GameInMemoryRepository {
     protected GameInMemoryRepository() {
-        //empty constructor for modifying access
+        super();
     }
 
-    protected abstract void addInMemory( GameEntity gameEntity );
+    protected abstract void addInMemory( PavGamePojo pojo );
 
-    protected abstract GameEntity removeInMemory();
+    protected abstract PavGamePojo removeInMemory( Class< ? extends PavGamePojo > pojoClass );
 
-    protected abstract int getNrOfElements();
+    protected abstract int getNrOfElements( Class< ? extends PavGamePojo > pojoClass );
 }

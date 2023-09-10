@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.model.GameEntity;
 
 public abstract class GameLocalRepository {
     protected GameLocalRepository() {
-        //empty constructor for modifying access
+        super();
     }
 
     protected abstract LiveData< List< GameEntity > > getAllGames();

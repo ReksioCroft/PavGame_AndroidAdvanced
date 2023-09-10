@@ -13,9 +13,9 @@ android {
     defaultConfig {
         applicationId = "ro.tav.pavgame"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 33
         versionCode = 3
-        versionName = "3.0"
+        versionName = "3.1"
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments += mapOf(

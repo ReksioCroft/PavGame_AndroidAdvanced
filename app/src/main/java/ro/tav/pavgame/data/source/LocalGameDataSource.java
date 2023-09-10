@@ -10,7 +10,7 @@ import androidx.room.Query;
 
 import java.util.List;
 
-import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.model.GameEntity;
 import ro.tav.pavgame.domain.GameLocalRepository;
 import timber.log.Timber;
 
@@ -51,25 +51,17 @@ public class LocalGameDataSource extends GameLocalRepository {
 
     @Dao
     protected interface GameDao {
-        @Query( "SELECT DISTINCT numeJucator, gameType, result, cast (count(*) as text) as gameId" +
+        @Query( "SELECT numeJucator as gameId, numeJucator, gameType, result, cast (count(*) as text) as gameDateTime" +
                 " from gameEntity " +
                 " group by numeJucator, gameType, result" +
                 " order by count(*) desc, gameType desc, result desc, numeJucator" )
         LiveData< List< GameEntity > > getAllGames();
 
-        @Query( "SELECT DISTINCT numeJucator, gameType, result, cast ( count(*) as text) as gameId" +
-                " from gameEntity  " +
-                "group by numeJucator, gameType, result " +
-                "having numeJucator=:user " +
-                "order by gameType desc, result desc" )
-        LiveData< List< GameEntity > > getSpecificGamesbyUserName( String user );
-
-        @Query( "SELECT DISTINCT numeJucator, gameType, result, cast ( count(*) as text) as gameId " +
+        @Query( "SELECT * " +
                 "from gameEntity " +
-                " group by numeJucator, gameType, result " +
-                "having numeJucator=:user " +
-                "order by gameType desc, result desc" )
-        List< GameEntity > getSpecificGamesbyUserNameAsList( String user );
+                "WHERE numeJucator=:user " +
+                "order by gameDateTime desc" )
+        LiveData< List< GameEntity > > getSpecificGamesbyUserName( String user );
 
         @Insert( onConflict = OnConflictStrategy.IGNORE )
         void insertGame( GameEntity game );

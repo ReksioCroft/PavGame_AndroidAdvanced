@@ -1,4 +1,4 @@
-package ro.tav.pavgame;
+package ro.tav.pavgame.presentation.viewmodel;
 
 import android.app.Application;
 import android.app.NotificationManager;
@@ -15,6 +15,7 @@ import com.google.firebase.appcheck.FirebaseAppCheck;
 import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
+import ro.tav.pavgame.BuildConfig;
 import ro.tav.pavgame.domain.DaggerPavGameDependencyProviderComponent;
 import ro.tav.pavgame.domain.PavGameDependencyProviderComponent;
 import ro.tav.pavgame.domain.PavGameDependencyProviderModule;
@@ -22,14 +23,12 @@ import ro.tav.pavgame.presentation.notification.PavGameNotificationChannelFactor
 import timber.log.Timber;
 
 public class PavGameApplication extends Application {
-    private static PavGameApplication pavGameApplication;
     //private final List < Activity > activities;
-    private NotificationManager notificationManager = null;
+    private static NotificationManager notificationManager = null;
     private PavGameDependencyProviderComponent pavGameDependencyProviderComponent = null;
 
     public PavGameApplication() {
         super();
-        pavGameApplication = this;
 //        activities = new ArrayList <>();
     }
 
@@ -41,7 +40,7 @@ public class PavGameApplication extends Application {
 
         pavGameDependencyProviderComponent = DaggerPavGameDependencyProviderComponent
                 .builder()
-                .context( this )
+                .application( this )
                 .pavGameDependencyProviderModule( new PavGameDependencyProviderModule( this ) )
                 .build();
     }
@@ -98,15 +97,13 @@ public class PavGameApplication extends Application {
 //        pavGameApplication.activities.remove( a );
 //    }
 
-    public static PavGameApplication getApplication() {
-        return pavGameApplication;
-    }
 
-    public NotificationManager getNotificationManager() {
+    public static NotificationManager getNotificationManager() {
         return notificationManager;
     }
 
-    public PavGameDependencyProviderComponent getPavGameDependencyProviderComponent(){
+
+    PavGameDependencyProviderComponent getPavGameDependencyProviderComponent() {
         return pavGameDependencyProviderComponent;
     }
 

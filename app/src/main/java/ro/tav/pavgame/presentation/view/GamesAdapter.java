@@ -17,10 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.model.GameEntity;
+import ro.tav.pavgame.databinding.GameItemBinding;
 import ro.tav.pavgame.presentation.activity.RecyclerViewActivity;
 
-public class GamesAdapter extends RecyclerView.Adapter< GamesViewHolder > implements Filterable {
+public class GamesAdapter extends RecyclerView.Adapter< GamesAdapter.GamesViewHolder > implements Filterable {
 
     private final List< GameEntity > mGames;
     private final List< GameEntity > mFilteredGames;
@@ -37,10 +38,19 @@ public class GamesAdapter extends RecyclerView.Adapter< GamesViewHolder > implem
         this.mFilteredGames = new ArrayList<>();
     }
 
+    public class GamesViewHolder extends RecyclerView.ViewHolder {
+        public GameItemBinding binding;
+
+        public GamesViewHolder( @NonNull View itemView ) {
+            super( itemView );
+            binding = GameItemBinding.bind( itemView );
+        }
+    }
+
     @NonNull
     @Override
     public GamesViewHolder onCreateViewHolder( @NonNull ViewGroup parent, int viewType ) {
-        itemView = mInflater.inflate( R.layout.contact_item, parent, false );
+        itemView = mInflater.inflate( R.layout.game_item, parent, false );
         return new GamesViewHolder( itemView );
     }
 
@@ -48,31 +58,44 @@ public class GamesAdapter extends RecyclerView.Adapter< GamesViewHolder > implem
     public void onBindViewHolder( @NonNull GamesViewHolder gamesViewHolder, int i ) {
         if ( mFilteredGames != null ) {
             GameEntity currentGame = mFilteredGames.get( i );
-            gamesViewHolder.mTextViewName.setText( currentGame.getNumeJucator() );
+            gamesViewHolder.binding.textviewName.setText( currentGame.getNumeJucator() );
             String result = itemView.getResources().getString( currentGame.getResult() ? R.string.Win : R.string.Lose );
-            gamesViewHolder.mTextViewResult.setText( result );
+            gamesViewHolder.binding.textviewResult.setText( result );
             String gameType = currentGame.getGameType() + "x" + currentGame.getGameType();
-            gamesViewHolder.mTextViewType.setText( gameType );
-
-            String totalPoints = itemView.getResources().getString( R.string.total_points ) + currentGame.getGameId();
-            gamesViewHolder.mTextViewTotalPoints.setText( totalPoints );
-
-            if ( gamesViewHolder.mTextViewResult.getText().equals( itemView.getResources().getString( R.string.Lose ) ) ) {
-                gamesViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
-                gamesViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
-                gamesViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
-                gamesViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
-                gamesViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+            gamesViewHolder.binding.textviewGameType.setText( gameType );
+            String date = currentGame.getGameDateTime();
+            if ( date != null ) {
+                if ( currentGame.getGameId().equals( currentGame.getNumeJucator() ) ) {//total points
+                    String totalPoints = itemView.getResources().getString( R.string.total_points ) + date;
+                    gamesViewHolder.binding.textViewDate.setVisibility( View.GONE );
+                    gamesViewHolder.binding.textViewTotalPoints.setText( totalPoints );
+                } else { // one user
+                    gamesViewHolder.binding.textViewTotalPoints.setVisibility( View.GONE );
+                    gamesViewHolder.binding.textViewDate.setText( date );
+                }
             } else {
-                gamesViewHolder.mTextViewName.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
-                gamesViewHolder.mTextViewType.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
-                gamesViewHolder.mTextViewResult.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
-                gamesViewHolder.mTextViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
-                gamesViewHolder.mCard.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                gamesViewHolder.binding.textViewTotalPoints.setVisibility( View.GONE );
+                gamesViewHolder.binding.textViewDate.setVisibility( View.GONE );
+            }
+
+            if ( gamesViewHolder.binding.textviewResult.getText().equals( itemView.getResources().getString( R.string.Lose ) ) ) {
+                gamesViewHolder.binding.textviewName.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                gamesViewHolder.binding.textviewGameType.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                gamesViewHolder.binding.textviewResult.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                gamesViewHolder.binding.textViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                gamesViewHolder.binding.textViewDate.setTextColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
+                gamesViewHolder.binding.cardViewResults.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+            } else {
+                gamesViewHolder.binding.textviewName.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                gamesViewHolder.binding.textviewGameType.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                gamesViewHolder.binding.textviewResult.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                gamesViewHolder.binding.textViewTotalPoints.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                gamesViewHolder.binding.textViewDate.setTextColor( itemView.getResources().getColor( R.color.colorPrimary, context.getTheme() ) );
+                gamesViewHolder.binding.cardViewResults.setCardBackgroundColor( itemView.getResources().getColor( R.color.colorAccent, context.getTheme() ) );
             }
 
             if ( setOnClickListenerOnViewCards ) {
-                gamesViewHolder.mCard.setOnClickListener( new View.OnClickListener() {
+                gamesViewHolder.binding.cardViewResults.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick( View view ) {
                         Intent intent = new Intent( context, RecyclerViewActivity.class );
@@ -84,10 +107,7 @@ public class GamesAdapter extends RecyclerView.Adapter< GamesViewHolder > implem
                 } );
             }
         } else {
-            gamesViewHolder.mTextViewName.setText( R.string.noText );
-            gamesViewHolder.mTextViewResult.setText( R.string.noText );
-            gamesViewHolder.mTextViewType.setText( R.string.noText );
-            gamesViewHolder.mTextViewTotalPoints.setText( R.string.noText );
+            gamesViewHolder.binding.cardViewResults.setVisibility( View.GONE );
         }
     }
 

@@ -1,28 +1,39 @@
 package ro.tav.pavgame.data.source;
 
-import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.model.GameEntity;
+import ro.tav.pavgame.data.model.PavGamePojo;
 import ro.tav.pavgame.domain.GameInMemoryRepository;
 
-public class InMemoryDataSource extends GameInMemoryRepository {
-    private final InMemoryTemporaryStorage inMemoryTemporaryStorage;
+public final class InMemoryDataSource extends GameInMemoryRepository {
+    private final InMemoryTemporaryStorage gameInMemoryTemporaryStorage;
+
 
     public InMemoryDataSource() {
         super();
-        inMemoryTemporaryStorage = new InMemoryTemporaryStorage();
+        gameInMemoryTemporaryStorage = InMemoryTemporaryStorage.getInstance( GameEntity.class );
     }
 
     @Override
-    protected void addInMemory( GameEntity gameEntity ) {
-        inMemoryTemporaryStorage.addInMemory( gameEntity );
+    protected void addInMemory( PavGamePojo pojo ) {
+        if ( pojo instanceof GameEntity )
+            gameInMemoryTemporaryStorage.addInMemory( pojo );
+        else
+            throw new RuntimeException( "obj instance not known" );
     }
 
     @Override
-    protected GameEntity removeInMemory() {
-        return inMemoryTemporaryStorage.removeInMemory();
+    protected PavGamePojo removeInMemory( Class< ? extends PavGamePojo > pojoClass ) {
+        if ( pojoClass.equals( GameEntity.class ) )
+            return gameInMemoryTemporaryStorage.removeInMemory();
+        else
+            throw new RuntimeException( "obj instance not known" );
     }
 
     @Override
-    protected int getNrOfElements() {
-        return inMemoryTemporaryStorage.getNrOfElements();
+    protected int getNrOfElements( Class< ? extends PavGamePojo > pojoClass ) {
+        if ( pojoClass.equals( GameEntity.class ) )
+            return gameInMemoryTemporaryStorage.getNrOfElements();
+        else
+            throw new RuntimeException( "obj instance not known" );
     }
 }

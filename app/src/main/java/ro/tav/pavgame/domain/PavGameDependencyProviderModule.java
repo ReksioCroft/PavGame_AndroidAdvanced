@@ -2,6 +2,7 @@ package ro.tav.pavgame.domain;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
 import androidx.work.WorkManager;
 
 import dagger.Module;
@@ -13,14 +14,14 @@ import ro.tav.pavgame.data.source.RemoteDataSource;
 //se afla in .domain, deci ne poate da obiecte din tipul acelor clase
 @Module
 public final class PavGameDependencyProviderModule {
-    private final GameInMemoryRepository inMemoryRepository;
-    private final GameRemoteRepository remoteRepository;
-    private final GameUseCase useCase;
+    private final @NonNull GameInMemoryRepository inMemoryRepository;
+    private final @NonNull GameRemoteRepository remoteRepository;
+    private final @NonNull GameUseCase useCase;
 
     public PavGameDependencyProviderModule( Context context ) {
         GameLocalRepository localRepository = new LocalGameDataSource( context );
         inMemoryRepository = new InMemoryDataSource();
-        remoteRepository = new RemoteDataSource();
+        remoteRepository = new RemoteDataSource( ( LocalGameDataSource ) localRepository, ( InMemoryDataSource ) inMemoryRepository );
 
         WorkManager workManager1;           //necesar pt jUnitTests
         try {
@@ -30,8 +31,7 @@ public final class PavGameDependencyProviderModule {
         }
         WorkManager workManager = workManager1;
 
-        GameMediator mediator = new GameMediator( localRepository, workManager );
-        useCase = new GameUseCase( mediator );
+        useCase = new GameMediator( localRepository, inMemoryRepository, workManager );
     }
 
     @Provides
@@ -45,7 +45,7 @@ public final class PavGameDependencyProviderModule {
     }
 
     @Provides
-    public GameUseCase provideUseCase() {
+    public @NonNull GameUseCase provideUseCase() {
         return useCase;
     }
 }

@@ -1,15 +1,21 @@
 package ro.tav.pavgame.domain;
 
+import androidx.annotation.Nullable;
+
 import java.util.List;
 
-import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.model.PavGamePojo;
 
 public abstract class GameRemoteRepository {
+    public static final String firebaseRealtimeDatabaseUrl = "https://pav-game-tav.firebaseio.com/";
+
     protected GameRemoteRepository() {
-        //empty constructor for modifying access
+        super();
     }
 
-    protected abstract List < GameEntity > getAllGames();
+    protected abstract @Nullable List< PavGamePojo > getObjects( Class< ? extends PavGamePojo > clazz );
 
-    protected abstract void insertGame( GameEntity gameEntity );
+    protected abstract void insertPojo( PavGamePojo pojo );
+
+    protected abstract void updatePojo( PavGamePojo pojo );
 }

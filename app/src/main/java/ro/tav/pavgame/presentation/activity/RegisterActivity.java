@@ -17,7 +17,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -74,9 +73,9 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                mFirebaseAuth.createUserWithEmailAndPassword( emailString, passwordString ).addOnCompleteListener( RegisterActivity.this, new OnCompleteListener < AuthResult >() {
+                mFirebaseAuth.createUserWithEmailAndPassword( emailString, passwordString ).addOnCompleteListener( RegisterActivity.this, new OnCompleteListener< AuthResult >() {
                     @Override
-                    public void onComplete( @NonNull Task < AuthResult > task ) {
+                    public void onComplete( @NonNull Task< AuthResult > task ) {
                         if ( !task.isSuccessful() ) {
                             Toast.makeText( RegisterActivity.this, "Registration failed. Please try again", Toast.LENGTH_SHORT ).show();
                         } else {

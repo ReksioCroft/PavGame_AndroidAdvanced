@@ -1,4 +1,4 @@
-package ro.tav.pavgame.data;
+package ro.tav.pavgame.data.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -11,13 +11,7 @@ import com.google.gson.annotations.SerializedName;
 import org.jetbrains.annotations.NotNull;
 
 @Entity( tableName = "gameEntity", primaryKeys = { "gameId", "numeJucator" } )
-public class GameEntity {
-    @ColumnInfo( name = "gameId" )
-    @SerializedName( "gameId" )
-    @Expose
-    @NonNull
-    private final String gameId;
-
+public final class GameEntity extends PavGamePojo {
     @ColumnInfo( name = "numeJucator" )
     @SerializedName( "numeJucator" )
     @Expose
@@ -34,15 +28,18 @@ public class GameEntity {
     @Expose
     private final boolean result;
 
-    public GameEntity( @NotNull String numeJucator, int gameType, boolean result, @NotNull String gameId ) {
+    @ColumnInfo( name = "gameDateTime" )
+    @SerializedName( "gameDateTime" )
+    @Expose
+    @Nullable
+    private final String gameDateTime;
+
+    public GameEntity( @NotNull String gameId, @NotNull String numeJucator, int gameType, boolean result, @Nullable String gameDateTime ) {
+        super( gameId );
         this.numeJucator = numeJucator;
         this.gameType = gameType;
         this.result = result;
-        this.gameId = gameId;
-    }
-
-    public @NotNull String getGameId() {
-        return gameId;
+        this.gameDateTime = gameDateTime;
     }
 
     public @NotNull String getNumeJucator() {
@@ -55,6 +52,11 @@ public class GameEntity {
 
     public int getGameType() {
         return gameType;
+    }
+
+    @Nullable
+    public String getGameDateTime() {
+        return gameDateTime;
     }
 
     @Override

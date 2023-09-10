@@ -27,9 +27,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.presentation.PavGameViewModel;
+import ro.tav.pavgame.presentation.viewmodel.PavGameViewModel;
 import timber.log.Timber;
 
 public class LoginActivity extends AppCompatActivity {
@@ -38,7 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     GoogleSignInClient mGoogleSignInClient;
-    private ActivityResultLauncher < Intent > googleSignInLauncher;
+    private ActivityResultLauncher< Intent > googleSignInLauncher;
 
 
     private void googleSignInLaunch( GoogleSignInAccount googleSignInAccount ) {
@@ -48,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
         startActivity( i );
     }
 
-    private void handleGoogleSignInTask( Task < GoogleSignInAccount > completedTask ) {
+    private void handleGoogleSignInTask( Task< GoogleSignInAccount > completedTask ) {
 
 
         try {
@@ -120,9 +119,9 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                mFirebaseAuth.signInWithEmailAndPassword( emailString, passwordString ).addOnCompleteListener( LoginActivity.this, new OnCompleteListener < AuthResult >() {
+                mFirebaseAuth.signInWithEmailAndPassword( emailString, passwordString ).addOnCompleteListener( LoginActivity.this, new OnCompleteListener< AuthResult >() {
                     @Override
-                    public void onComplete( @NonNull Task < AuthResult > task ) {
+                    public void onComplete( @NonNull Task< AuthResult > task ) {
                         if ( !task.isSuccessful() ) {
                             Toast.makeText( LoginActivity.this, "Login Error. Please try again", Toast.LENGTH_SHORT ).show();
                         } else {
@@ -161,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
                         // There are no request codes
                         Intent data = result.getData();
                         if ( data != null ) {
-                            Task < GoogleSignInAccount > task = GoogleSignIn.getSignedInAccountFromIntent( data );
+                            Task< GoogleSignInAccount > task = GoogleSignIn.getSignedInAccountFromIntent( data );
                             handleGoogleSignInTask( task );
                         }
                     }

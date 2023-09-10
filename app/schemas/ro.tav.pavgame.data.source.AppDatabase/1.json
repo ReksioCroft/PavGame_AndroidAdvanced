@@ -2,18 +2,12 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "da72907d33c8c70c9d3049e01f408e0b",
+    "identityHash": "f60e7f8d0f648da59a0b41a6881c42e2",
     "entities": [
       {
         "tableName": "gameEntity",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`gameId` TEXT NOT NULL, `numeJucator` TEXT NOT NULL, `gameType` INTEGER NOT NULL, `result` INTEGER NOT NULL, PRIMARY KEY(`gameId`, `numeJucator`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`numeJucator` TEXT NOT NULL, `gameType` INTEGER NOT NULL, `result` INTEGER NOT NULL, `gameDateTime` TEXT, `gameId` TEXT NOT NULL, PRIMARY KEY(`gameId`, `numeJucator`))",
         "fields": [
-          {
-            "fieldPath": "gameId",
-            "columnName": "gameId",
-            "affinity": "TEXT",
-            "notNull": true
-          },
           {
             "fieldPath": "numeJucator",
             "columnName": "numeJucator",
@@ -31,14 +25,26 @@
             "columnName": "result",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "gameDateTime",
+            "columnName": "gameDateTime",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "gameId",
+            "columnName": "gameId",
+            "affinity": "TEXT",
+            "notNull": true
           }
         ],
         "primaryKey": {
+          "autoGenerate": false,
           "columnNames": [
             "gameId",
             "numeJucator"
-          ],
-          "autoGenerate": false
+          ]
         },
         "indices": [],
         "foreignKeys": []
@@ -47,7 +53,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'da72907d33c8c70c9d3049e01f408e0b')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'f60e7f8d0f648da59a0b41a6881c42e2')"
     ]
   }
 }

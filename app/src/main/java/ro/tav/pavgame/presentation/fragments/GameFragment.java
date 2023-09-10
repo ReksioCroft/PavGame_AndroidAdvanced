@@ -24,12 +24,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.gson.Gson;
 
-import ro.tav.pavgame.PavGameApplication;
+import java.sql.Timestamp;
+import java.util.Objects;
+
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.presentation.notification.PavGameService;
-import ro.tav.pavgame.presentation.PavGameViewModel;
-import ro.tav.pavgame.presentation.PavGameViewModelFactory;
+import ro.tav.pavgame.data.model.GameEntity;
 import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;
+import ro.tav.pavgame.presentation.notification.PavGameService;
+import ro.tav.pavgame.presentation.viewmodel.PavGameApplication;
+import ro.tav.pavgame.presentation.viewmodel.PavGameViewModel;
+import ro.tav.pavgame.presentation.viewmodel.PavGameViewModelFactory;
 import timber.log.Timber;
 
 public class GameFragment extends Fragment {
@@ -71,7 +75,7 @@ public class GameFragment extends Fragment {
         long timeSpent;   //timpul petrecut(cu precizie de minute) in joc
         sharedPreferences = super.requireContext().getSharedPreferences( pavGameSharedPreference, Context.MODE_PRIVATE );
         try {
-            String s = sharedPreferences.getString( PavGameViewModel.getUserName(), "0" );//preluam timpul utilizatorului
+            String s = sharedPreferences.getString( PavGameViewModel.getUserName( getActivity() ), "0" );//preluam timpul utilizatorului
             timeSpent = Long.parseLong( s );
         } catch ( Exception e ) {
             Timber.d( e );
@@ -159,7 +163,7 @@ public class GameFragment extends Fragment {
         //si ii fac update in shared preferances
         Gson gson = new Gson();
         String json = gson.toJson( newTime );       ///convertim acest timp la un json string
-        sharedPreferences.edit().putString( PavGameViewModel.getUserName() + "", json ).apply(); ///updatam valoarea in shared preferances
+        sharedPreferences.edit().putString( PavGameViewModel.getUserName( getActivity() ) + "", json ).apply(); ///updatam valoarea in shared preferances
 
     }
 
@@ -361,19 +365,21 @@ public class GameFragment extends Fragment {
                     button.setText( messege );
                     result = true;
                     s1 = getString( R.string.Win );
-                    s2 = getString( R.string.victorie ) + ", " + PavGameViewModel.getUserName() + "!";
+                    s2 = getString( R.string.victorie ) + ", " + PavGameViewModel.getUserName( getActivity() ) + "!";
                 } else {
                     messege = getString( R.string.esec ) + "! " + getString( R.string.solution );
                     button.setText( messege );
                     result = false;
                     s1 = getString( R.string.Lose );
-                    s2 = getString( R.string.esec ) + ", " + PavGameViewModel.getUserName() + "!";
+                    s2 = getString( R.string.esec ) + ", " + PavGameViewModel.getUserName( getActivity() ) + "!";
                 }
 
                 //adaugam jocul in baza de date folosindu-ne de viewModel
-                PavGameViewModel pavGameViewModel = new ViewModelProvider( requireActivity(), new PavGameViewModelFactory( PavGameApplication.getApplication() ) ).get( PavGameViewModel.class );
-                pavGameViewModel.addResult( PavGameViewModel.getUserName(), result, lat );
-                PavGameApplication.getApplication().getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
+                PavGameViewModel pavGameViewModel = new ViewModelProvider( requireActivity(), new PavGameViewModelFactory( requireActivity().getApplication() ) ).get( PavGameViewModel.class );
+                String timeStamp = new Timestamp( System.currentTimeMillis() ).toString();  //id-ul va fi timpul la care s-a facut adaugarea
+                GameEntity game = new GameEntity( "", Objects.requireNonNull( PavGameViewModel.getUserName( getActivity() ) ), lat, result, timeStamp );
+                pavGameViewModel.insertGame( game );
+                PavGameApplication.getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
                         PavGameNotificationFactory.createCustomHelloNotification( getContext(),
                                 s1, s2 ) );
                 Toast.makeText( getContext(), messege, Toast.LENGTH_LONG ).show();

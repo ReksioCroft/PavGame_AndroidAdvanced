@@ -10,7 +10,8 @@ import org.robolectric.RobolectricTestRunner;
 import java.sql.Timestamp;
 import java.util.List;
 
-import ro.tav.pavgame.data.GameEntity;
+import ro.tav.pavgame.data.model.GameEntity;
+import ro.tav.pavgame.data.model.PavGamePojo;
 import timber.log.Timber;
 
 @RunWith( RobolectricTestRunner.class )
@@ -23,21 +24,22 @@ public class JUnitTestsDomain {
     @Before
     public void createGameEntity() {
         String timeStamp = new Timestamp( System.currentTimeMillis() ).toString();
-        mGame = new GameEntity( "myJUnitTest", 4096, true, timeStamp );
+        mGame = new GameEntity( "myJUnitTest", "myJUnitTest", 4096, true, timeStamp );
     }
 
     @Test
     public void test1() {
         GameRemoteRepository gameRemoteRepository = pavGameDependencyProviderModule.provideRemoteRepository();
-        gameRemoteRepository.insertGame( mGame );
+        gameRemoteRepository.insertPojo( mGame );
         try {
             Thread.sleep( 2000 );
         } catch ( Exception e ) {
             Timber.d( e );
         }
-        List < GameEntity > l = gameRemoteRepository.getAllGames();
+        List< PavGamePojo > l = gameRemoteRepository.getObjects( GameEntity.class );
         boolean ok = false;
-        for ( GameEntity gameEntity : l ) {
+        assert l != null;
+        for ( PavGamePojo gameEntity : l ) {
             if ( gameEntity.equals( mGame ) ) {
                 ok = true;
                 break;
@@ -51,7 +53,7 @@ public class JUnitTestsDomain {
         GameUseCase gameUseCase = pavGameDependencyProviderModule.provideUseCase();
         gameUseCase.insertGame( mGame );
         GameInMemoryRepository gameInMemoryRepository = pavGameDependencyProviderModule.provideInMemoryRepository();
-        GameEntity gameFromRemoteRepository = gameInMemoryRepository.removeInMemory();
+        PavGamePojo gameFromRemoteRepository = gameInMemoryRepository.removeInMemory( GameEntity.class );
         assert gameFromRemoteRepository == mGame;
     }
 }

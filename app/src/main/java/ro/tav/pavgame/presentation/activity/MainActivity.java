@@ -21,14 +21,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.presentation.view.PavGameFragmentStack;
-import ro.tav.pavgame.presentation.PavGameViewModel;
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 import ro.tav.pavgame.presentation.fragments.HomeFragment;
 import ro.tav.pavgame.presentation.fragments.WebViewFragment;
 import ro.tav.pavgame.presentation.notification.PavGameNotificationFactory;
+import ro.tav.pavgame.presentation.view.PavGameFragmentStack;
+import ro.tav.pavgame.presentation.viewmodel.PavGameApplication;
+import ro.tav.pavgame.presentation.viewmodel.PavGameViewModel;
 import timber.log.Timber;
 
 
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener( this );
         View headerView = navigationView.getHeaderView( 0 );
         TextView textView = headerView.findViewById( R.id.nav_header_subtitle );
-        String userName = PavGameViewModel.getUserName();
+        String userName = PavGameViewModel.getUserName( this );
         if ( userName == null )
             finish();
         textView.setText( userName );
@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //afisam o notificare de bun venit
-        PavGameApplication.getApplication().getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
+        PavGameApplication.getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
                 PavGameNotificationFactory.createHelloNotification( this ) );
 
     }

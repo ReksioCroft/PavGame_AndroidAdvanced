@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.presentation.PavGameViewModel;
+import ro.tav.pavgame.presentation.viewmodel.PavGameViewModel;
 
 public class HomeFragment extends Fragment {
     @Nullable
@@ -20,7 +20,7 @@ public class HomeFragment extends Fragment {
         View root = super.onCreateView( inflater, container, savedInstanceState );
         if ( root != null ) {
             TextView textView = root.findViewById( R.id.text_home );
-            textView.setText( String.format( getString( R.string.welcome ), PavGameViewModel.getUserName() ) );
+            textView.setText( String.format( getString( R.string.welcome ), PavGameViewModel.getUserName( getActivity() ) ) );
         }
         return root;
     }

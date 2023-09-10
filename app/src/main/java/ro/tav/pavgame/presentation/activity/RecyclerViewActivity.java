@@ -4,19 +4,17 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
-import androidx.appcompat.widget.SearchView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
-import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
-import ro.tav.pavgame.presentation.PavGameViewModel;
-import ro.tav.pavgame.presentation.PavGameViewModelFactory;
 import ro.tav.pavgame.presentation.view.PavGameBindingAdapter;
+import ro.tav.pavgame.presentation.viewmodel.PavGameViewModel;
+import ro.tav.pavgame.presentation.viewmodel.PavGameViewModelFactory;
 
 
 public class RecyclerViewActivity extends AppCompatActivity {
@@ -54,11 +52,11 @@ public class RecyclerViewActivity extends AppCompatActivity {
 
         //obtinem ViewModel
         PavGameViewModel pavGameViewModel =
-                new ViewModelProvider( this, new PavGameViewModelFactory( PavGameApplication.getApplication() ) )
+                new ViewModelProvider( this, new PavGameViewModelFactory( getApplication() ) )
                         .get( PavGameViewModel.class );
 
         //binding pentru a prelua datele din repository
-        PavGameBindingAdapter.recycleViewGamesBind( mRecyclerViewGames, pavGameViewModel, specificUser );
+        PavGameBindingAdapter.recycleViewGamesBind( mRecyclerViewGames, pavGameViewModel, this, specificUser );
 
         //activare searchView
         PavGameBindingAdapter.setSearchViewFilter( mRecyclerViewGames, searchView );

@@ -6,7 +6,7 @@ import java.util.Stack;
 
 import ro.tav.pavgame.presentation.fragments.GameFragment;
 
-public class PavGameFragmentStack extends Stack < Fragment > {
+public class PavGameFragmentStack extends Stack< Fragment > {
     private boolean containsGame = false;
     private int co = 0;
 

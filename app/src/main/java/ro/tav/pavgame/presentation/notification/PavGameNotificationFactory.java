@@ -30,6 +30,7 @@ public class PavGameNotificationFactory {
     public static int getFirebaseNotificationId() {
         return FIREBASE_NOTIFICATION_ID;
     }
+
     public static Notification createProcessingWorkNotification( Context context ) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder( context, PavGameNotificationChannelFactory.CHANNEL_ID )
                 .setSmallIcon( android.R.drawable.ic_popup_sync )
@@ -71,10 +72,10 @@ public class PavGameNotificationFactory {
     }
 
     private static PendingIntent createContentIntent( Context context ) {
-        NavDeepLinkBuilder navDeepLinkBuilder = new NavDeepLinkBuilder(context)
-                .setGraph(R.navigation.nav_graph)
-                .setDestination(R.id.homeFragment)
-                .setComponentName(MainActivity.class);
+        NavDeepLinkBuilder navDeepLinkBuilder = new NavDeepLinkBuilder( context )
+                .setGraph( R.navigation.nav_graph )
+                .setDestination( R.id.homeFragment )
+                .setComponentName( MainActivity.class );
         return navDeepLinkBuilder.createPendingIntent();
     }
 

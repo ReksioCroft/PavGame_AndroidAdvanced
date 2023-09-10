@@ -8,7 +8,6 @@ import android.view.View;
 
 import androidx.cardview.widget.CardView;
 
-import ro.tav.pavgame.PavGameApplication;
 import ro.tav.pavgame.R;
 
 public class CreditsActivity extends Activity {

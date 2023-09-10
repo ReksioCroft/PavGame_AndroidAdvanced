@@ -1,10 +1,11 @@
 package ro.tav.pavgame.presentation.view;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.databinding.BindingAdapter;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 import java.util.Objects;
 
-import ro.tav.pavgame.data.GameEntity;
-import ro.tav.pavgame.presentation.PavGameViewModel;
+import ro.tav.pavgame.data.model.GameEntity;
+import ro.tav.pavgame.presentation.viewmodel.PavGameViewModel;
 
 
 public class PavGameBindingAdapter {
@@ -54,15 +55,21 @@ public class PavGameBindingAdapter {
         }
     }
 
-    @BindingAdapter( { "pavGameViewModel", "user" } )
+    @BindingAdapter( { "pavGameViewModel", "activity", "user" } )
     public static void recycleViewGamesBind( @NonNull RecyclerView mRecyclerViewGames,
                                              @NonNull PavGameViewModel pavGameViewModel,
+                                             @NonNull AppCompatActivity activity,
                                              @Nullable String user ) {
         //daca am primit un string null, facem bind cu toate jocurile din repo
         if ( user == null ) {
-            pavGameViewModel.getAllGames().observeForever( new Observer< List< GameEntity > >() {
+            LiveData< List< GameEntity > > listLiveData = pavGameViewModel.getAllGames();
+            if ( listLiveData == null )
+                return;
+            listLiveData.observe( activity, new Observer< List< GameEntity > >() {
                 @Override
                 public void onChanged( @Nullable final List< GameEntity > games ) {
+                    if ( games == null )
+                        return;
                     //suntem siguri ca adaptorul nostru este de tipul GameAdapter
                     GamesAdapter gamesAdapter = ( GamesAdapter ) mRecyclerViewGames.getAdapter();
                     Objects.requireNonNull( gamesAdapter ).setGames( games );
@@ -70,9 +77,14 @@ public class PavGameBindingAdapter {
             } );
         }  //altfel, afisam jocurile unui anumite utilizator
         else {
-            pavGameViewModel.getSpecificGamesbyUserName( user ).observeForever( new Observer< List< GameEntity > >() {
+            LiveData< List< GameEntity > > listLiveData = pavGameViewModel.getSpecificGamesbyUserName( user );
+            if ( listLiveData == null )
+                return;
+            listLiveData.observe( activity, new Observer< List< GameEntity > >() {
                 @Override
                 public void onChanged( @Nullable final List< GameEntity > games ) {
+                    if ( games == null )
+                        return;
                     GamesAdapter gamesAdapter = ( GamesAdapter ) mRecyclerViewGames.getAdapter();
                     Objects.requireNonNull( gamesAdapter ).setGames( games );
                 }

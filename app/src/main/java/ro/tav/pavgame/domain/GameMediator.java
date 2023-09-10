@@ -1,5 +1,7 @@
 package ro.tav.pavgame.domain;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.work.Data;
 import androidx.work.ExistingPeriodicWorkPolicy;
@@ -10,20 +12,20 @@ import androidx.work.WorkManager;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import ro.tav.pavgame.data.GameEntity;
-import ro.tav.pavgame.data.source.InMemoryDataSource;
+import ro.tav.pavgame.data.model.GameEntity;
 import timber.log.Timber;
 
-public class GameMediator {
+final class GameMediator implements GameUseCase {
     private final GameLocalRepository localRepository;
+    private final GameInMemoryRepository inMemoryRepository;
+
     private final WorkManager workManager;
     private final Data getDataforBuilder = ( new Data.Builder().putString( "mode", "get" ) ).build();
     private final Data postDataforBuilder = ( new Data.Builder().putString( "mode", "post" ) ).build();
 
-    protected GameMediator( GameLocalRepository localRepository,
-                            WorkManager workManager ) {
-
+    GameMediator( GameLocalRepository localRepository, GameInMemoryRepository inMemoryRepository, WorkManager workManager ) {
         this.localRepository = localRepository;
+        this.inMemoryRepository = inMemoryRepository;
         this.workManager = workManager;
 
         //Vrem ca primul get sa se faca instant cand se deschide aplicatia
@@ -33,20 +35,22 @@ public class GameMediator {
         setPeriodicRequests();
     }
 
-    protected LiveData < List < GameEntity > > getAllGames() {
+    @Override
+    @Nullable
+    public LiveData< List< GameEntity > > getAllGames() {
         return localRepository.getAllGames();
     }
 
-    protected LiveData < List < GameEntity > > getSpecificGamesbyUserName( String user ) {
+    @Override
+    @Nullable
+    public LiveData< List< GameEntity > > getSpecificGamesbyUserName( String user ) {
         return localRepository.getSpecificGamesbyUserName( user );
     }
 
-    protected void insertGame( GameEntity game ) {
+    @Override
+    public void insertGame( @NonNull GameEntity game ) {
         //adaugam jocul in firebase db
         postToRemoteRepository( game );
-
-        //Inseram jocul in roomDatabase
-        localRepository.insertGame( game );
     }
 
     private void setPeriodicRequests() {
@@ -82,8 +86,7 @@ public class GameMediator {
 
     private void postToRemoteRepository( GameEntity game ) {
         //inseram jocul in coada repo-ului local
-        GameInMemoryRepository gameInMemoryRepository = new InMemoryDataSource();
-        gameInMemoryRepository.addInMemory( game );
+        inMemoryRepository.addInMemory( game );
 
         //dupa ce am inserat acest joc, il vom trimite (pe el si ce mai e in coada) in repo-ul firebase, prin worker
         try {
