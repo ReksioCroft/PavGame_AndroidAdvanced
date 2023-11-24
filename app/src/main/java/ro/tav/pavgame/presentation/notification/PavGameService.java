@@ -1,7 +1,10 @@
 package ro.tav.pavgame.presentation.notification;
 
+import android.app.Notification;
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.ServiceInfo;
+import android.os.Build;
 import android.os.IBinder;
 
 import androidx.annotation.Nullable;
@@ -30,8 +33,16 @@ public class PavGameService extends Service {
         int type = intent.getIntExtra( TYPE_KEY, TYPE_BASIC );
 
         if ( type == TYPE_BASIC ) {
-            startForeground( PavGameNotificationFactory.getServiceNotificationId(), PavGameNotificationFactory.createProcessingWorkNotification( this ) );
-
+            final int notificationId = PavGameNotificationFactory.getServiceNotificationId();
+            final Notification notification = PavGameNotificationFactory.createProcessingWorkNotification( this );
+            if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE ) {
+                startForeground( notificationId, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING );
+            }
+            else if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q ) {
+                startForeground( notificationId, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MANIFEST );
+            } else {
+                startForeground( notificationId, notification );
+            }
             Timber.i( "Basic work in progress" );
 
         } else if ( type == TYPE_ADVANCED ) {

@@ -4,6 +4,7 @@ package ro.tav.pavgame.presentation.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Pair;
@@ -240,7 +241,11 @@ public class GameFragment extends Fragment {
                 Button gameButton = ( Button ) view;
                 gameButton.setEnabled( false );
                 gameButton.setText( getString( R.string.start_game ) );
-                requireActivity().startService( gameInProgressServiceIntent );
+                if ( Build.VERSION.SDK_INT >= Build.VERSION_CODES.O ) {
+                    requireActivity().startForegroundService( gameInProgressServiceIntent );
+                } else {
+                    requireActivity().startService( gameInProgressServiceIntent );
+                }
                 gameState = GameState.Init;
             } catch ( Exception e ) {
                 if ( s.length() == 0 )  //daca s-a introdus stringul vid

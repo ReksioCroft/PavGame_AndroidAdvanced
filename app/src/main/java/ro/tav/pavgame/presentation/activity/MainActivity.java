@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -87,22 +89,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         PavGameApplication.getNotificationManager().notify( PavGameNotificationFactory.getHelloNotificationId(),
                 PavGameNotificationFactory.createHelloNotification( this ) );
 
-    }
+        // handle back press
+        OnBackPressedDispatcher dispatcher = getOnBackPressedDispatcher();
+        dispatcher.addCallback( new OnBackPressedCallback( true /* enabled by default */ ) {
+            @Override
+            public void handleOnBackPressed() {
+                DrawerLayout drawer = findViewById( R.id.drawer_layout );
+                if ( drawer.isDrawerOpen( GravityCompat.START ) ) {
+                    drawer.closeDrawer( GravityCompat.START );
+                } else {
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = findViewById( R.id.drawer_layout );
-        if ( drawer.isDrawerOpen( GravityCompat.START ) ) {
-            drawer.closeDrawer( GravityCompat.START );
-        } else {
+                    if ( fragmentStack.getNrOfItems() > 1 && fragmentStack.peek().getClass() != GameFragment.class ) {
+                        popFragment();
+                    } else {
+                        Toast.makeText( MainActivity.this, getString( R.string.longPressFinishGame ), Toast.LENGTH_LONG ).show();
+                    }
 
-            if ( fragmentStack.getNrOfItems() > 1 && fragmentStack.peek().getClass() != GameFragment.class ) {
-                popFragment();
-            } else {
-                Toast.makeText( MainActivity.this, getString( R.string.longPressFinishGame ), Toast.LENGTH_LONG ).show();
+                }
             }
+        } );
 
-        }
     }
 
     @Override
